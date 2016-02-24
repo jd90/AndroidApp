@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="25dip"
+    android:paddingRight="25dip"
+    android:paddingTop="5dip"
+    android:paddingBottom="5dip"
+    android:visibility="visible"
+    android:id="@+id/containerLayout"
+    android:focusable="false"
+    android:clickable="false"
+    android:longClickable="true"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:id="@+id/textView" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:minWidth="200dp"
+        android:id="@+id/titleInput"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/abc_text_size_title_material"
+        android:layout_below="@+id/textView"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="x"
+        android:id="@+id/close"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/titleInput">
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+        </Spinner>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="frequency"
+            />
+    </LinearLayout>
+</RelativeLayout><!-- From: file:/C:/Users/Borris/Desktop/ParseGoalApp/ParseStarterProject/src/main/res/layout/new_goal_list_item.xml -->

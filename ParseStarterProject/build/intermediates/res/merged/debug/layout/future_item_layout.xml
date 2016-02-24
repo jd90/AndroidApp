@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/future"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ff47aff3"
+        android:title="Next Week">
+        <TextView
+            android:id="@+id/windowTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Next Week's Goals"
+            android:textSize="@dimen/abc_text_size_title_material_toolbar"
+            android:textColor="#ff000000"/>
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:id="@android:id/list"
+        android:layout_above="@+id/newGoalButton">
+    </ListView>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Goal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/newGoalButton" />
+
+</RelativeLayout><!-- From: file:/C:/Users/Borris/Desktop/ParseGoalApp/ParseStarterProject/src/main/res/layout/future_item_layout.xml -->

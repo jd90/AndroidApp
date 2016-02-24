@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\build\intermediates\exploded-aar\com.android.support\design\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="fc63b820d54c8a27a3a614bdd93920e0076581c2">
+        <dex dex="C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\build\intermediates\pre-dexed\debug\classes-a313e5cdfbfd90d8305d78fd00b4037bfab78664.jar" />
+    </item>
+
+</items>
