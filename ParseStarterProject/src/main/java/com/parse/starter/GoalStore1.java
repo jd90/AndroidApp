@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -17,6 +18,10 @@ public class GoalStore1 {
     SQLiteDatabase myDatabase;
     Cursor c;
 
+    Calendar calendar = Calendar.getInstance();
+    int dayofyear;
+    int day;
+
     boolean whichDatastore;
 
     public GoalStore1(SQLiteDatabase x, boolean y) {
@@ -25,6 +30,10 @@ public class GoalStore1 {
         //test if database exists
         //if empty fill arraylist and fill database
         //if full fill arraylist from database
+
+        dayofyear = calendar.get(Calendar.DAY_OF_YEAR);
+        day = calendar.get(Calendar.DAY_OF_WEEK);
+
         setUpGoalStore();
     }
 
@@ -46,10 +55,17 @@ public class GoalStore1 {
     public int getSize(){return this.list.size();}
 
     public double getTotalPercentage() {
-        double sum=0.0;
+        /**int sum=0;
         for (Goal g:this.list)
-            sum+=g.percentNum;
+            sum+=(int) g.percent;
         return sum;
+         */
+        double sum =0;
+        for(Goal g:this.list){
+            sum+=(int) g.percent;
+        }
+        //check if this casting works/is right in a separate small netbeans window
+        return (int) (sum/this.getSize()) + (sum%this.getSize());
     }
 
 
@@ -147,6 +163,26 @@ public class GoalStore1 {
         Log.i("6705 2 load2", "goalstore length "+this.getSize());
     }
 
+    public int daysToRefresh(int day){
+        int refreshDay=0;
+        switch(day) {
+            case 2:refreshDay += 7;
+                break;
+            case 3:refreshDay += 6;
+                break;
+            case 4:refreshDay += 5;
+                break;
+            case 5:refreshDay += 4;
+                break;
+            case 6:refreshDay += 3;
+                break;
+            case 7:refreshDay += 2;
+                break;
+            case 1:refreshDay += 1;
+                break;
+        }
+        return refreshDay;
+    }
 
     public void setUpGoalStore(){
         Log.i("6705 1", "called setupgoalstore1");
@@ -160,7 +196,12 @@ public class GoalStore1 {
                     myDatabase.execSQL("INSERT INTO goalsStarted (started) VALUES (1)");
                     Log.i("6705 2", "started set");
 
+                    int refreshDayOfYear = dayofyear + daysToRefresh(day);
+                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS refreshDay (day INT(1))");
+                    myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES ("+refreshDayOfYear+")");
+
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (percentageTotal INT(3))");
+
 
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3))");
                     //this should make a "nae goals started" screen
@@ -170,7 +211,40 @@ public class GoalStore1 {
 //not empty table
                     Log.i("6705 2", "already started- moving on");
 
-                    this.loadFromFutureDatabase();
+
+
+
+//this could likely be a shorter query, single result etc... rather than needing a cursor?
+                    c = myDatabase.rawQuery("SELECT * FROM refreshDay", null);
+                    int refreshIndex = c.getColumnIndex("day");
+                    c.moveToFirst();
+                    int refreshDay =c.getInt(refreshIndex);
+
+Log.i("6705 today", ""+dayofyear);
+Log.i("6705 refreshdate", ""+refreshDay);
+                    if (dayofyear >= refreshDay) {
+                        //refresh goals
+                        //and refresh refreshDay
+
+                        double newTotal = this.getTotalPercentage();
+                        myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotals (totalPercent INT(3))");
+                        //if this was empty - it would mean that app has started, but one week
+                        // has not passed yet.. could set a boolean for first week or something? - need to be put above this tho - in the isnt passsed refresh check
+                        myDatabase.execSQL("INSERT INTO pastTotals (totalPercent) VALUES ("+newTotal+")");
+
+                        this.loadFromFutureDatabase();
+
+                        refreshDay = dayofyear + daysToRefresh(day);
+
+                        if (refreshDay > 365) {
+                            refreshDay -= 365;
+                        }
+                        myDatabase.execSQL("delete from refreshDay");
+                        myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES ("+refreshDay+")");
+                    } else{
+                        //dont refresh goals
+                        this.loadFromDatabase();
+                    }
 
                     // block this for now - when implementing weekly update change it to
                     // this on the regular instead and the above FutureDatabase one on weekly days.
@@ -178,7 +252,7 @@ public class GoalStore1 {
                     //i should also display reset date in Future Goals page, maybe above the button?
 
                     //when resetting it should add the past total percentage to a PastTotalsTbl.
-                    // this.loadFromDatabase();
+                    //
                 }}}
         catch(Exception e){e.printStackTrace();}
     }
