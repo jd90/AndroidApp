@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class GoalStore1 {
 
+    boolean firstweek = false;
+
     List<Goal> list;
 
     SQLiteDatabase myDatabase;
@@ -21,8 +23,8 @@ public class GoalStore1 {
     Calendar calendar = Calendar.getInstance();
     int dayofyear;
     int day;
+    ArrayList<Integer> pastTotals = new ArrayList<>();
 
-    boolean whichDatastore;
 
     public GoalStore1(SQLiteDatabase x, boolean y) {
         myDatabase = x;
@@ -35,23 +37,27 @@ public class GoalStore1 {
         day = calendar.get(Calendar.DAY_OF_WEEK);
 
         setUpGoalStore();
+// this lets you see a graph of pastTotals if it is too early to have data
+        pastTotals.add(60);
+        pastTotals.add(100);
+        pastTotals.add(20);
+        pastTotals.add(10);
+        pastTotals.add(50);
+        pastTotals.add(60);
+        pastTotals.add(100);
+        pastTotals.add(20);
     }
 
     public boolean add(Goal g) {
         this.list.add(g);
         return true;
     }
-
     public Goal getAt(int i){
         return list.get(i);
     }
-
-
-
     public void clear() {
         this.list.clear();
     }
-
     public int getSize(){return this.list.size();}
 
     public double getTotalPercentage() {
@@ -63,11 +69,16 @@ public class GoalStore1 {
         double sum =0;
         for(Goal g:this.list){
             sum+=(int) g.percent;
+        Log.i("6705percent", ""+sum);
         }
         //check if this casting works/is right in a separate small netbeans window
-        return (int) (sum/this.getSize()) + (sum%this.getSize());
-    }
 
+        Log.i("6705percentfinal1", ""+ (sum/this.getSize()) + (sum%this.getSize()));
+        Log.i("6705percentfinal2", ""+ (int) (sum/this.getSize()) + (sum%this.getSize()));
+
+        return (int) (sum/this.getSize()); //+ (sum%this.getSize());
+
+    }
 
     public void saveToDatabase(){
         myDatabase.execSQL("delete from goalsTbl");
@@ -128,8 +139,9 @@ public class GoalStore1 {
             }
         Log.i("6705 1 load2", "goalstore length "+this.getSize());
         }
-
     public void loadFromFutureDatabase(){
+        Log.i("6705reset", "loadfromfuture called");
+        firstweek = false;
         this.clear();
         c = myDatabase.rawQuery("SELECT * FROM FgoalsTbl", null);
         int nameIndex = c.getColumnIndex("name");
@@ -145,43 +157,49 @@ public class GoalStore1 {
         int b6Index = c.getColumnIndex("b6");
         c.moveToFirst();
         int pos = 0;
-        while (c != null) {
-            Log.i("6705 2 load1", c.getString(nameIndex));
-            this.add(new Goal(c.getString(nameIndex), c.getInt(totalIndex)));
-            this.getAt(pos).done = c.getInt(doneIndex);
-            this.getAt(pos).percent = c.getDouble(percentIndex);
-            this.getAt(pos).setButton(0, c.getInt(b0Index));
-            this.getAt(pos).setButton(1, c.getInt(b1Index));
-            this.getAt(pos).setButton(2, c.getInt(b2Index));
-            this.getAt(pos).setButton(3, c.getInt(b3Index));
-            this.getAt(pos).setButton(4, c.getInt(b4Index));
-            this.getAt(pos).setButton(5, c.getInt(b5Index));
-            this.getAt(pos).setButton(6, c.getInt(b6Index));
-            pos++;
-            c.moveToNext();
+        boolean cancel = false;
+        while (c != null && cancel==false) {
+            try {// why must i have this?? and the cancel bit too... tidy this all up
+                Log.i("6705 2 load1", c.getString(nameIndex));
+                this.add(new Goal(c.getString(nameIndex), c.getInt(totalIndex)));
+                this.getAt(pos).done = c.getInt(doneIndex);
+                this.getAt(pos).percent = c.getDouble(percentIndex);
+                this.getAt(pos).setButton(0, c.getInt(b0Index));
+                this.getAt(pos).setButton(1, c.getInt(b1Index));
+                this.getAt(pos).setButton(2, c.getInt(b2Index));
+                this.getAt(pos).setButton(3, c.getInt(b3Index));
+                this.getAt(pos).setButton(4, c.getInt(b4Index));
+                this.getAt(pos).setButton(5, c.getInt(b5Index));
+                this.getAt(pos).setButton(6, c.getInt(b6Index));
+                pos++;
+                c.moveToNext();
+            }catch(Exception e){cancel = true; Log.i("6705why", "canceled from index out of bounds exception");}
+
         }
         Log.i("6705 2 load2", "goalstore length "+this.getSize());
     }
-
-    public int daysToRefresh(int day){
-        int refreshDay=0;
+    public int daysToRefresh(){
+        int daysToRefresh=0;
         switch(day) {
-            case 2:refreshDay += 7;
+            case 2:daysToRefresh += 6;
                 break;
-            case 3:refreshDay += 6;
+            case 3:daysToRefresh += 5;
                 break;
-            case 4:refreshDay += 5;
+            case 4:daysToRefresh += 4;
                 break;
-            case 5:refreshDay += 4;
+            case 5:daysToRefresh += 3;
                 break;
-            case 6:refreshDay += 3;
+            case 6:daysToRefresh += 2;
                 break;
-            case 7:refreshDay += 2;
+            case 7:daysToRefresh += 1;
                 break;
-            case 1:refreshDay += 1;
+            case 1:daysToRefresh += 7;
                 break;
         }
-        return refreshDay;
+        //return daysToRefresh;
+        return 1;
+        //this is temporary, to test that it does a daily reset properly,
+        // then it would follow that the above would work every monday, test that too after success from the daily
     }
 
     public void setUpGoalStore(){
@@ -196,18 +214,22 @@ public class GoalStore1 {
                     myDatabase.execSQL("INSERT INTO goalsStarted (started) VALUES (1)");
                     Log.i("6705 2", "started set");
 
-                    int refreshDayOfYear = dayofyear + daysToRefresh(day);
+                    int refreshDayOfYear = dayofyear + daysToRefresh();
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS refreshDay (day INT(1))");
                     myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES ("+refreshDayOfYear+")");
 
-                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (percentageTotal INT(3))");
+                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3))");
 
 
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3))");
                     //this should make a "nae goals started" screen
 
+                    firstweek = true;
+
                 }
                 else {
+
+                    //firstweek = false;//this is possibly redundant - as the data does not persist
 //not empty table
                     Log.i("6705 2", "already started- moving on");
 
@@ -225,89 +247,42 @@ Log.i("6705 refreshdate", ""+refreshDay);
                     if (dayofyear >= refreshDay) {
                         //refresh goals
                         //and refresh refreshDay
-
-                        double newTotal = this.getTotalPercentage();
-                        myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotals (totalPercent INT(3))");
+Log.i("6705reset", "day is greater");
+                        int newTotal = (int) this.getTotalPercentage();
+                     //   myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3))");
                         //if this was empty - it would mean that app has started, but one week
                         // has not passed yet.. could set a boolean for first week or something? - need to be put above this tho - in the isnt passsed refresh check
-                        myDatabase.execSQL("INSERT INTO pastTotals (totalPercent) VALUES ("+newTotal+")");
+                        myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + newTotal + ")");
+
+                        Log.i("6705reset", "day is greater2");
 
                         this.loadFromFutureDatabase();
 
-                        refreshDay = dayofyear + daysToRefresh(day);
+                        refreshDay = dayofyear + daysToRefresh();
 
                         if (refreshDay > 365) {
                             refreshDay -= 365;
                         }
                         myDatabase.execSQL("delete from refreshDay");
                         myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES ("+refreshDay+")");
+
+        Cursor c = myDatabase.rawQuery("SELECT * FROM pastTotalsTbl", null);
+        int totalsIndex = c.getColumnIndex("totalPercent");
+        c.moveToFirst();
+        while (c != null) {// this was stopping it from moving onto what was below - the loadfromfuture bit. why? index problem?
+            //cant see any problems tho... maybe with the try catch it would be fine. its as if movenext and c!=null doesnt catch that its over... but then it doesnt
+            // spend infinitity in the loop so... it does move on??
+            pastTotals.add(c.getInt(totalsIndex));
+            c.moveToNext();
+            //this needs connected to the drawRectangle bit - in a loop and with a if(null) height = 0;
+        }
+
                     } else{
                         //dont refresh goals
                         this.loadFromDatabase();
                     }
-
-                    // block this for now - when implementing weekly update change it to
-                    // this on the regular instead and the above FutureDatabase one on weekly days.
-                    // will need a database table to hold reset date etc.
-                    //i should also display reset date in Future Goals page, maybe above the button?
-
-                    //when resetting it should add the past total percentage to a PastTotalsTbl.
-                    //
                 }}}
         catch(Exception e){e.printStackTrace();}
     }
-
-    /*
-
-        this.add(new Goal("Goal one", 5));
-        this.add(new Goal("Goal 2", 5));
-        this.add(new Goal("Goal 3", 5));
-        this.add(new Goal("Goal 4", 5));
-        this.add(new Goal("Goal 5", 5));
-        this.add(new Goal("Goal 6", 5));
-        this.add(new Goal("Goal 7", 5));
-
-        Log.i("6705", "called setupgoalstore");
-
-//        myDatabase = this.openOrCreateDatabase("Goals", MODE_PRIVATE, null);
-
-        //remove thismyDatabase.execSQL("DROP TABLE IF EXISTS goalsTbl");
-        myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3), id INT PRIMARY KEY)");
-        try {
-
-            //this cursor is for my update query?
-            //if changing table, must clear first//myDatabase.execSQL("delete from goalsTbl");
-            Cursor cur = myDatabase.rawQuery("SELECT COUNT(*) FROM goalsTbl", null);
-            if (cur != null) {
-                cur.moveToFirst();                       // Always one row returned.
-                if (cur.getInt (0) == 0) {        // Zero count means empty table.
-
-
-                    for(int i=0; i<this.getSize(); i++){
-                        //should remove the primary key from here?
-
-                        myDatabase.execSQL("INSERT INTO goalsTbl (name, done, total, b0, b1, b2, b3, b4, b5, b6, percent) VALUES ("
-                                +this.getAt(i).name+", "
-                                +this.getAt(i).done+", "
-                                +this.getAt(i).total+", "
-                                +this.getAt(i).getButton(0) +", "
-                                +this.getAt(i).getButton(1) +", "
-                                +this.getAt(i).getButton(2) +", "
-                                +this.getAt(i).getButton(3) +", "
-                                +this.getAt(i).getButton(4) +", "
-                                +this.getAt(i).getButton(5) +", "
-                                +this.getAt(i).getButton(6) +", "
-                                +this.getAt(i).percent+")");
-                    }
-                    //Log.i("goalsnull", "being filled");
-                }
-                else
-                {this.loadFromDatabase();}
-            }
-        }
-        catch(Exception e){e.printStackTrace();}
-
-}
-*/
 
 }

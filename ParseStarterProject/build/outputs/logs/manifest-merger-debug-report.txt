@@ -34,7 +34,7 @@ MERGED from [com.android.support:support-v4:22.2.0] C:\Users\Borris\Desktop\Pars
 	android:allowBackup
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:18:9-35
 	android:icon
-		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:19:9-36
+		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:19:9-49
 	android:theme
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:21:9-40
 	android:name

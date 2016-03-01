@@ -10,8 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ff47aff3"
-        android:title="Next Week">
+        android:background="#ff47aff3">
         <TextView
             android:id="@+id/windowTitle"
             android:layout_width="wrap_content"
@@ -28,16 +27,33 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
         android:id="@android:id/list"
-        android:layout_above="@+id/newGoalButton">
+        android:layout_above="@+id/bottomButtons">
     </ListView>
 
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottomButtons"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Goal"
+        android:text="Add Goal"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/newGoalButton" />
+        android:id="@+id/newGoalButton"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@android:id/list"
+            android:id="@+id/startButton"
+            android:visibility="gone"
+            android:text="Save And Start"
+            android:layout_centerHorizontal="true"/>
+
+</LinearLayout>
 
 </RelativeLayout>

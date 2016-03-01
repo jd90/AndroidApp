@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- From: file:/C:/Users/Borris/Desktop/ParseGoalApp/ParseStarterProject/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string-array name="freq_arrays">
+            <item>1</item>
+            <item>2</item>
+            <item>3</item>
+            <item>4</item>
+            <item>5</item>
+            <item>6</item>
+            <item>7</item>
+        </string-array>
     <!-- From: file:/C:/Users/Borris/Desktop/ParseGoalApp/ParseStarterProject/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
     <eat-comment/>
     <attr format="reference" name="drawerArrowStyle"/>
@@ -275,12 +286,13 @@
     <!-- From: file:/C:/Users/Borris/Desktop/ParseGoalApp/ParseStarterProject/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="action_settings">Settings</string>
-    <string name="app_name">Parse Starter Project</string>
+    <string name="app_name">GoalShark</string>
     <!-- From: file:/C:/Users/Borris/Desktop/ParseGoalApp/ParseStarterProject/build/intermediates/exploded-aar/com.android.support/design/22.2.0/res/values/values.xml -->
     <eat-comment/>
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
     <!-- From: file:/C:/Users/Borris/Desktop/ParseGoalApp/ParseStarterProject/src/main/res/values/strings.xml -->
     <eat-comment/>
+    <string name="freq">Frequency?</string>
     <string name="hello_world">Hello World!</string>
     <string name="parse_app_id">m6kTaqfv5lf3aK4LC2wGKp3r0lsTCK7V3zBiXOtR</string>
     <string name="parse_client_key">ouiNCcXvPQpTEC2BzURW2Svd1GZFXkXOOxej33G5</string>

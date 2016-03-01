@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    android:id="@+id/containerShadow"
+    >
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -12,7 +24,13 @@
     android:focusableInTouchMode="false"
     android:clickable="false"
     android:longClickable="true"
+    android:background="#ffffffff"
+
     >
+
+    <!--android:translationZ="20dp"
+    android:elevation="20dp" -->
+
 
 
     <TextView
@@ -57,90 +75,6 @@
         android:focusableInTouchMode="false"
         android:clickable="false"
         >
-        <!--
-                <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="M"
-                    android:id="@+id/button1"
-                    android:layout_columnWeight="0"
-                    android:layout_weight="1"
-
-
-                    />
-
-                <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="T"
-                    android:id="@+id/button2"
-                    android:layout_columnWeight="0"
-                    android:layout_weight="1"
-
-
-                    />
-
-                <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="W"
-                    android:id="@+id/button3"
-                    android:layout_columnWeight="0"
-                    android:layout_weight="1"
-
-
-                    />
-
-                <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="T"
-                    android:id="@+id/button4"
-                    android:layout_columnWeight="0"
-                    android:layout_weight="1"
-
-                    />
-
-                <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="F"
-                    android:id="@+id/button5"
-               android:layout_columnWeight="0"
-                    android:layout_weight="1"
-
-
-                    />
-
-                <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="S"
-                    android:id="@+id/button6"
-                    android:layout_columnWeight="0"
-                    android:layout_weight="1"
-
-
-
-                    />
-
-                <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="S"
-                    android:id="@+id/button7"
-                    android:layout_columnWeight="0"
-                    android:layout_weight="1"
-                    />
-
-                    -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -204,5 +138,6 @@
 
         android:focusable="false"
         />
-
 </RelativeLayout>
+
+</LinearLayout>

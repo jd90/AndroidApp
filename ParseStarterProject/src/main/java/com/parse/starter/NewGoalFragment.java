@@ -9,13 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class NewGoalFragment extends DialogFragment implements View.OnClickListener, TextWatcher {
 
     EditText inputTitle;
     TextView warningMessage;
-
+    Spinner freqSpin;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -33,6 +34,8 @@ public class NewGoalFragment extends DialogFragment implements View.OnClickListe
         cancelB.setOnClickListener(this);
         okB.setTag("ok");
         cancelB.setTag("cancel");
+
+        freqSpin = (Spinner) rootView.findViewById(R.id.freqSpin);
 
         return rootView;
     }
@@ -57,7 +60,9 @@ public class NewGoalFragment extends DialogFragment implements View.OnClickListe
                 } else {
                     //MainActivity.fgoalStore.add(new Goal(inputTitle.getText().toString(), 8));
                     //MainActivity.fgoalStore.saveToDatabase();
-                    FutureGoals.fgoalStore.add(new Goal(inputTitle.getText().toString(), 8));
+
+                    FutureGoals.fgoalStore.add(new Goal(inputTitle.getText().toString(), Integer.parseInt(freqSpin.getSelectedItem().toString())));
+
                     FutureGoals.fgoalStore.saveToDatabase();
 
 

@@ -153,7 +153,6 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
             holder.b6.setImageResource(R.drawable.s1);}
         else{holder.b6.setImageResource(R.drawable.s2);}
 
-
         return convertView;
     }
 

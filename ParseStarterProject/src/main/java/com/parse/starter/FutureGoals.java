@@ -1,17 +1,20 @@
 package com.parse.starter;
 
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * Created by Borris on 09/02/2016.
  */
-public class FutureGoals extends ListActivity {
+public class FutureGoals extends ListActivity implements View.OnClickListener {
 
     //this is a separate goalStore = however, it could possibly be held within MainActivity as static? and updated/accessed as needed?
 
@@ -23,20 +26,36 @@ public class FutureGoals extends ListActivity {
 
         setContentView(R.layout.future_item_layout);
 
+        Bundle b = new Bundle();
+        b = getIntent().getExtras();
+        boolean firstweek = b.getBoolean("firstweek");
+
+
         fgoalStore = MainActivity.fgoalStore;
 
                 //MainActivity.fgoalStore;
 
 
+        TextView title = (TextView) findViewById(R.id.windowTitle);
+        title.setText("Next Week: " + MainActivity.goalStore.daysToRefresh() + " days to refresh");
 
         Button newGoal = (Button) findViewById(R.id.newGoalButton);
-        newGoal.setText("NEW");
+        newGoal.setText("Add Goal");
         newGoal.setTag("new");
 
-        CustomArrayAdapter4 adapter = new CustomArrayAdapter4(this, MainActivity.fgoalStore);
+        CustomArrayAdapter4 adapter = new CustomArrayAdapter4(this, fgoalStore);
         setListAdapter(adapter);
 
         newGoal.setOnClickListener(adapter);
+
+        if(firstweek){
+            title.setText("FIRST WEEK: PLEASE ADD GOALS");
+
+            Button startButton = (Button) findViewById(R.id.startButton);
+            startButton.setTag("start");
+            startButton.setVisibility(View.VISIBLE);
+            startButton.setOnClickListener(this);
+        }
     }
 
     //this is somewhat set up to be opened from action bar as an activity_for_result. and below code sends it back with intent data
@@ -47,7 +66,7 @@ public class FutureGoals extends ListActivity {
         String message = "some message text";
         Intent intentBack = new Intent();
         intentBack.putExtra("Message", message);
-        setResult(ListActivity.RESULT_OK, intentBack);
+        setResult(RESULT_OK, intentBack);
 
         Log.i("MethodCalledJ", "L");
         //why use intents when i can just access MainActivity.goalStore2?
@@ -56,5 +75,25 @@ public class FutureGoals extends ListActivity {
     }
 
 
+    public void onClick(View view){
+
+        AlertDialog.Builder confirm = new AlertDialog.Builder(this);
+                confirm.setTitle("Save and Start");
+                confirm.setMessage("Are you sure you want to commit to these Goals? \n" +
+                        "Next refresh is in "+ MainActivity.goalStore.daysToRefresh() +" days");
+                confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        onBackPressed();
+                    }
+        })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+
+    }
 
 }

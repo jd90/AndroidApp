@@ -16,7 +16,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Title"
+        android:text="Title:"
         android:id="@+id/textView" />
     <TextView
         android:layout_width="wrap_content"
@@ -24,10 +24,11 @@
         android:id="@+id/titleInput"
         android:layout_height="wrap_content"
         android:textSize="@dimen/abc_text_size_title_material"
+        android:textColor="#b8000000"
         android:layout_below="@+id/textView"/>
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:text="x"
         android:id="@+id/close"
         android:layout_alignParentRight="true"
@@ -38,16 +39,10 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/titleInput">
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
-
-        </Spinner>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="frequency"
+            android:id="@+id/freq"
             />
     </LinearLayout>
 </RelativeLayout>

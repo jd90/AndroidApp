@@ -3,9 +3,12 @@ package com.parse.starter;
 /**
  * Created by Borris on 04/02/2016.
  */
+import android.graphics.Outline;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
+import android.view.ViewOutlineProvider;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 public class Fragment2 extends ListFragment {
@@ -13,6 +16,8 @@ public class Fragment2 extends ListFragment {
     // Required empty public constructor
     public Fragment2() {
     }
+
+
 
     GoalStore1 goalStore;
 
@@ -29,7 +34,7 @@ public class Fragment2 extends ListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //getListView().setDivider(null);
+        getListView().setDivider(null);
 
        // final ListView  lv=getListView();
 

@@ -5,17 +5,70 @@
     android:orientation="vertical"
     tools:context="com.example.tabstutorial.Fragment3">
 
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="bottom"
+    android:weightSum="10"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/sharkFin"
+    android:layout_weight="6"
+    android:background="#ffffffff"
+    android:orientation="vertical"
+    android:gravity="bottom"
+    android:weightSum="1">
+
     <TextView
+        android:layout_width="178dp"
+        android:layout_height="119dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=""
+        android:id="@+id/totalPercent"
+        android:layout_gravity="right"
+        android:textSize="70dp"
+        android:textAlignment="textEnd"
+        android:layout_weight="0.80" />
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Statistics" />
+        android:src="@drawable/shark_fin_pic"
+        android:id="@+id/sharkFinPic"/>
 
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingTop="40dp"
+        android:background="#47aff3"
+        android:layout_marginBottom="10dp">
 
+    </LinearLayout>
 <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/rect">
+    android:id="@+id/rect"
+    android:background="#ffffffff"
+    android:layout_weight="3.5">
 </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="8 Week View of Performance Totals"
+        android:layout_weight="0.5"
+        android:paddingBottom="1dp"
+        android:background="#ffffffff"
+        android:gravity="center_horizontal" />
 
+</LinearLayout>
 </LinearLayout>

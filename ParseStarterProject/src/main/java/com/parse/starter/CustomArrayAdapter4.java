@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 
@@ -56,6 +58,9 @@ public class CustomArrayAdapter4 extends ArrayAdapter<Goal> implements View.OnCl
 
         TextView titleInput = (TextView) row_view.findViewById(R.id.titleInput);
         titleInput.setHint(fGoalStore.getAt(position).name);
+
+        TextView freq = (TextView) row_view.findViewById(R.id.freq);
+        freq.setText(String.valueOf(fGoalStore.getAt(position).total)+" times a week");
 
         return row_view;
     }
