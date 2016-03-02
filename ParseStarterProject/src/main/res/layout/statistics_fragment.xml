@@ -49,8 +49,14 @@
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
         android:paddingTop="40dp"
-        android:background="#47aff3"
-        android:layout_marginBottom="10dp">
+        android:background="#47aff3">
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ff989898"
+        android:layout_marginBottom="9dp">
 
     </LinearLayout>
 <LinearLayout
@@ -69,6 +75,11 @@
         android:paddingBottom="1dp"
         android:background="#ffffffff"
         android:gravity="center_horizontal" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ff989898">
 
+    </LinearLayout>
 </LinearLayout>
 </LinearLayout>

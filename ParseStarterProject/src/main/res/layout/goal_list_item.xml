@@ -8,8 +8,13 @@
     android:paddingRight="10dp"
     android:paddingTop="10dp"
     android:id="@+id/containerShadow"
-    >
+    android:orientation="vertical"
+    android:weightSum="1">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ff989898">
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -25,6 +30,7 @@
     android:clickable="false"
     android:longClickable="true"
     android:background="#ffffffff"
+    android:layout_marginBottom="1dp"
 
     >
 
@@ -139,5 +145,7 @@
         android:focusable="false"
         />
 </RelativeLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

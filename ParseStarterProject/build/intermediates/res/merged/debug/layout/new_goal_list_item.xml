@@ -24,7 +24,7 @@
         android:id="@+id/titleInput"
         android:layout_height="wrap_content"
         android:textSize="@dimen/abc_text_size_title_material"
-        android:textColor="#ff000000"
+        android:textColor="#b8000000"
         android:layout_below="@+id/textView"/>
     <Button
         android:layout_width="35dp"
