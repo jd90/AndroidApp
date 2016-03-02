@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener {
@@ -48,10 +49,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-        ImageView prof1 = (ImageView) findViewById(R.id.prof1);
-        ImageView prof2 = (ImageView) findViewById(R.id.prof2);
-        ImageView prof3 = (ImageView) findViewById(R.id.prof3);
-        ImageView prof4 = (ImageView) findViewById(R.id.prof4);
+        LinearLayout prof1 = (LinearLayout) findViewById(R.id.prof1);
+        LinearLayout prof2 = (LinearLayout) findViewById(R.id.prof2);
+        LinearLayout prof3 = (LinearLayout) findViewById(R.id.prof3);
+        LinearLayout prof4 = (LinearLayout) findViewById(R.id.prof4);
 
         prof1.setOnClickListener(this);
         prof2.setOnClickListener(this);
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 if (!profileString.contains("1")) {
                                     profileString = profileString + "1";
                                     count++;
-                                    ImageView prof = (ImageView) findViewById(R.id.prof1);
+                                    LinearLayout prof = (LinearLayout) findViewById(R.id.prof1);
                                     prof.setVisibility(View.VISIBLE);
                                     TextView profText = (TextView) findViewById(R.id.prof1Text);
                                     profText.setText(String.valueOf(profileInput.getText()));
@@ -151,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     if (!profileString.contains("2")) {
                                         profileString = profileString + "2";
                                         count++;
-                                        ImageView prof = (ImageView) findViewById(R.id.prof2);
+                                        LinearLayout prof = (LinearLayout) findViewById(R.id.prof2);
                                         prof.setVisibility(View.VISIBLE);
                                         TextView profText = (TextView) findViewById(R.id.prof2Text);
                                         profText.setText(String.valueOf(profileInput.getText()));
@@ -160,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         if (!profileString.contains("3")) {
                                             profileString = profileString + "3";
                                             count++;
-                                            ImageView prof = (ImageView) findViewById(R.id.prof3);
+                                            LinearLayout prof = (LinearLayout) findViewById(R.id.prof3);
                                             prof.setVisibility(View.VISIBLE);
                                             TextView profText = (TextView) findViewById(R.id.prof3Text);
                                             profText.setText(String.valueOf(profileInput.getText()));
@@ -169,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             if (!profileString.contains("4")) {
                                                 profileString = profileString + "4";
                                                 count++;
-                                                ImageView prof = (ImageView) findViewById(R.id.prof4);
+                                                LinearLayout prof = (LinearLayout) findViewById(R.id.prof4);
                                                 prof.setVisibility(View.VISIBLE);
                                                 TextView profText = (TextView) findViewById(R.id.prof4Text);
                                                 profText.setText(String.valueOf(profileInput.getText()));
@@ -201,9 +202,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
 
-        if(view instanceof ImageView){
+        if(view instanceof LinearLayout){
 
-            ImageView profile = (ImageView) view;
+            LinearLayout profile = (LinearLayout) view;
             int profileNum = Integer.parseInt(String.valueOf(profile.getTag()));
 
             intent.putExtra("profile", profileNum);
@@ -222,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onLongClick(View v) {
 
-        ImageView prof = (ImageView)v;
+        LinearLayout prof = (LinearLayout)v;
         String profNum = String.valueOf(prof.getTag());
         String profileString = prefs.getString("profiles", " ");
 
@@ -239,12 +240,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.apply();
 
 
-        ImageView profHide;
-
         switch(profNum){
 
             case "1":
-                prof = (ImageView) findViewById(R.id.prof1);
+                prof = (LinearLayout) findViewById(R.id.prof1);
                 prof.setVisibility(View.GONE);
                 TextView profText = (TextView) findViewById(R.id.prof1Text);
                 profText.setText("");
@@ -256,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
                 break;
             case "2":
-                prof = (ImageView) findViewById(R.id.prof2);
+                prof = (LinearLayout) findViewById(R.id.prof2);
                 prof.setVisibility(View.GONE);
                 profText = (TextView) findViewById(R.id.prof2Text);
                 profText.setText("");
@@ -268,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case "3":
-                prof = (ImageView) findViewById(R.id.prof3);
+                prof = (LinearLayout) findViewById(R.id.prof3);
                 prof.setVisibility(View.GONE);
                 profText = (TextView) findViewById(R.id.prof3Text);
                 profText.setText("");
@@ -280,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case "4":
-                prof = (ImageView) findViewById(R.id.prof4);
+                prof = (LinearLayout) findViewById(R.id.prof4);
                 prof.setVisibility(View.GONE);
                 profText = (TextView) findViewById(R.id.prof4Text);
                 profText.setText("");
