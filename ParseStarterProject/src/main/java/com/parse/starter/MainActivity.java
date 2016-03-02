@@ -1,108 +1,304 @@
 package com.parse.starter;
 
+
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
 
-    static GoalStore1 goalStore;
-    static GoalStore2 fgoalStore;
-    static SQLiteDatabase myDatabase;
-    static SQLiteDatabase myDatabase2;
-    Cursor c;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener {
+
+    Context context = this;
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        setContentView(R.layout.profiles_page);
+
+        prefs = this.getPreferences(Context.MODE_PRIVATE);
+        editor = prefs.edit();
+        intent = new Intent(this, ProfileMainActivity.class);
 
 
 
-        myDatabase = this.openOrCreateDatabase("GoalApp", MODE_PRIVATE, null);
-        goalStore = new GoalStore1(myDatabase, false);
-        myDatabase2 = this.openOrCreateDatabase("GoalApp", MODE_PRIVATE, null);
-        fgoalStore = new GoalStore2(myDatabase2, true);
-
-//THIS IS CHECKING IF IT IS THE FIRST WEEK -- strange place for this to go?
-        if(goalStore.firstweek){
-
-            Log.i("6705firstweek", "first week called");
-            Intent intent = new Intent(this, FutureGoals.class);
-            int a = 4; //request code? (receives back request code, resultcode, intent)?
-            intent.putExtra("firstweek", true);
-            startActivityForResult(intent, a);
-            //startActivity(intent);
-         //goalStore.loadFromFutureDatabase();//one time on first load
-      }
-
-
-        setUpPage();
-
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-//this is set in menu_main as an item
-            case R.id.action_next_seven:
-                Intent intent = new Intent(this, FutureGoals.class);
-                intent.putExtra("firstweek", false);
-                int a = 4; //request code? (receives back request code, resultcode, intent)?
-                startActivityForResult(intent, a);
-
-                break;
+        if (prefs.contains("started")) {
+            Log.i("loadedfromprefs", "" + prefs.getString("started", ""));
         }
 
-        return true;
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        int a =4;
-        if (resultCode == RESULT_OK && requestCode == 4) {
-            //if (data.hasExtra("returnKey1")) {
-            //  Toast.makeText(this, data.getExtras().getString("returnKey1"),
-            //        Toast.LENGTH_SHORT).show();}}
-            if(goalStore.firstweek){
 
-                goalStore.loadFromFutureDatabase();
+        TextView prof1Text = (TextView) findViewById(R.id.prof1Text);
+        TextView prof2Text = (TextView) findViewById(R.id.prof2Text);
+        TextView prof3Text = (TextView) findViewById(R.id.prof3Text);
+        TextView prof4Text = (TextView) findViewById(R.id.prof4Text);
+
+
+
+
+        ImageView prof1 = (ImageView) findViewById(R.id.prof1);
+        ImageView prof2 = (ImageView) findViewById(R.id.prof2);
+        ImageView prof3 = (ImageView) findViewById(R.id.prof3);
+        ImageView prof4 = (ImageView) findViewById(R.id.prof4);
+
+        prof1.setOnClickListener(this);
+        prof2.setOnClickListener(this);
+        prof3.setOnClickListener(this);
+        prof4.setOnClickListener(this);
+        prof1.setOnLongClickListener(this);
+        prof2.setOnLongClickListener(this);
+        prof3.setOnLongClickListener(this);
+        prof4.setOnLongClickListener(this);
+
+        String profString = (prefs.getString("profiles", " "));
+        if(profString.contains("1")){
+            prof1.setVisibility(View.VISIBLE);
+            prof1Text.setText(prefs.getString("prof1Text", " "));
+        }
+        if(profString.contains("2")){
+            prof2.setVisibility(View.VISIBLE);
+            prof2Text.setText(prefs.getString("prof2Text", " "));
+        }
+
+        if(profString.contains("3")){
+            prof3.setVisibility(View.VISIBLE);
+            prof3Text.setText(prefs.getString("prof3Text", " "));
+        }
+
+        if(profString.contains("4")){
+            prof4.setVisibility(View.VISIBLE);
+            prof4Text.setText(prefs.getString("prof4Text", " "));
+        }
+
+        prof1.setTag("1");
+        prof2.setTag("2");
+        prof3.setTag("3");
+        prof4.setTag("4");
+
+
+        Button newGoal = (Button) findViewById(R.id.newGoalButton);
+        newGoal.setText("Add New Profile");
+        newGoal.setTag("new");
+        newGoal.setOnClickListener(this);
+
+    }
+
+
+    public void onClick(View view) {
+
+        if (view instanceof Button) {
+            Button button = (Button) view;
+
+            if (button.getTag() == "new") {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Name your Profile");
+
+                final EditText profileInput = new EditText(this);
+
+
+                builder.setView(profileInput);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int num) {
+                        //m_Text = input.getText().toString();
+
+                        int count = prefs.getInt("count", 0);
+                        String profileString = prefs.getString("profiles", " ");
+
+                        if (count == 0) {
+                            count++;
+                            profileString = "1";
+                        } else {
+                            if(count ==4){
+                                AlertDialog.Builder confirm = new AlertDialog.Builder(context);
+                                confirm.setTitle("Max Reached");
+                                confirm.setMessage("Sorry, Maximum of 4 Profiles Reached!");
+                                confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+
+                                //pupup max profiles reached
+                            }else{
+                            if (count > 0) {
+
+
+                                if (!profileString.contains("1")) {
+                                    profileString = profileString + "1";
+                                    count++;
+                                    ImageView prof = (ImageView) findViewById(R.id.prof1);
+                                    prof.setVisibility(View.VISIBLE);
+                                    TextView profText = (TextView) findViewById(R.id.prof1Text);
+                                    profText.setText(String.valueOf(profileInput.getText()));
+                                    editor.putString("prof1Text", String.valueOf(profileInput.getText()));
+                                } else {
+                                    if (!profileString.contains("2")) {
+                                        profileString = profileString + "2";
+                                        count++;
+                                        ImageView prof = (ImageView) findViewById(R.id.prof2);
+                                        prof.setVisibility(View.VISIBLE);
+                                        TextView profText = (TextView) findViewById(R.id.prof2Text);
+                                        profText.setText(String.valueOf(profileInput.getText()));
+                                        editor.putString("prof2Text", String.valueOf(profileInput.getText()));
+                                    } else {
+                                        if (!profileString.contains("3")) {
+                                            profileString = profileString + "3";
+                                            count++;
+                                            ImageView prof = (ImageView) findViewById(R.id.prof3);
+                                            prof.setVisibility(View.VISIBLE);
+                                            TextView profText = (TextView) findViewById(R.id.prof3Text);
+                                            profText.setText(String.valueOf(profileInput.getText()));
+                                            editor.putString("prof3Text", String.valueOf(profileInput.getText()));
+                                        } else {
+                                            if (!profileString.contains("4")) {
+                                                profileString = profileString + "4";
+                                                count++;
+                                                ImageView prof = (ImageView) findViewById(R.id.prof4);
+                                                prof.setVisibility(View.VISIBLE);
+                                                TextView profText = (TextView) findViewById(R.id.prof4Text);
+                                                profText.setText(String.valueOf(profileInput.getText()));
+                                                editor.putString("prof4Text", String.valueOf(profileInput.getText()));
+                                            }
+                                        }
+                                    }
+                                }
+                                }
+                            }
+                        }
+
+                        editor.putString("profiles", profileString);
+                        editor.putInt("count", count);
+                        editor.apply();
+                    }
+                        });
+
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int num) {
+                                dialog.cancel();
+                            }
+                        });
+
+                builder.show();
+
             }
         }
+
+
+        if(view instanceof ImageView){
+
+            ImageView profile = (ImageView) view;
+            int profileNum = Integer.parseInt(String.valueOf(profile.getTag()));
+
+            intent.putExtra("profile", profileNum);
+            startActivity(intent);
+
+
+
+        }
+
+
+
+
+
     }
 
-    public void setUpPage(){
-        //this works because styles requests a noActionBar style and actionbar is set to false
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Setup the viewPager
-        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(pagerAdapter);
-        // Setup the Tabs
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        // tabs will be populated according to viewPager's count and
-        // with the name from the pagerAdapter getPageTitle()
-        tabLayout.setTabsFromPagerAdapter(pagerAdapter);
-        //tab selection events update the ViewPager and page changes update the selected tab.
-        viewPager.setCurrentItem(1);
-        tabLayout.setupWithViewPager(viewPager);
-    }
+    @Override
+    public boolean onLongClick(View v) {
 
+        ImageView prof = (ImageView)v;
+        String profNum = String.valueOf(prof.getTag());
+        String profileString = prefs.getString("profiles", " ");
+
+        Log.i("profileString before ", profileString);
+
+        profileString = profileString.replace(profNum, "");
+
+        Log.i("profileString after ", profileString);
+
+        editor.putString("profiles", profileString);
+        int count =prefs.getInt("count", 0);
+        count--;
+        editor.putInt("count", count);
+        editor.apply();
+
+
+        ImageView profHide;
+
+        switch(profNum){
+
+            case "1":
+                prof = (ImageView) findViewById(R.id.prof1);
+                prof.setVisibility(View.GONE);
+                TextView profText = (TextView) findViewById(R.id.prof1Text);
+                profText.setText("");
+                editor.putString("prof1Text", " ");
+                try {
+                ProfileMainActivity.deleteDatabase(1);
+            }catch(Exception e){
+
+            }
+                break;
+            case "2":
+                prof = (ImageView) findViewById(R.id.prof2);
+                prof.setVisibility(View.GONE);
+                profText = (TextView) findViewById(R.id.prof2Text);
+                profText.setText("");
+                editor.putString("prof1Text", " ");
+                try {
+                    ProfileMainActivity.deleteDatabase(2);
+                }catch(Exception e){
+
+                }
+                break;
+            case "3":
+                prof = (ImageView) findViewById(R.id.prof3);
+                prof.setVisibility(View.GONE);
+                profText = (TextView) findViewById(R.id.prof3Text);
+                profText.setText("");
+                editor.putString("prof1Text", " ");
+                try {
+                    ProfileMainActivity.deleteDatabase(3);
+                }catch(Exception e){
+
+                }
+                break;
+            case "4":
+                prof = (ImageView) findViewById(R.id.prof4);
+                prof.setVisibility(View.GONE);
+                profText = (TextView) findViewById(R.id.prof4Text);
+                profText.setText("");
+                editor.putString("prof1Text", " ");
+                try {
+                    ProfileMainActivity.deleteDatabase(4);
+                }catch(Exception e){
+
+                }
+                break;
+
+        }
+
+        editor.apply();
+
+
+        return true;
+    }
 }

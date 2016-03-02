@@ -3,32 +3,21 @@ package com.parse.starter;
 /**
  * Created by Borris on 04/02/2016.
  */
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Fragment3 extends Fragment implements View.OnClickListener{
@@ -71,7 +60,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener{
         int y=100;
 
 
-        ArrayList<Integer> g = MainActivity.goalStore.pastTotals;
+        ArrayList<Integer> g = ProfileMainActivity.goalStore.pastTotals;
             for(int i=g.size()-1; i>=0; i--){ // this is backwards so that it is
 
                 //max height = 500
@@ -102,7 +91,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener{
         //must set translationX()to the value of goalstore2.getTotalPercentages() * 5
         //also set the totalPercent text to this number
 
-        double percent = MainActivity.goalStore.getTotalPercentage();
+        double percent = ProfileMainActivity.goalStore.getTotalPercentage();
 
         ImageView sharkFinPic = (ImageView) view.findViewById(R.id.sharkFinPic);
         double x= percent*5;
@@ -118,7 +107,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener{
             public void run() {
                 TextView totalPercent = (TextView) view.findViewById(R.id.totalPercent);
                 //totalPercent.setText(per+"%");
-                totalPercent.setText("" +(int) MainActivity.goalStore.getTotalPercentage()+"%");
+                totalPercent.setText("" +(int) ProfileMainActivity.goalStore.getTotalPercentage()+"%");
                 //starts after 600
                 //ImageView sharkFinPic = (ImageView) view.findViewById(R.id.sharkFinPic);
                 //sharkFinPic.setImageResource(R.drawable.shark_fin_pic);

@@ -16,7 +16,7 @@ import android.widget.TextView;
  */
 public class FutureGoals extends ListActivity implements View.OnClickListener {
 
-    //this is a separate goalStore = however, it could possibly be held within MainActivity as static? and updated/accessed as needed?
+    //this is a separate goalStore = however, it could possibly be held within ProfileMainActivity as static? and updated/accessed as needed?
 
     static GoalStore2 fgoalStore;
     @Override
@@ -31,13 +31,13 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
         boolean firstweek = b.getBoolean("firstweek");
 
 
-        fgoalStore = MainActivity.fgoalStore;
+        fgoalStore = ProfileMainActivity.fgoalStore;
 
-                //MainActivity.fgoalStore;
+                //ProfileMainActivity.fgoalStore;
 
 
         TextView title = (TextView) findViewById(R.id.windowTitle);
-        title.setText("Next Week: " + MainActivity.goalStore.daysToRefresh() + " days to refresh");
+        title.setText("Next Week: " + ProfileMainActivity.goalStore.daysToRefresh() + " days to refresh");
 
         Button newGoal = (Button) findViewById(R.id.newGoalButton);
         newGoal.setText("Add Goal");
@@ -69,7 +69,7 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
         setResult(RESULT_OK, intentBack);
 
         Log.i("MethodCalledJ", "L");
-        //why use intents when i can just access MainActivity.goalStore2?
+        //why use intents when i can just access ProfileMainActivity.goalStore2?
 
         finish();
     }
@@ -80,7 +80,7 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
         AlertDialog.Builder confirm = new AlertDialog.Builder(this);
                 confirm.setTitle("Save and Start");
                 confirm.setMessage("Are you sure you want to commit to these Goals? \n" +
-                        "Next refresh is in "+ MainActivity.goalStore.daysToRefresh() +" days");
+                        "Next refresh is in "+ ProfileMainActivity.goalStore.daysToRefresh() +" days");
                 confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         onBackPressed();

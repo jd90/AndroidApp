@@ -58,8 +58,8 @@ public class NewGoalFragment extends DialogFragment implements View.OnClickListe
                     inputTitle.addTextChangedListener(this);
 
                 } else {
-                    //MainActivity.fgoalStore.add(new Goal(inputTitle.getText().toString(), 8));
-                    //MainActivity.fgoalStore.saveToDatabase();
+                    //ProfileMainActivity.fgoalStore.add(new Goal(inputTitle.getText().toString(), 8));
+                    //ProfileMainActivity.fgoalStore.saveToDatabase();
 
                     FutureGoals.fgoalStore.add(new Goal(inputTitle.getText().toString(), Integer.parseInt(freqSpin.getSelectedItem().toString())));
 

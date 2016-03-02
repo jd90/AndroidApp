@@ -2001,16 +2001,17 @@ containing a value of this type.
         public static final int goal_shark_logo1=0x7f020041;
         public static final int m1=0x7f020042;
         public static final int m2=0x7f020043;
-        public static final int notification_template_icon_bg=0x7f02004d;
+        public static final int notification_template_icon_bg=0x7f02004e;
         public static final int s1=0x7f020044;
         public static final int s2=0x7f020045;
         public static final int shark_fin_pic=0x7f020046;
         public static final int shark_fin_pic_moving=0x7f020047;
-        public static final int snackbar_background=0x7f020048;
-        public static final int t1=0x7f020049;
-        public static final int t2=0x7f02004a;
-        public static final int w1=0x7f02004b;
-        public static final int w2=0x7f02004c;
+        public static final int sharkprofile=0x7f020048;
+        public static final int snackbar_background=0x7f020049;
+        public static final int t1=0x7f02004a;
+        public static final int t2=0x7f02004b;
+        public static final int w1=0x7f02004c;
+        public static final int w2=0x7f02004d;
     }
     public static final class id {
         public static final int action0=0x7f0d0089;
@@ -2028,8 +2029,8 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f0d0054;
         public static final int action_mode_bar_stub=0x7f0d0053;
         public static final int action_mode_close_button=0x7f0d003c;
-        public static final int action_next_seven=0x7f0d009a;
-        public static final int action_settings=0x7f0d009b;
+        public static final int action_next_seven=0x7f0d00a2;
+        public static final int action_settings=0x7f0d00a3;
         public static final int activity_chooser_view_content=0x7f0d003d;
         public static final int alertTitle=0x7f0d0047;
         public static final int always=0x7f0d002b;
@@ -2110,11 +2111,19 @@ containing a value of this type.
         public static final int parallax=0x7f0d0018;
         public static final int parentPanel=0x7f0d0044;
         public static final int pin=0x7f0d0019;
+        public static final int prof1=0x7f0d0096;
+        public static final int prof1Text=0x7f0d0097;
+        public static final int prof2=0x7f0d0098;
+        public static final int prof2Text=0x7f0d0099;
+        public static final int prof3=0x7f0d009a;
+        public static final int prof3Text=0x7f0d009b;
+        public static final int prof4=0x7f0d009c;
+        public static final int prof4Text=0x7f0d009d;
         public static final int progressBar1=0x7f0d007c;
         public static final int progress_circular=0x7f0d0005;
         public static final int progress_horizontal=0x7f0d0006;
         public static final int radio=0x7f0d0051;
-        public static final int rect=0x7f0d0099;
+        public static final int rect=0x7f0d00a1;
         public static final int right=0x7f0d0025;
         public static final int screen=0x7f0d0036;
         public static final int scroll=0x7f0d0017;
@@ -2131,8 +2140,8 @@ containing a value of this type.
         public static final int search_src_text=0x7f0d0060;
         public static final int search_voice_btn=0x7f0d0064;
         public static final int select_dialog_listview=0x7f0d0065;
-        public static final int sharkFin=0x7f0d0096;
-        public static final int sharkFinPic=0x7f0d0098;
+        public static final int sharkFin=0x7f0d009e;
+        public static final int sharkFinPic=0x7f0d00a0;
         public static final int shortcut=0x7f0d0050;
         public static final int showCustom=0x7f0d0010;
         public static final int showHome=0x7f0d0011;
@@ -2160,7 +2169,7 @@ containing a value of this type.
         public static final int toolbar=0x7f0d0067;
         public static final int top=0x7f0d0027;
         public static final int topPanel=0x7f0d0045;
-        public static final int totalPercent=0x7f0d0097;
+        public static final int totalPercent=0x7f0d009f;
         public static final int up=0x7f0d0008;
         public static final int useLogo=0x7f0d0013;
         public static final int view_offset_helper=0x7f0d0009;
@@ -2226,11 +2235,12 @@ containing a value of this type.
         public static final int notification_template_media=0x7f04002c;
         public static final int notification_template_part_chronometer=0x7f04002d;
         public static final int notification_template_part_time=0x7f04002e;
-        public static final int select_dialog_item_material=0x7f04002f;
-        public static final int select_dialog_multichoice_material=0x7f040030;
-        public static final int select_dialog_singlechoice_material=0x7f040031;
-        public static final int statistics_fragment=0x7f040032;
-        public static final int support_simple_spinner_dropdown_item=0x7f040033;
+        public static final int profiles_page=0x7f04002f;
+        public static final int select_dialog_item_material=0x7f040030;
+        public static final int select_dialog_multichoice_material=0x7f040031;
+        public static final int select_dialog_singlechoice_material=0x7f040032;
+        public static final int statistics_fragment=0x7f040033;
+        public static final int support_simple_spinner_dropdown_item=0x7f040034;
     }
     public static final class menu {
         public static final int menu_main=0x7f0e0000;

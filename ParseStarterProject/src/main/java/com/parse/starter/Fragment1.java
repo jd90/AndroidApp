@@ -19,7 +19,7 @@ public class Fragment1 extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), MainActivity.goalStore);
+        CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), ProfileMainActivity.goalStore);
         setListAdapter(adapter);
     }
     @Override

@@ -3,12 +3,9 @@ package com.parse.starter;
 /**
  * Created by Borris on 04/02/2016.
  */
-import android.graphics.Outline;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
-import android.view.ViewOutlineProvider;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 public class Fragment2 extends ListFragment {
@@ -25,7 +22,7 @@ public class Fragment2 extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        CustomArrayAdapter2 adapter = new CustomArrayAdapter2(getActivity(), MainActivity.goalStore);
+        CustomArrayAdapter2 adapter = new CustomArrayAdapter2(getActivity(), ProfileMainActivity.goalStore);
         setListAdapter(adapter);
 
     }

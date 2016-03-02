@@ -165,9 +165,9 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
             if(goalStore.getAt(i).equals(g)){
                 g.buttonClick(Integer.parseInt(v.getTag().toString()));
 
-                MainActivity.goalStore.saveToDatabase();
+                ProfileMainActivity.goalStore.saveToDatabase();
 
-                //MainActivity.updateGoalStore(Integer.parseInt(l.getTag().toString()));
+                //ProfileMainActivity.updateGoalStore(Integer.parseInt(l.getTag().toString()));
                 notifyDataSetChanged();
 
             }
