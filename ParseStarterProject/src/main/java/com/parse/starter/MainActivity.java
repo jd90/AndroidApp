@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         prof3.setOnLongClickListener(this);
         prof4.setOnLongClickListener(this);
 
+        Log.i("profiles on start",""+prefs.getString("profiles", "empty "));
+
         String profString = (prefs.getString("profiles", " "));
         if(profString.contains("1")){
             prof1.setVisibility(View.VISIBLE);
@@ -120,81 +122,81 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         int count = prefs.getInt("count", 0);
                         String profileString = prefs.getString("profiles", " ");
 
-                //        if (count == 0) {
-                //            count++;
-               //             profileString = "1";
-                 //       } else {
-                            if(count ==4){
-                                AlertDialog.Builder confirm = new AlertDialog.Builder(context);
-                                confirm.setTitle("Max Reached");
-                                confirm.setMessage("Sorry, Maximum of 4 Profiles Reached!");
-                                confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                })
-                                        .setIcon(android.R.drawable.ic_dialog_alert)
-                                        .show();
+                          //      if (count == 0) {
+                        //            count++;
+                      //              //profileString = "1";
+                      //         } else {
+                        if(count >3){
+                            AlertDialog.Builder confirm = new AlertDialog.Builder(context);
+                            confirm.setTitle("Max Reached");
+                            confirm.setMessage("Sorry, Maximum of 4 Profiles Reached!");
+                            confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
 
-                                //pupup max profiles reached
-                            }else{
-                         //   if (count > 0) {
+                            //pupup max profiles reached
+                        }else{
+                            //   if (count > 0) {
 
 
-                                if (!profileString.contains("1")) {
-                                    profileString = profileString + "1";
+                            if (!profileString.contains("1")) {
+                                profileString = profileString + "1";
+                                count++;
+                                LinearLayout prof = (LinearLayout) findViewById(R.id.prof1);
+                                prof.setVisibility(View.VISIBLE);
+                                TextView profText = (TextView) findViewById(R.id.prof1Text);
+                                profText.setText(String.valueOf(profileInput.getText()));
+                                editor.putString("prof1Text", String.valueOf(profileInput.getText()));
+                            } else {
+                                if (!profileString.contains("2")) {
+                                    profileString = profileString + "2";
                                     count++;
-                                    LinearLayout prof = (LinearLayout) findViewById(R.id.prof1);
+                                    LinearLayout prof = (LinearLayout) findViewById(R.id.prof2);
                                     prof.setVisibility(View.VISIBLE);
-                                    TextView profText = (TextView) findViewById(R.id.prof1Text);
+                                    TextView profText = (TextView) findViewById(R.id.prof2Text);
                                     profText.setText(String.valueOf(profileInput.getText()));
-                                    editor.putString("prof1Text", String.valueOf(profileInput.getText()));
+                                    editor.putString("prof2Text", String.valueOf(profileInput.getText()));
                                 } else {
-                                    if (!profileString.contains("2")) {
-                                        profileString = profileString + "2";
+                                    if (!profileString.contains("3")) {
+                                        profileString = profileString + "3";
                                         count++;
-                                        LinearLayout prof = (LinearLayout) findViewById(R.id.prof2);
+                                        LinearLayout prof = (LinearLayout) findViewById(R.id.prof3);
                                         prof.setVisibility(View.VISIBLE);
-                                        TextView profText = (TextView) findViewById(R.id.prof2Text);
+                                        TextView profText = (TextView) findViewById(R.id.prof3Text);
                                         profText.setText(String.valueOf(profileInput.getText()));
-                                        editor.putString("prof2Text", String.valueOf(profileInput.getText()));
+                                        editor.putString("prof3Text", String.valueOf(profileInput.getText()));
                                     } else {
-                                        if (!profileString.contains("3")) {
-                                            profileString = profileString + "3";
+                                        if (!profileString.contains("4")) {
+                                            profileString = profileString + "4";
                                             count++;
-                                            LinearLayout prof = (LinearLayout) findViewById(R.id.prof3);
+                                            LinearLayout prof = (LinearLayout) findViewById(R.id.prof4);
                                             prof.setVisibility(View.VISIBLE);
-                                            TextView profText = (TextView) findViewById(R.id.prof3Text);
+                                            TextView profText = (TextView) findViewById(R.id.prof4Text);
                                             profText.setText(String.valueOf(profileInput.getText()));
-                                            editor.putString("prof3Text", String.valueOf(profileInput.getText()));
-                                        } else {
-                                            if (!profileString.contains("4")) {
-                                                profileString = profileString + "4";
-                                                count++;
-                                                LinearLayout prof = (LinearLayout) findViewById(R.id.prof4);
-                                                prof.setVisibility(View.VISIBLE);
-                                                TextView profText = (TextView) findViewById(R.id.prof4Text);
-                                                profText.setText(String.valueOf(profileInput.getText()));
-                                                editor.putString("prof4Text", String.valueOf(profileInput.getText()));
-                                            }
+                                            editor.putString("prof4Text", String.valueOf(profileInput.getText()));
                                         }
                                     }
                                 }
-                                }
-                         //   }
-                     //   }
+                            }
+                        }
+                        //   }
+                        //   }
 
                         editor.putString("profiles", profileString);
                         editor.putInt("count", count);
                         editor.apply();
                     }
-                        });
+                });
 
-                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int num) {
-                                dialog.cancel();
-                            }
-                        });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int num) {
+                        dialog.cancel();
+                    }
+                });
 
                 builder.show();
 
@@ -249,10 +251,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 profText.setText("");
                 editor.putString("prof1Text", " ");
                 try {
-                ProfileMainActivity.deleteDatabase(1);
-            }catch(Exception e){
+                    ProfileMainActivity.deleteDatabase(1);
+                }catch(Exception e){
 
-            }
+                }
                 break;
             case "2":
                 prof = (LinearLayout) findViewById(R.id.prof2);
