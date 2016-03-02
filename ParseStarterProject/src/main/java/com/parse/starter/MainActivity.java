@@ -15,8 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener {
 
     Context context = this;
@@ -121,10 +119,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         int count = prefs.getInt("count", 0);
                         String profileString = prefs.getString("profiles", " ");
 
-                        if (count == 0) {
-                            count++;
-                            profileString = "1";
-                        } else {
+                //        if (count == 0) {
+                //            count++;
+               //             profileString = "1";
+                 //       } else {
                             if(count ==4){
                                 AlertDialog.Builder confirm = new AlertDialog.Builder(context);
                                 confirm.setTitle("Max Reached");
@@ -138,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                                 //pupup max profiles reached
                             }else{
-                            if (count > 0) {
+                         //   if (count > 0) {
 
 
                                 if (!profileString.contains("1")) {
@@ -181,8 +179,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     }
                                 }
                                 }
-                            }
-                        }
+                         //   }
+                     //   }
 
                         editor.putString("profiles", profileString);
                         editor.putInt("count", count);
@@ -262,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 prof.setVisibility(View.GONE);
                 profText = (TextView) findViewById(R.id.prof2Text);
                 profText.setText("");
-                editor.putString("prof1Text", " ");
+                editor.putString("prof2Text", " ");
                 try {
                     ProfileMainActivity.deleteDatabase(2);
                 }catch(Exception e){
@@ -274,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 prof.setVisibility(View.GONE);
                 profText = (TextView) findViewById(R.id.prof3Text);
                 profText.setText("");
-                editor.putString("prof1Text", " ");
+                editor.putString("prof3Text", " ");
                 try {
                     ProfileMainActivity.deleteDatabase(3);
                 }catch(Exception e){
@@ -286,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 prof.setVisibility(View.GONE);
                 profText = (TextView) findViewById(R.id.prof4Text);
                 profText.setText("");
-                editor.putString("prof1Text", " ");
+                editor.putString("prof4Text", " ");
                 try {
                     ProfileMainActivity.deleteDatabase(4);
                 }catch(Exception e){

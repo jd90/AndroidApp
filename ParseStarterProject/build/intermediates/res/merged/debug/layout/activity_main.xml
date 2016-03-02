@@ -19,7 +19,6 @@
             android:background="#47aff3"
             />
 
-
         <android.support.design.widget.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
