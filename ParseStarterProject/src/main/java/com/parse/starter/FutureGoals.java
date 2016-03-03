@@ -63,15 +63,33 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
   //      onBackPressed();
   //  }
     public void onBackPressed() {
-        String message = "some message text";
-        Intent intentBack = new Intent();
-        intentBack.putExtra("Message", message);
-        setResult(RESULT_OK, intentBack);
 
-        Log.i("MethodCalledJ", "L");
-        //why use intents when i can just access ProfileMainActivity.goalStore2?
+        Button startButton = (Button) findViewById(R.id.startButton);
 
-        finish();
+        if(startButton.getVisibility() == View.GONE) {
+
+            exitFirstWeekInput();
+        }
+        else{
+            AlertDialog.Builder confirm = new AlertDialog.Builder(this);
+            confirm.setTitle("Save and Start");
+            confirm.setMessage("Are you sure you want to commit to these Goals? \n" +
+                    "Next refresh is in "+ ProfileMainActivity.goalStore.daysToRefresh() +" days");
+            confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    exitFirstWeekInput();
+                }
+            })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setCancelable(false)
+                    .show();
+
+        }
     }
 
 
@@ -83,7 +101,7 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
                         "Next refresh is in "+ ProfileMainActivity.goalStore.daysToRefresh() +" days");
                 confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        onBackPressed();
+                        exitFirstWeekInput();
                     }
         })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -92,8 +110,19 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
+                .setCancelable(false)
                 .show();
 
     }
+
+    public void exitFirstWeekInput(){String message = "some message text";
+        Intent intentBack = new Intent();
+        intentBack.putExtra("Message", message);
+        setResult(RESULT_OK, intentBack);
+
+        Log.i("MethodCalledJ", "L");
+        //why use intents when i can just access ProfileMainActivity.goalStore2?
+        finish();}
+
 
 }

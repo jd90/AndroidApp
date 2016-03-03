@@ -37,9 +37,9 @@ public class NewGoalFragment extends DialogFragment implements View.OnClickListe
 
         freqSpin = (Spinner) rootView.findViewById(R.id.freqSpin);
 
+        this.setCancelable(false);
         return rootView;
     }
-
 
     @Override
     public void onClick(View v) {
