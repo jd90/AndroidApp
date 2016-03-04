@@ -47,7 +47,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener, View.On
         ArrayList<Integer> g = ProfileMainActivity.goalStore.pastTotals;
             for(int i=0; i<4; i++){
 
-                int height = (int) (g.get(i)*2.5);
+                int height = (int) (g.get(i)*2);
                 Log.i("heightbargraph", ""+g.get(i) * 2);
                 LinearLayout l;
                 switch(i){
@@ -117,7 +117,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener, View.On
         bgTitle.setOnClickListener(this);
         sharkFin = (LinearLayout) view.findViewById(R.id.sharkFin);
         sharkFin.setMinimumHeight(60);
-
+        sharkFin.setTag("sharkSwim");
         sharkFin.setOnClickListener(this);
 
         LinearLayout graphContainer = (LinearLayout) view.findViewById(R.id.bargraphcontainer);
@@ -134,10 +134,70 @@ public class Fragment3 extends Fragment implements View.OnClickListener, View.On
 
 
 
-        if( v instanceof LinearLayout || v instanceof TextView){
+if(v.getTag() == "sharkSwim") {
+    //must set translationX()to the value of goalstore2.getTotalPercentages() * 5
+    //also set the totalPercent text to this number
+
+
+    ImageView sharkFinPic = (ImageView) view.findViewById(R.id.sharkFinPic);
+    sharkFinPic.setTranslationX(0);
+    TextView totalPercentAve = (TextView) view.findViewById(R.id.totalPercentAve);
+    totalPercentAve.setText("");
+
+    TextView weektotalAveTitle = (TextView) view.findViewById(R.id.weektotalAveTitle);
+    weektotalAveTitle.setText("");
+
+    TextView totalPercent = (TextView) view.findViewById(R.id.totalPercent);
+    totalPercent.setText("");
+
+    TextView weektotalTitle = (TextView) view.findViewById(R.id.weektotalTitle);
+    weektotalTitle.setText("");
+
+    double percent = ProfileMainActivity.goalStore.getTotalPercentage();
+    if(percent>100){
+        percent = 100;
+    }
+    double x = percent * 4.73;
+    per = Float.parseFloat("" + x);
+    // sharkFinPic.setImageResource(R.drawable.shark_fin_pic_moving);
+    sharkFinPic.animate().translationX(per).setDuration(600);
+
+
+    final Handler handler = new Handler();
+    handler.postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            TextView totalPercent = (TextView) view.findViewById(R.id.totalPercent);
+            TextView weektotalTitle = (TextView) view.findViewById(R.id.weektotalTitle);
+            //totalPercent.setText(per+"%");
+            int total = (int) ProfileMainActivity.goalStore.getTotalPercentage();
+            if(total>100){
+                total = 100;
+            }
+            totalPercent.setText(total+"%");
+            weektotalTitle.setText("Week Total:");
+            TextView totalPercentAve = (TextView) view.findViewById(R.id.totalPercentAve);
+            int aveTotal=0;
+            for(int i=7; i>=4; i-- ){
+
+                aveTotal += ProfileMainActivity.goalStore.pastTotals.get(i);
+            }
+
+            totalPercentAve.setText(aveTotal/4+"%");
+
+            TextView weektotalAveTitle = (TextView) view.findViewById(R.id.weektotalAveTitle);
+            weektotalAveTitle.setText("4 Week Average");
+            //starts after 600
+            //ImageView sharkFinPic = (ImageView) view.findViewById(R.id.sharkFinPic);
+            //sharkFinPic.setImageResource(R.drawable.shark_fin_pic);
+        }
+    }, 600);
+
+}
+        else {//if( v instanceof LinearLayout || v instanceof TextView){
 
             LinearLayout l = (LinearLayout) view.findViewById(R.id.rect);
-            if(l.getVisibility() == View.GONE){
+    if (l.getVisibility() == View.GONE){
                 l.setVisibility(View.VISIBLE);
                 TextView bgTitle = (TextView) view.findViewById(R.id.bargraphtitle);
                 bgTitle.setText("8 Week View of Performance Totals");
@@ -147,35 +207,8 @@ public class Fragment3 extends Fragment implements View.OnClickListener, View.On
                 TextView bgTitle = (TextView) view.findViewById(R.id.bargraphtitle);
                 bgTitle.setText("4 Week View of Performance Totals");
             }
-        }
+        //}
 
-        else {
-
-
-            //must set translationX()to the value of goalstore2.getTotalPercentages() * 5
-            //also set the totalPercent text to this number
-
-            double percent = ProfileMainActivity.goalStore.getTotalPercentage();
-
-            ImageView sharkFinPic = (ImageView) view.findViewById(R.id.sharkFinPic);
-            double x = percent * 5;
-            per = Float.parseFloat("" + x);
-            // sharkFinPic.setImageResource(R.drawable.shark_fin_pic_moving);
-            sharkFinPic.animate().translationX(per).setDuration(600);
-
-
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    TextView totalPercent = (TextView) view.findViewById(R.id.totalPercent);
-                    //totalPercent.setText(per+"%");
-                    totalPercent.setText("" + (int) ProfileMainActivity.goalStore.getTotalPercentage() + "%");
-                    //starts after 600
-                    //ImageView sharkFinPic = (ImageView) view.findViewById(R.id.sharkFinPic);
-                    //sharkFinPic.setImageResource(R.drawable.shark_fin_pic);
-                }
-            }, 600);
 
         }
     }

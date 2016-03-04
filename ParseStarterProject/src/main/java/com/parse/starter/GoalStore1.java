@@ -43,7 +43,7 @@ public class GoalStore1 {
         pastTotals.add(20);
         pastTotals.add(10);
         pastTotals.add(50);
-        pastTotals.add(60);
+        pastTotals.add(70);
         pastTotals.add(100);
         pastTotals.add(20);
     }

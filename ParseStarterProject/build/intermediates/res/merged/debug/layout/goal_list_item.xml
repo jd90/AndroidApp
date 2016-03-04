@@ -141,7 +141,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/progressBar1"
         android:layout_below="@+id/buttonsLayout"
-
         android:focusable="false"
         />
 </RelativeLayout>

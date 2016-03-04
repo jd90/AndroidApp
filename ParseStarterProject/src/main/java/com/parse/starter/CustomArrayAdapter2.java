@@ -1,6 +1,8 @@
 package com.parse.starter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -153,6 +155,7 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
             holder.b6.setImageResource(R.drawable.s1);}
         else{holder.b6.setImageResource(R.drawable.s2);}
 
+        holder.percentageBar.getProgressDrawable().setColorFilter(Color.parseColor("#47aff3"), PorterDuff.Mode.MULTIPLY);
         return convertView;
     }
 

@@ -11,39 +11,84 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="bottom"
-    android:weightSum="10"
+    android:weightSum="2"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp">
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:id="@+id/sharkFin"
-    android:layout_weight="6"
     android:background="#ffffffff"
     android:orientation="vertical"
     android:gravity="bottom"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:layout_weight="1"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_marginBottom="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:layout_marginBottom="30dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/weektotalAveTitle"
+            android:includeFontPadding="false"/>
+        <TextView
+            android:includeFontPadding="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text=""
+            android:id="@+id/totalPercentAve"
+            android:layout_gravity="center"
+            android:textSize="45dp"
 
+            android:layout_weight="0.80" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_marginBottom="30dp">
     <TextView
-        android:layout_width="178dp"
-        android:layout_height="119dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/weektotalTitle"
+        android:includeFontPadding="false"/>
+    <TextView
+        android:includeFontPadding="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text=""
         android:id="@+id/totalPercent"
-        android:layout_gravity="right"
+        android:layout_gravity="center"
         android:textSize="70dp"
-        android:textAlignment="textEnd"
-        android:layout_weight="0.80" />
 
+        android:layout_weight="0.80" />
+</LinearLayout>
+    </LinearLayout>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/shark_fin_pic"
         android:id="@+id/sharkFinPic"/>
 
-</LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,25 +101,36 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#ff989898"
-        android:layout_marginBottom="9dp">
+        android:layout_marginBottom="1dp">
 
-    </LinearLayout>
+    </LinearLayout></LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="202dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_marginTop="5dp"
+        android:weightSum="10">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:id="@+id/bargraphcontainer"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="6">
+
 
 <LinearLayout
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="202dp"
+    android:layout_height="match_parent"
     android:id="@+id/rect"
     android:visibility="gone"
     android:background="#ffffffff"
     android:gravity="bottom"
-    android:layout_weight="3.5"
-    android:weightSum="4">
+    android:weightSum="4"
+    android:layout_weight="3">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_weight="1"
@@ -82,7 +138,10 @@
         android:orientation="vertical"
         android:layout_marginLeft="5dp"
         android:background="#ff616161"
-        android:id="@+id/bar1"/>
+        android:id="@+id/bar1"
+        android:minHeight="100dp"
+        android:longClickable="false"
+        android:measureWithLargestChild="true" />
     <LinearLayout
     android:layout_width="match_parent"
         android:layout_weight="1"
@@ -111,12 +170,13 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="202dp"
+        android:layout_height="match_parent"
         android:id="@+id/rect2"
         android:background="#ffffffff"
         android:gravity="bottom"
-        android:layout_weight="3.5"
-        android:weightSum="4">
+        android:weightSum="4"
+        android:layout_gravity="left"
+        android:layout_weight="3">
     <LinearLayout
     android:layout_width="match_parent"
         android:layout_weight="1"
@@ -152,22 +212,29 @@
     android:id="@+id/bar8"/>
 </LinearLayout>
 
-        </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:paddingBottom="1dp"
-        android:text="4 Week View of Performance Totals"
-        android:paddingTop="5dp"
-        android:id="@+id/bargraphtitle"
-        android:background="#ffffffff"
-        android:gravity="center_horizontal" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#ff989898">
 
     </LinearLayout>
-</LinearLayout>
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="31dp"
+        android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:weightSum="4">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:paddingBottom="5dp"
+            android:text="4 Week View of Performance Totals"
+            android:paddingTop="5dp"
+            android:id="@+id/bargraphtitle"
+            android:background="#ffffffff"
+            android:singleLine="true"
+            android:gravity="center"
+            android:layout_gravity="top|bottom|right" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FF989898">
+
+        </LinearLayout></LinearLayout></LinearLayout> </LinearLayout>
 </LinearLayout>
