@@ -11,16 +11,18 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class Fragment3 extends Fragment implements View.OnClickListener{
+public class Fragment3 extends Fragment implements View.OnClickListener, View.OnLongClickListener{
 
     View view;
     LinearLayout sharkFin;
@@ -42,42 +44,84 @@ public class Fragment3 extends Fragment implements View.OnClickListener{
 
         view = inflater.inflate(R.layout.statistics_fragment, container, false);
 
-
-
-        LinearLayout barChart = (LinearLayout) view.findViewById(R.id.rect);
-        Paint paint = new Paint();
-        paint.setColor(Color.parseColor("#ff616161"));
-        //width and height and then storage quality definition = Bitmap.Config
-        Bitmap bg = Bitmap.createBitmap(810,510, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bg);
-
-        canvas.drawColor(Color.parseColor("#ffffffff"));
-
-
-//        int x = 5;
-  //      int y = 95;  //also reset bitmap to 800x500 and height to 500-pasttotal, and height bottom to 500
-        int x=10;
-        int y=100;
-
-
         ArrayList<Integer> g = ProfileMainActivity.goalStore.pastTotals;
-            for(int i=g.size()-1; i>=0; i--){ // this is backwards so that it is
+            for(int i=0; i<4; i++){
 
-                //max height = 500
-                int height = 505-(g.get(i)*5);
-                canvas.drawRect(x, height, y, 505, paint);
-                x+=100;
-                y+=100;
+                int height = (int) (g.get(i)*2.5);
+                Log.i("heightbargraph", ""+g.get(i) * 2);
+                LinearLayout l;
+                switch(i){
+                    case 0:
+                        l =(LinearLayout) view.findViewById(R.id.bar1);
+                        l.setOnLongClickListener(this);
+                        l.setTag(0);
+                        l.setMinimumHeight(height);
+                        break;
+                    case 1:
+                        l =(LinearLayout) view.findViewById(R.id.bar2);
+                        l.setOnLongClickListener(this);
+                        l.setTag(1);
+                        l.setMinimumHeight(height);
+                        break;
+                    case 2:
+                        l =(LinearLayout) view.findViewById(R.id.bar3);
+                        l.setOnLongClickListener(this);
+                        l.setTag(2);
+                        l.setMinimumHeight(height);
+                        break;
+                    case 3:
+                        l =(LinearLayout) view.findViewById(R.id.bar4);
+                        l.setOnLongClickListener(this);
+                        l.setTag(3);
+                        l.setMinimumHeight(height);
+                        break;
+                }
+
             }
 
-        barChart.setBackgroundDrawable(new BitmapDrawable(bg));
+        for(int i=4; i<8; i++){
 
+            int height = (int) (g.get(i)*2.5);
+            Log.i("heightbargraph", ""+g.get(i) * 2);
+            LinearLayout l;
+            switch(i){
+                case 4:
+                    l =(LinearLayout) view.findViewById(R.id.bar5);
+                    l.setOnLongClickListener(this);
+                    l.setTag(4);
+                    l.setMinimumHeight(height);
+                    break;
+                case 5:
+                    l =(LinearLayout) view.findViewById(R.id.bar6);
+                    l.setOnLongClickListener(this);
+                    l.setTag(5);
+                    l.setMinimumHeight(height);
+                    break;
+                case 6:
+                    l =(LinearLayout) view.findViewById(R.id.bar7);
+                    l.setOnLongClickListener(this);
+                    l.setTag(6);
+                    l.setMinimumHeight(height);
+                    break;
+                case 7:
+                    l =(LinearLayout) view.findViewById(R.id.bar8);
+                    l.setOnLongClickListener(this);
+                    l.setTag(7);
+                    l.setMinimumHeight(height);
+                    break;
+            }
 
+        }
+
+        TextView bgTitle = (TextView) view.findViewById(R.id.bargraphtitle);
+        bgTitle.setOnClickListener(this);
         sharkFin = (LinearLayout) view.findViewById(R.id.sharkFin);
         sharkFin.setMinimumHeight(60);
 
         sharkFin.setOnClickListener(this);
 
+        LinearLayout graphContainer = (LinearLayout) view.findViewById(R.id.bargraphcontainer);
+        graphContainer.setOnClickListener(this);
 
 
 
@@ -88,33 +132,63 @@ public class Fragment3 extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
 
-        //must set translationX()to the value of goalstore2.getTotalPercentages() * 5
-        //also set the totalPercent text to this number
-
-        double percent = ProfileMainActivity.goalStore.getTotalPercentage();
-
-        ImageView sharkFinPic = (ImageView) view.findViewById(R.id.sharkFinPic);
-        double x= percent*5;
-        per = Float.parseFloat(""+x);
-       // sharkFinPic.setImageResource(R.drawable.shark_fin_pic_moving);
-        sharkFinPic.animate().translationX(per).setDuration(600);
 
 
+        if( v instanceof LinearLayout || v instanceof TextView){
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                TextView totalPercent = (TextView) view.findViewById(R.id.totalPercent);
-                //totalPercent.setText(per+"%");
-                totalPercent.setText("" +(int) ProfileMainActivity.goalStore.getTotalPercentage()+"%");
-                //starts after 600
-                //ImageView sharkFinPic = (ImageView) view.findViewById(R.id.sharkFinPic);
-                //sharkFinPic.setImageResource(R.drawable.shark_fin_pic);
+            LinearLayout l = (LinearLayout) view.findViewById(R.id.rect);
+            if(l.getVisibility() == View.GONE){
+                l.setVisibility(View.VISIBLE);
+                TextView bgTitle = (TextView) view.findViewById(R.id.bargraphtitle);
+                bgTitle.setText("8 Week View of Performance Totals");
+
+            }else {
+                l.setVisibility(View.GONE);
+                TextView bgTitle = (TextView) view.findViewById(R.id.bargraphtitle);
+                bgTitle.setText("4 Week View of Performance Totals");
             }
-        }, 600);
+        }
+
+        else {
 
 
+            //must set translationX()to the value of goalstore2.getTotalPercentages() * 5
+            //also set the totalPercent text to this number
 
+            double percent = ProfileMainActivity.goalStore.getTotalPercentage();
+
+            ImageView sharkFinPic = (ImageView) view.findViewById(R.id.sharkFinPic);
+            double x = percent * 5;
+            per = Float.parseFloat("" + x);
+            // sharkFinPic.setImageResource(R.drawable.shark_fin_pic_moving);
+            sharkFinPic.animate().translationX(per).setDuration(600);
+
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    TextView totalPercent = (TextView) view.findViewById(R.id.totalPercent);
+                    //totalPercent.setText(per+"%");
+                    totalPercent.setText("" + (int) ProfileMainActivity.goalStore.getTotalPercentage() + "%");
+                    //starts after 600
+                    //ImageView sharkFinPic = (ImageView) view.findViewById(R.id.sharkFinPic);
+                    //sharkFinPic.setImageResource(R.drawable.shark_fin_pic);
+                }
+            }, 600);
+
+        }
+    }
+
+
+    @Override
+    public boolean onLongClick(View v) {
+
+        LinearLayout l = (LinearLayout)v;
+        int x = Integer.parseInt(l.getTag().toString());
+        Toast t = Toast.makeText(getActivity(), "YOU HIT " + x, Toast.LENGTH_SHORT);
+        t.show();
+
+        return false;
     }
 }

@@ -85,7 +85,6 @@ context =this.getApplicationContext();
             if(goalStore.firstweek){
 
                 goalStore.loadFromFutureDatabase();
-                goalStore.saveToDatabase();
             }
         }
     }

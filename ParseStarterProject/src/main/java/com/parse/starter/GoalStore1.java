@@ -177,6 +177,7 @@ public class GoalStore1 {
 
         }
         Log.i("6705 2 load2", "goalstore length "+this.getSize());
+        this.saveToDatabase();//better here as its called whenever this is, rather than listing it a-new whenever loadfromfuture is called
     }
     public int daysToRefresh(){
         int daysToRefresh=0;

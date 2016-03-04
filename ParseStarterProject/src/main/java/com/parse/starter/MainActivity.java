@@ -216,8 +216,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onLongClick(View v) {
 
         final View  vi = v;
-
-
+        
 
         AlertDialog.Builder confirm = new AlertDialog.Builder(this);
         confirm.setTitle("Delete Profile?");

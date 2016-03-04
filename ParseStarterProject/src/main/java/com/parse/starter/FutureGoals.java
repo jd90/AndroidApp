@@ -6,9 +6,11 @@ import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -26,18 +28,19 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
 
         setContentView(R.layout.future_item_layout);
 
-        Bundle b = new Bundle();
+        Bundle b;
         b = getIntent().getExtras();
         boolean firstweek = b.getBoolean("firstweek");
-
 
         fgoalStore = ProfileMainActivity.fgoalStore;
 
                 //ProfileMainActivity.fgoalStore;
-
-
         TextView title = (TextView) findViewById(R.id.windowTitle);
         title.setText("Next Week: " + ProfileMainActivity.goalStore.daysToRefresh() + " days to refresh");
+
+        ImageView backButton = (ImageView) findViewById(R.id.back_button);
+        backButton.setOnClickListener(this);
+        backButton.setTag("backButton");
 
         Button newGoal = (Button) findViewById(R.id.newGoalButton);
         newGoal.setText("Add Goal");
@@ -95,24 +98,27 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
 
     public void onClick(View view){
 
-        AlertDialog.Builder confirm = new AlertDialog.Builder(this);
-                confirm.setTitle("Save and Start");
-                confirm.setMessage("Are you sure you want to commit to these Goals? \n" +
-                        "Next refresh is in "+ ProfileMainActivity.goalStore.daysToRefresh() +" days");
-                confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        exitFirstWeekInput();
-                    }
-        })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+        if(view instanceof ImageView){
+            exitFirstWeekInput();
+        }else {
+            AlertDialog.Builder confirm = new AlertDialog.Builder(this);
+            confirm.setTitle("Save and Start");
+            confirm.setMessage("Are you sure you want to commit to these Goals? \n" +
+                    "Next refresh is in " + ProfileMainActivity.goalStore.daysToRefresh() + " days");
+            confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    exitFirstWeekInput();
+                }
+            })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setCancelable(false)
-                .show();
-
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setCancelable(false)
+                    .show();
+        }
     }
 
     public void exitFirstWeekInput(){String message = "some message text";
