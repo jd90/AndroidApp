@@ -46,6 +46,14 @@ public class GoalStore1 {
         pastTotals.add(70);
         pastTotals.add(100);
         pastTotals.add(20);
+        pastTotals.add(70);
+        pastTotals.add(40);
+        pastTotals.add(75);
+        pastTotals.add(78);
+        pastTotals.add(86);
+        pastTotals.add(100);
+        pastTotals.add(10);
+        pastTotals.add(55);
     }
 
     public boolean add(Goal g) {
