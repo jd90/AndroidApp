@@ -47,7 +47,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener, View.On
         ArrayList<Integer> g = ProfileMainActivity.goalStore.pastTotals;
             for(int i=0; i<4; i++){
 
-                int height = (int) (g.get(i)*2);
+                int height = (int) (g.get(i)*3);
                 Log.i("heightbargraph", ""+g.get(i) * 2);
                 LinearLayout l;
                 switch(i){
@@ -81,7 +81,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener, View.On
 
         for(int i=4; i<8; i++) {
 
-            int height = (int) (g.get(i) * 2.5);
+            int height = (int) (g.get(i) * 3);
             Log.i("heightbargraph", "" + g.get(i) * 2);
             LinearLayout l;
             switch (i) {
@@ -113,7 +113,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener, View.On
         }
             for(int i=8; i<16; i++){
 
-                int height = (int) (g.get(i)*2.5);
+                int height = (int) (g.get(i)*3);
                 LinearLayout l;
                 Log.i("heightbargraph", ""+g.get(i) * 2);
                 switch(i){
