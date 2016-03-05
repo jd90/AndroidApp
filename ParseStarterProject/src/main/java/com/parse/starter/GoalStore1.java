@@ -150,6 +150,7 @@ public class GoalStore1 {
     public void loadFromFutureDatabase(){
         Log.i("6705reset", "loadfromfuture called");
         firstweek = false;
+
         this.clear();
         c = myDatabase.rawQuery("SELECT * FROM FgoalsTbl", null);
         int nameIndex = c.getColumnIndex("name");
