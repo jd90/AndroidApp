@@ -215,104 +215,165 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onLongClick(View v) {
 
-        final View  vi = v;
-        
+        final View vi = v;
 
-        AlertDialog.Builder confirm = new AlertDialog.Builder(this);
-        confirm.setTitle("Delete Profile?");
-        confirm.setMessage("Are you sure you want to delete this profile?");
-        confirm.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+        final CharSequence[] options = {"Rename", "Delete"};
+
+        AlertDialog.Builder renameDelete = new AlertDialog.Builder(this);
+        renameDelete.setCustomTitle(null);
+        renameDelete.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
 
-                LinearLayout prof = (LinearLayout)vi;
-                String profNum = String.valueOf(prof.getTag());
-                String profileString = prefs.getString("profiles", " ");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle("Rename your Profile");
+                    final EditText profileInput = new EditText(MainActivity.this);
+                    builder.setView(profileInput);
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int num) {
+                            TextView prof;
+                            String newTitle = profileInput.getText().toString();
+                            switch(Integer.parseInt(vi.getTag().toString())){
+                                case 1:
+                                    editor.putString("prof1Text", String.valueOf(newTitle));
+                                    prof = (TextView) findViewById(R.id.prof1Text);
+                                    prof.setText(newTitle);
+                                    break;
+                                case 2:
+                                    editor.putString("prof2Text", String.valueOf(newTitle));
+                                    prof = (TextView) findViewById(R.id.prof2Text);
+                                    prof.setText(newTitle);
+                                    break;
+                                case 3:
+                                    editor.putString("prof3Text", String.valueOf(newTitle));
+                                    prof = (TextView) findViewById(R.id.prof3Text);
+                                    prof.setText(newTitle);
+                                    break;
+                                case 4:
+                                    editor.putString("prof4Text", String.valueOf(newTitle));
+                                    prof = (TextView) findViewById(R.id.prof4Text);
+                                    prof.setText(newTitle);
+                                    break;
+                            }
+                            editor.apply();
 
-                Log.i("profileString before ", profileString);
+                        }});
 
-                profileString = profileString.replace(profNum, "");
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int num) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.setCancelable(false);
+                    builder.show();
 
-                Log.i("profileString after ", profileString);
+                }else
 
-                editor.putString("profiles", profileString);
-                int count =prefs.getInt("count", 0);
-                Log.i("6705 count3", "" + count);
+                        {
+                            AlertDialog.Builder confirm = new AlertDialog.Builder(MainActivity.this);
+                            confirm.setTitle("Delete Profile?");
+                            confirm.setMessage("Are you sure you want to delete this profile?");
+                            confirm.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
 
-                count--;
-                editor.putInt("count", count);
-                editor.apply();
+                                    LinearLayout prof = (LinearLayout) vi;
+                                    String profNum = String.valueOf(prof.getTag());
+                                    String profileString = prefs.getString("profiles", " ");
+
+                                    Log.i("profileString before ", profileString);
+
+                                    profileString = profileString.replace(profNum, "");
+
+                                    Log.i("profileString after ", profileString);
+
+                                    editor.putString("profiles", profileString);
+                                    int count = prefs.getInt("count", 0);
+                                    Log.i("6705 count3", "" + count);
+
+                                    count--;
+                                    editor.putInt("count", count);
+                                    editor.apply();
 
 
-                switch(profNum){
+                                    switch (profNum) {
 
-                    case "1":
-                        prof = (LinearLayout) findViewById(R.id.prof1);
-                        prof.setVisibility(View.GONE);
-                        TextView profText = (TextView) findViewById(R.id.prof1Text);
-                        profText.setText("");
-                        editor.putString("prof1Text", " ");
-                        try {
-                            ProfileMainActivity.deleteDatabase(1);
-                        }catch(Exception e){
+                                        case "1":
+                                            prof = (LinearLayout) findViewById(R.id.prof1);
+                                            prof.setVisibility(View.GONE);
+                                            TextView profText = (TextView) findViewById(R.id.prof1Text);
+                                            profText.setText("");
+                                            editor.putString("prof1Text", " ");
+                                            try {
+                                                ProfileMainActivity.deleteDatabase(1);
+                                            } catch (Exception e) {
+
+                                            }
+                                            break;
+                                        case "2":
+                                            prof = (LinearLayout) findViewById(R.id.prof2);
+                                            prof.setVisibility(View.GONE);
+                                            profText = (TextView) findViewById(R.id.prof2Text);
+                                            profText.setText("");
+                                            editor.putString("prof2Text", " ");
+                                            try {
+                                                ProfileMainActivity.deleteDatabase(2);
+                                            } catch (Exception e) {
+
+                                            }
+                                            break;
+                                        case "3":
+                                            prof = (LinearLayout) findViewById(R.id.prof3);
+                                            prof.setVisibility(View.GONE);
+                                            profText = (TextView) findViewById(R.id.prof3Text);
+                                            profText.setText("");
+                                            editor.putString("prof3Text", " ");
+                                            try {
+                                                ProfileMainActivity.deleteDatabase(3);
+                                            } catch (Exception e) {
+
+                                            }
+                                            break;
+                                        case "4":
+                                            prof = (LinearLayout) findViewById(R.id.prof4);
+                                            prof.setVisibility(View.GONE);
+                                            profText = (TextView) findViewById(R.id.prof4Text);
+                                            profText.setText("");
+                                            editor.putString("prof4Text", " ");
+                                            try {
+                                                ProfileMainActivity.deleteDatabase(4);
+                                            } catch (Exception e) {
+
+                                            }
+                                            break;
+
+                                    }
+
+                                    editor.apply();
+
+                                    Log.i("6705 count4", "" + count);
+
+
+                                }
+                            })
+                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    })
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+
 
                         }
-                        break;
-                    case "2":
-                        prof = (LinearLayout) findViewById(R.id.prof2);
-                        prof.setVisibility(View.GONE);
-                        profText = (TextView) findViewById(R.id.prof2Text);
-                        profText.setText("");
-                        editor.putString("prof2Text", " ");
-                        try {
-                            ProfileMainActivity.deleteDatabase(2);
-                        }catch(Exception e){
+                    }
 
-                        }
-                        break;
-                    case "3":
-                        prof = (LinearLayout) findViewById(R.id.prof3);
-                        prof.setVisibility(View.GONE);
-                        profText = (TextView) findViewById(R.id.prof3Text);
-                        profText.setText("");
-                        editor.putString("prof3Text", " ");
-                        try {
-                            ProfileMainActivity.deleteDatabase(3);
-                        }catch(Exception e){
+                });
 
-                        }
-                        break;
-                    case "4":
-                        prof = (LinearLayout) findViewById(R.id.prof4);
-                        prof.setVisibility(View.GONE);
-                        profText = (TextView) findViewById(R.id.prof4Text);
-                        profText.setText("");
-                        editor.putString("prof4Text", " ");
-                        try {
-                            ProfileMainActivity.deleteDatabase(4);
-                        }catch(Exception e){
-
-                        }
-                        break;
-
-                }
-
-                editor.apply();
-
-                Log.i("6705 count4", "" + count);
-
+                renameDelete.show();
+                return true;
 
             }
-        })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-
-
-
-        return true;
-    }
-}
+        }
