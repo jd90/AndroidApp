@@ -68,6 +68,29 @@ public class GoalStore1 {
     }
     public int getSize(){return this.list.size();}
 
+    public void reorderUp(int i){
+
+        Log.i("6705reorderU", "bef:"+list.toString());
+
+        Goal g2 = list.get(i);
+        list.remove(i);
+        list.add(i - 1, g2);
+
+        Log.i("6705reorderU", "aft:" + list.toString());
+        this.saveToDatabase();
+    }
+    public void reorderDown(int i){
+
+        Log.i("6705reorderD", "bef:" + list.toString());
+        Goal g2 = list.get(i);
+        list.remove(i);
+
+        list.add(i + 1, g2);
+        Log.i("6705reorderD", "aft:" + list.toString());
+        this.saveToDatabase();
+    }
+
+
     public double getTotalPercentage() {
         /**int sum=0;
         for (Goal g:this.list)
@@ -81,7 +104,7 @@ public class GoalStore1 {
         }
         //check if this casting works/is right in a separate small netbeans window
 
-        Log.i("6705percentfinal1", ""+ (sum/this.getSize()) + (sum%this.getSize()));
+        Log.i("6705percentfinal1", "" + (sum / this.getSize()) + (sum % this.getSize()));
         Log.i("6705percentfinal2", ""+ (int) (sum/this.getSize()) + (sum%this.getSize()));
 
         return (int) (sum/this.getSize()); //+ (sum%this.getSize());
@@ -124,11 +147,12 @@ public class GoalStore1 {
             int b6Index = c.getColumnIndex("b6");
 
             c.moveToFirst();
-
+boolean cancel=false;
             int pos = 0;
-            while (c != null) {
-                Log.i("6705 1 load1", c.getString(nameIndex));
+            while (c != null&& cancel==false) {
 
+
+                try {// why must i have this?? and the cancel bit too... tidy this all up
 
                 this.add(new Goal(c.getString(nameIndex), c.getInt(totalIndex)));
                 //this.getAt(pos).name = c.getString(nameIndex);
@@ -144,6 +168,7 @@ public class GoalStore1 {
                 this.getAt(pos).setButton(6, c.getInt(b6Index));
                 pos++;
                 c.moveToNext();
+                }catch(Exception e){cancel = true; Log.i("6705why", "canceled from index out of bounds exception");}
             }
         Log.i("6705 1 load2", "goalstore length "+this.getSize());
         }

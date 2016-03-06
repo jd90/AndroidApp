@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 public class Fragment2 extends ListFragment {
 
+    static CustomArrayAdapter2 adapter;
     // Required empty public constructor
     public Fragment2() {
     }
@@ -22,7 +23,7 @@ public class Fragment2 extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        CustomArrayAdapter2 adapter = new CustomArrayAdapter2(getActivity(), ProfileMainActivity.goalStore);
+        adapter = new CustomArrayAdapter2(getActivity(), ProfileMainActivity.goalStore);
         setListAdapter(adapter);
 
     }
@@ -52,6 +53,9 @@ public class Fragment2 extends ListFragment {
 
     }
 
+    public static void reload(){
+        adapter.notifyDataSetChanged();
+    }
 
 
 

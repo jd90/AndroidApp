@@ -178,6 +178,7 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
 
     }
 
+
     static class ViewHolder {
         // this enables reuse. recyler view it is called? means that it only has to do a findviewbyid call once then reuse it, saving valuable processing time.
         //this means that things like scrolling etc are smoother
@@ -189,6 +190,9 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
         private ImageView b0,b1,b2,b3,b4,b5,b6;
         private ProgressBar percentageBar;
     }
+
+
+
 
 }
 

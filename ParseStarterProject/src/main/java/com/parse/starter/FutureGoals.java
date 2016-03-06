@@ -74,33 +74,18 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
             exitFirstWeekInput();
         }
         else{
-            AlertDialog.Builder confirm = new AlertDialog.Builder(this);
-            confirm.setTitle("Save and Start");
-            confirm.setMessage("Are you sure you want to commit to these Goals? \n" +
-                    "Next refresh is in "+ ProfileMainActivity.goalStore.daysToRefresh() +" days");
-            confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    exitFirstWeekInput();
-                }
-            })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setCancelable(false)
-                    .show();
-
+           popUpConfirm();
         }
     }
 
 
     public void onClick(View view){
 
-        if(view instanceof ImageView){
-            exitFirstWeekInput();
-        }else {
+
+            popUpConfirm();
+
+
+        /**else {
             AlertDialog.Builder confirm = new AlertDialog.Builder(this);
             confirm.setTitle("Save and Start");
             confirm.setMessage("Are you sure you want to commit to these Goals? \n" +
@@ -118,7 +103,27 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setCancelable(false)
                     .show();
-        }
+        }**/
+    }
+
+    public void popUpConfirm(){
+
+            AlertDialog.Builder confirm = new AlertDialog.Builder(this);
+            confirm.setTitle("Save and Start");
+            confirm.setMessage("Are you sure you want to commit to these Goals? \n" +
+                    "Next refresh is in " + ProfileMainActivity.goalStore.daysToRefresh() + " days");
+            confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    exitFirstWeekInput();
+                }
+            })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
     }
 
     public void exitFirstWeekInput(){String message = "some message text";

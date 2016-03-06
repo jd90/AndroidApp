@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 public class ProfileMainActivity extends AppCompatActivity {
@@ -22,14 +24,15 @@ public class ProfileMainActivity extends AppCompatActivity {
     static SQLiteDatabase myDatabase;
     static Context context;
     Cursor c;
+    int profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-context =this.getApplicationContext();
+        context =this.getApplicationContext();
 
-        int profile = getIntent().getExtras().getInt("profile");
+        profile = getIntent().getExtras().getInt("profile");
 
 
         myDatabase = this.openOrCreateDatabase("GoalApp"+profile, MODE_PRIVATE, null);
@@ -59,6 +62,7 @@ context =this.getApplicationContext();
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return true;
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -69,8 +73,8 @@ context =this.getApplicationContext();
                 intent.putExtra("firstweek", false);
                 int a = 4; //request code? (receives back request code, resultcode, intent)?
                 startActivityForResult(intent, a);
-
                 break;
+
         }
 
         return true;
@@ -86,6 +90,16 @@ context =this.getApplicationContext();
 
                 goalStore.loadFromFutureDatabase();
             }
+        }
+        else{
+
+            goalStore.loadFromDatabase();
+
+            //i dont like this, surely this is "tightly coupled"?? maybe ask
+            Fragment2.reload();
+
+
+
         }
     }
 
@@ -113,5 +127,24 @@ context =this.getApplicationContext();
     }
 
 
+    public void menuDropdown(MenuItem item) {
+        Log.i("6705reorder", "ayyyp");
+
+        switch(String.valueOf(item.getTitle())){
+            case "settings":
+                
+
+                break;
+            case "Re-order Goals":
+
+                Log.i("6705reorder", "called");
+                Intent intent = new Intent(this, ReorderPage.class);
+                startActivityForResult(intent, 8);
+
+                break;
+        }
+
+
+    }
 
 }

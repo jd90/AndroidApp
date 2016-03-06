@@ -12,18 +12,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
 
+
     <item
         android:id="@+id/action_next_seven"
-        android:icon="@drawable/edit_button"
-
+        android:icon="@drawable/plus23_button"
         android:title="Next Seven"
         app:showAsAction="always"
 
-        />
 
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:icon="@android:drawable/ic_menu_preferences"
-        android:orderInCategory="100" app:showAsAction="always" />
+        />
+    <group android:id="@+id/settingsGroup">
+    <item android:id="@+id/settings"
+        android:title="Settings"
+        android:onClick="menuDropdown"/>
+    <item android:id="@+id/reorder"
+        android:title="Re-order Goals"
+        android:onClick="menuDropdown"/>
+</group>
+
+
 
 </menu>
 
