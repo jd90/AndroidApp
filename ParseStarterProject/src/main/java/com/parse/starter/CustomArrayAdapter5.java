@@ -1,8 +1,6 @@
 package com.parse.starter;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.List;
@@ -44,19 +41,16 @@ public class CustomArrayAdapter5 extends ArrayAdapter<Goal> implements View.OnCl
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.reorder_list_item, parent, false);
             holder = new ViewHolder();
-            holder.linearLayout = (LinearLayout) convertView.findViewById(R.id.buttonsLayout);
-            holder.goalTitleView = (TextView) convertView.findViewById(R.id.goalTitle);
-            holder.numberOutOfView = (TextView) convertView.findViewById(R.id.goalTargets);
-            holder.percentView = (TextView) convertView.findViewById(R.id.goalPercent);
+             holder.goalTitleView = (TextView) convertView.findViewById(R.id.goalTitle);
 
-            holder.upCont = (LinearLayout) convertView.findViewById(R.id.upcont);
-            holder.downCont = (LinearLayout) convertView.findViewById(R.id.downcont);
+            holder.upCont = (LinearLayout) convertView.findViewById(R.id.upCont);
+            holder.downCont = (LinearLayout) convertView.findViewById(R.id.downCont);
 
-            Button up = (Button) convertView.findViewById(R.id.up);
-            Button down = (Button) convertView.findViewById(R.id.down);
-            up.setOnClickListener(this);
-            up.setTag("up");down.setTag("down");
-            down.setOnClickListener(this);
+            holder.up = (Button) convertView.findViewById(R.id.up);
+            holder.down = (Button) convertView.findViewById(R.id.down);
+            holder.up.setOnClickListener(this);
+            holder.up.setTag("up");holder.down.setTag("down");
+            holder.down.setOnClickListener(this);
 
             convertView.setTag(holder);
         }
@@ -64,15 +58,15 @@ public class CustomArrayAdapter5 extends ArrayAdapter<Goal> implements View.OnCl
             holder = (ViewHolder) convertView.getTag();
         }
 
-        if(position==0){holder.upCont.setVisibility(View.GONE);}
-        if(position==goalStore.getSize()-1){holder.downCont.setVisibility(View.GONE);}
-        holder.linearLayout.setTag(position);
+        if(position==0){holder.up.setVisibility(View.INVISIBLE);
+        holder.up.setOnClickListener(null);}
+        if(position==goalStore.getSize()-1){holder.down.setVisibility(View.INVISIBLE);
+        holder.down.setOnClickListener(null);}
         holder.upCont.setTag(position);
         holder.downCont.setTag(position);
         Goal g = goalStore.getAt(position);
         holder.goalTitleView.setText(g.name);
-        holder.numberOutOfView.setText(g.getTargets());
-        holder.percentView.setText(g.getPercentage());
+
 
 
         return convertView;
@@ -89,7 +83,7 @@ public class CustomArrayAdapter5 extends ArrayAdapter<Goal> implements View.OnCl
             Log.i("6705reorder", "goalstoreAt: "+Integer.parseInt(l.getTag().toString()));
             Goal g = goalStore.getAt(Integer.parseInt(l.getTag().toString()));
 
-                Button pressed = (Button)v;
+            Button pressed = (Button)v;
             Log.i("6705reodrrrr",String.valueOf(pressed.getTag()) );
                     if(String.valueOf(pressed.getTag()).equals("up")){
                         Log.i("6705reorder", "insideup");
@@ -119,9 +113,10 @@ public class CustomArrayAdapter5 extends ArrayAdapter<Goal> implements View.OnCl
         private LinearLayout upCont;
         private LinearLayout downCont;
 
+        private Button up;
+        private Button down;
+
         private TextView goalTitleView;
-        private TextView numberOutOfView;
-        private TextView percentView;
     }
 
 }

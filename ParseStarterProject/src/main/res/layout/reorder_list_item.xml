@@ -14,11 +14,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ff989898">
+        android:background="#ff989898"
+        android:orientation="horizontal"
+        android:weightSum="10">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="#ffffffff"
+            android:id="@+id/upCont"
+            android:layout_weight="2">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/up_button"
+                        android:background="@drawable/up_buttonexemel"
+                        android:id="@+id/up"
+                        android:layout_gravity="bottom" />
+            </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:paddingLeft="25dip"
             android:paddingRight="25dip"
             android:paddingTop="5dip"
@@ -30,9 +47,8 @@
             android:clickable="false"
             android:longClickable="true"
             android:background="#ffffffff"
-            android:layout_marginBottom="1dp"
-
-            >
+            android:gravity="center"
+            android:layout_weight="6">
 
             <!--android:translationZ="20dp"
             android:elevation="20dp" -->
@@ -41,74 +57,29 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="New Text"
                 android:id="@+id/goalTitle"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
+                android:textSize="20dp"
+
                 android:focusable="false"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/goalTargets"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:focusable="false"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/goalPercent"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:focusable="false"
-                />
+                android:textStyle="bold" />
 
 
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/goalTitle"
-                android:id="@+id/buttonsLayout"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:clickable="false"
-                android:gravity="center_horizontal">
+        </LinearLayout>
 <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/upcont"
-    android:layout_gravity="start">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/up"
-                    android:text="UP" />
-            </LinearLayout>
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="end"
-    android:orientation="horizontal"
-    android:id="@+id/downcont"
-    android:gravity="right">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/down"
-                    android:text="DOWN"/>
-            </LinearLayout>
-            </LinearLayout>
-
-        </RelativeLayout>
-
+    android:background="#ffffffff"
+    android:id="@+id/downCont"
+    android:layout_weight="2">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/down"
+            android:background="@drawable/down_buttonexemel"
+            android:src="@drawable/down_button" />
+    </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

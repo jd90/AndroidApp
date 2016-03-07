@@ -71,7 +71,7 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
 
         if(startButton.getVisibility() == View.GONE) {
 
-            exitFirstWeekInput();
+            exit();
         }
         else{
            popUpConfirm();
@@ -82,8 +82,7 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
     public void onClick(View view){
 
 
-            popUpConfirm();
-
+        onBackPressed();
 
         /**else {
             AlertDialog.Builder confirm = new AlertDialog.Builder(this);
@@ -114,7 +113,7 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
                     "Next refresh is in " + ProfileMainActivity.goalStore.daysToRefresh() + " days");
             confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    exitFirstWeekInput();
+                    exit();
                 }
             })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -126,7 +125,7 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
                     .show();
     }
 
-    public void exitFirstWeekInput(){String message = "some message text";
+    public void exit(){String message = "some message text";
         Intent intentBack = new Intent();
         intentBack.putExtra("Message", message);
         setResult(RESULT_OK, intentBack);
