@@ -38,22 +38,7 @@ public class GoalStore1 {
 
         setUpGoalStore();
 // this lets you see a graph of pastTotals if it is too early to have data
-        pastTotals.add(60);
-        pastTotals.add(100);
-        pastTotals.add(20);
-        pastTotals.add(10);
-        pastTotals.add(50);
-        pastTotals.add(70);
-        pastTotals.add(100);
-        pastTotals.add(20);
-        pastTotals.add(70);
-        pastTotals.add(40);
-        pastTotals.add(75);
-        pastTotals.add(78);
-        pastTotals.add(86);
-        pastTotals.add(100);
-        pastTotals.add(10);
-        pastTotals.add(55);
+
     }
 
     public boolean add(Goal g) {
@@ -105,7 +90,7 @@ public class GoalStore1 {
         //check if this casting works/is right in a separate small netbeans window
 
         Log.i("6705percentfinal1", "" + (sum / this.getSize()) + (sum % this.getSize()));
-        Log.i("6705percentfinal2", ""+ (int) (sum/this.getSize()) + (sum%this.getSize()));
+        Log.i("6705percentfinal2", "" + (int) (sum / this.getSize()) + (sum % this.getSize()));
 
         return (int) (sum/this.getSize()); //+ (sum%this.getSize());
 
@@ -130,6 +115,8 @@ public class GoalStore1 {
         Log.i("goalsnull", "being updated");
     }
     public void loadFromDatabase(){
+
+        loadPastTotalsFromDB();
 
         this.clear();
 
@@ -175,6 +162,8 @@ boolean cancel=false;
     public void loadFromFutureDatabase(){
         Log.i("6705reset", "loadfromfuture called");
         firstweek = false;
+
+        savePastTotalstoDB();
 
         this.clear();
         c = myDatabase.rawQuery("SELECT * FROM FgoalsTbl", null);
@@ -251,9 +240,14 @@ boolean cancel=false;
 
                     int refreshDayOfYear = dayofyear + daysToRefresh();
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS refreshDay (day INT(1))");
-                    myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES ("+refreshDayOfYear+")");
+                    myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDayOfYear + ")");
 
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3))");
+
+                    pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);
+                    pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);
+                    pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);
+                    pastTotals.add(50);
 
 
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3))");
@@ -287,7 +281,7 @@ Log.i("6705reset", "day is greater");
                      //   myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3))");
                         //if this was empty - it would mean that app has started, but one week
                         // has not passed yet.. could set a boolean for first week or something? - need to be put above this tho - in the isnt passsed refresh check
-                        myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + newTotal + ")");
+                      //  myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + newTotal + ")");
 
                         Log.i("6705reset", "day is greater2");
 
@@ -301,16 +295,7 @@ Log.i("6705reset", "day is greater");
                         myDatabase.execSQL("delete from refreshDay");
                         myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES ("+refreshDay+")");
 
-        Cursor c = myDatabase.rawQuery("SELECT * FROM pastTotalsTbl", null);
-        int totalsIndex = c.getColumnIndex("totalPercent");
-        c.moveToFirst();
-        while (c != null) {// this was stopping it from moving onto what was below - the loadfromfuture bit. why? index problem?
-            //cant see any problems tho... maybe with the try catch it would be fine. its as if movenext and c!=null doesnt catch that its over... but then it doesnt
-            // spend infinitity in the loop so... it does move on??
-            pastTotals.add(c.getInt(totalsIndex));
-            c.moveToNext();
-            //this needs connected to the drawRectangle bit - in a loop and with a if(null) height = 0;
-        }
+                        loadPastTotalsFromDB();
 
                     } else{
                         //dont refresh goals
@@ -319,5 +304,52 @@ Log.i("6705reset", "day is greater");
                 }}}
         catch(Exception e){e.printStackTrace();}
     }
+
+
+
+
+
+
+
+
+    public void loadPastTotalsFromDB(){
+
+        Cursor c = myDatabase.rawQuery("SELECT * FROM pastTotalsTbl", null);
+        int totalsIndex = c.getColumnIndex("totalPercent");
+        c.moveToFirst();
+        boolean cancel = false;
+
+        while (c != null && cancel == false) {
+            try{
+                pastTotals.add(c.getInt(totalsIndex));
+            c.moveToNext();
+            }catch(Exception e){cancel = true; Log.i("6705why", "canceled from index out of bounds exception");}
+        }
+    }
+
+    public void savePastTotalstoDB(){
+
+        if(this.list.size() >0){
+//if its greater than zero... so that it doesnt save when you are first starting your goals profile
+            pastTotals.remove(0);
+            pastTotals.add(15, (int)this.getTotalPercentage());
+
+
+        }
+
+        myDatabase.execSQL("delete from pastTotalsTbl");
+
+        for(int i=0; i<pastTotals.size(); i++){
+            myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
+        }
+
+
+
+
+
+
+    }
+
+
 
 }

@@ -62,8 +62,7 @@
                 android:id="@+id/goalTitle"
                 android:textSize="20dp"
 
-                android:focusable="false"
-                android:textStyle="bold" />
+                android:focusable="false" />
 
 
         </LinearLayout>

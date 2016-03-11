@@ -124,6 +124,7 @@ public class ProfileMainActivity extends AppCompatActivity {
 
     public static void deleteDatabase(int profileN){
         myDatabase.deleteDatabase(context.getDatabasePath("GoalApp"+profileN));
+
     }
 
 

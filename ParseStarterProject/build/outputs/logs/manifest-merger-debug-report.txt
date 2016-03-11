@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:10:1-64:12
+ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:10:1-72:12
 	package
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:11:5-32
 		INJECTED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml
@@ -22,7 +22,7 @@ ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\And
 	android:name
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:14:22-76
 application
-ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:16:5-62:19
+ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:16:5-70:19
 MERGED from [com.android.support:appcompat-v7:22.2.0] C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:support-v4:22.2.0] C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:design:22.2.0] C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\build\intermediates\exploded-aar\com.android.support\design\22.2.0\AndroidManifest.xml:22:5-20
@@ -83,18 +83,24 @@ category#android.intent.category.DEFAULT
 ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:43:13-72
 	android:name
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:43:23-69
-activity#com.parse.starter.FutureGoals
+activity#com.parse.starter.SettingsScrn
 ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:46:9-53:20
 	android:label
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:48:13-45
 	android:name
-		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:47:13-57
-activity#com.parse.starter.ReorderPage
-ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:54:9-61:16
+		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:47:13-41
+activity#com.parse.starter.FutureGoals
+ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:54:9-61:20
 	android:label
-		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:56:9-41
+		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:56:13-45
 	android:name
-		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:55:9-53
+		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:55:13-57
+activity#com.parse.starter.ReorderPage
+ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:62:9-69:16
+	android:label
+		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:64:9-41
+	android:name
+		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:63:9-53
 uses-sdk
 INJECTED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.android.support:appcompat-v7:22.2.0] C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\AndroidManifest.xml:20:5-43

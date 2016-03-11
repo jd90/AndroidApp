@@ -4,9 +4,11 @@ package com.parse.starter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +24,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
     Intent intent;
+    ImageView windowTitle;
+
+    static int  count;
+    static String profileString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +36,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.profiles_page);
 
-        prefs = this.getPreferences(Context.MODE_PRIVATE);
+        //using getdefault and getapplicationcontext, instead of 'this', so that i can access this from anywhere??
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = prefs.edit();
         intent = new Intent(this, ProfileMainActivity.class);
 
@@ -40,14 +47,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.i("loadedfromprefs", "" + prefs.getString("started", ""));
         }
 
-
         TextView prof1Text = (TextView) findViewById(R.id.prof1Text);
         TextView prof2Text = (TextView) findViewById(R.id.prof2Text);
         TextView prof3Text = (TextView) findViewById(R.id.prof3Text);
         TextView prof4Text = (TextView) findViewById(R.id.prof4Text);
-
-
-
 
         LinearLayout prof1 = (LinearLayout) findViewById(R.id.prof1);
         LinearLayout prof2 = (LinearLayout) findViewById(R.id.prof2);
@@ -85,10 +88,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             prof4Text.setText(prefs.getString("prof4Text", " "));
         }
 
-        prof1.setTag("1");
-        prof2.setTag("2");
-        prof3.setTag("3");
-        prof4.setTag("4");
+        prof1.setTag("0");
+        prof2.setTag("1");
+        prof3.setTag("2");
+        prof4.setTag("3");
 
 
         Button newGoal = (Button) findViewById(R.id.newGoalButton);
@@ -96,10 +99,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         newGoal.setTag("new");
         newGoal.setOnClickListener(this);
 
+
+        windowTitle = (ImageView)findViewById(R.id.windowTitle);
+        windowTitle.setOnClickListener(this);
+
+
     }
 
-    static int  count;
-    static String profileString;
 
     public void onClick(View view) {
 
@@ -206,6 +212,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
+        if(view instanceof ImageView){
+
+            Intent intent2 = new Intent(this, SettingsScrn.class);
+            startActivity(intent2);
+
+        }
 
 
 
