@@ -68,23 +68,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Log.i("profiles on start",""+prefs.getString("profiles", "empty "));
 
-
         String profString = (prefs.getString("profiles", " "));
-        if(profString.contains("1")){
+        if(profString.contains("0")){
             prof1.setVisibility(View.VISIBLE);
             prof1Text.setText(prefs.getString("prof1Text", " "));
         }
-        if(profString.contains("2")){
+        if(profString.contains("1")){
             prof2.setVisibility(View.VISIBLE);
             prof2Text.setText(prefs.getString("prof2Text", " "));
         }
 
-        if(profString.contains("3")){
+        if(profString.contains("2")){
             prof3.setVisibility(View.VISIBLE);
             prof3Text.setText(prefs.getString("prof3Text", " "));
         }
 
-        if(profString.contains("4")){
+        if(profString.contains("3")){
             prof4.setVisibility(View.VISIBLE);
             prof4Text.setText(prefs.getString("prof4Text", " "));
         }
@@ -144,8 +143,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onClick(DialogInterface dialog, int num) {
 
-                        if (!profileString.contains("1")) {
-                            profileString = profileString + "1";
+                        if (!profileString.contains("0")) {
+                            profileString = profileString + "0";
                             count++;
                             LinearLayout prof = (LinearLayout) findViewById(R.id.prof1);
                             prof.setVisibility(View.VISIBLE);
@@ -153,8 +152,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             profText.setText(String.valueOf(profileInput.getText()));
                             editor.putString("prof1Text", String.valueOf(profileInput.getText()));
                         } else {
-                            if (!profileString.contains("2")) {
-                                profileString = profileString + "2";
+                            if (!profileString.contains("1")) {
+                                profileString = profileString + "1";
                                 count++;
                                 LinearLayout prof = (LinearLayout) findViewById(R.id.prof2);
                                 prof.setVisibility(View.VISIBLE);
@@ -162,8 +161,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 profText.setText(String.valueOf(profileInput.getText()));
                                 editor.putString("prof2Text", String.valueOf(profileInput.getText()));
                             } else {
-                                if (!profileString.contains("3")) {
-                                    profileString = profileString + "3";
+                                if (!profileString.contains("2")) {
+                                    profileString = profileString + "2";
                                     count++;
                                     LinearLayout prof = (LinearLayout) findViewById(R.id.prof3);
                                     prof.setVisibility(View.VISIBLE);
@@ -171,8 +170,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     profText.setText(String.valueOf(profileInput.getText()));
                                     editor.putString("prof3Text", String.valueOf(profileInput.getText()));
                                 } else {
-                                    if (!profileString.contains("4")) {
-                                        profileString = profileString + "4";
+                                    if (!profileString.contains("3")) {
+                                        profileString = profileString + "3";
                                         count++;
                                         LinearLayout prof = (LinearLayout) findViewById(R.id.prof4);
                                         prof.setVisibility(View.VISIBLE);
@@ -249,22 +248,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             TextView prof;
                             String newTitle = profileInput.getText().toString();
                             switch(Integer.parseInt(vi.getTag().toString())){
-                                case 1:
+                                case 0:
                                     editor.putString("prof1Text", String.valueOf(newTitle));
                                     prof = (TextView) findViewById(R.id.prof1Text);
                                     prof.setText(newTitle);
                                     break;
-                                case 2:
+                                case 1:
                                     editor.putString("prof2Text", String.valueOf(newTitle));
                                     prof = (TextView) findViewById(R.id.prof2Text);
                                     prof.setText(newTitle);
                                     break;
-                                case 3:
+                                case 2:
                                     editor.putString("prof3Text", String.valueOf(newTitle));
                                     prof = (TextView) findViewById(R.id.prof3Text);
                                     prof.setText(newTitle);
                                     break;
-                                case 4:
+                                case 3:
                                     editor.putString("prof4Text", String.valueOf(newTitle));
                                     prof = (TextView) findViewById(R.id.prof4Text);
                                     prof.setText(newTitle);
@@ -313,12 +312,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                                     switch (profNum) {
 
-                                        case "1":
+                                        case "0":
                                             prof = (LinearLayout) findViewById(R.id.prof1);
                                             prof.setVisibility(View.GONE);
                                             TextView profText = (TextView) findViewById(R.id.prof1Text);
                                             profText.setText("");
                                             editor.putString("prof1Text", " ");
+                                            try {
+                                                ProfileMainActivity.deleteDatabase(0);
+                                            } catch (Exception e) {
+
+                                            }
+                                            break;
+                                        case "1":
+                                            prof = (LinearLayout) findViewById(R.id.prof2);
+                                            prof.setVisibility(View.GONE);
+                                            profText = (TextView) findViewById(R.id.prof2Text);
+                                            profText.setText("");
+                                            editor.putString("prof2Text", " ");
                                             try {
                                                 ProfileMainActivity.deleteDatabase(1);
                                             } catch (Exception e) {
@@ -326,11 +337,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             }
                                             break;
                                         case "2":
-                                            prof = (LinearLayout) findViewById(R.id.prof2);
+                                            prof = (LinearLayout) findViewById(R.id.prof3);
                                             prof.setVisibility(View.GONE);
-                                            profText = (TextView) findViewById(R.id.prof2Text);
+                                            profText = (TextView) findViewById(R.id.prof3Text);
                                             profText.setText("");
-                                            editor.putString("prof2Text", " ");
+                                            editor.putString("prof3Text", " ");
                                             try {
                                                 ProfileMainActivity.deleteDatabase(2);
                                             } catch (Exception e) {
@@ -338,25 +349,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             }
                                             break;
                                         case "3":
-                                            prof = (LinearLayout) findViewById(R.id.prof3);
-                                            prof.setVisibility(View.GONE);
-                                            profText = (TextView) findViewById(R.id.prof3Text);
-                                            profText.setText("");
-                                            editor.putString("prof3Text", " ");
-                                            try {
-                                                ProfileMainActivity.deleteDatabase(3);
-                                            } catch (Exception e) {
-
-                                            }
-                                            break;
-                                        case "4":
                                             prof = (LinearLayout) findViewById(R.id.prof4);
                                             prof.setVisibility(View.GONE);
                                             profText = (TextView) findViewById(R.id.prof4Text);
                                             profText.setText("");
                                             editor.putString("prof4Text", " ");
                                             try {
-                                                ProfileMainActivity.deleteDatabase(4);
+                                                ProfileMainActivity.deleteDatabase(3);
                                             } catch (Exception e) {
 
                                             }

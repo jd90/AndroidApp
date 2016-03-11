@@ -211,7 +211,8 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
 
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery("GoalData");
-            query.whereNotContainedIn("username", profilenames);
+            query.whereNotContainedIn("profile", profilenames);
+            query.whereEqualTo("username", ParseUser.getCurrentUser().toString());
             query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> goalData, ParseException e) {
                     if (e == null) {
@@ -231,7 +232,8 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
 
 
             ParseQuery<ParseObject> query2 = ParseQuery.getQuery("GoalData");
-            query2.whereContainedIn("username", profilenames);
+            query2.whereContainedIn("profile", profilenames);
+            query2.whereEqualTo("username", ParseUser.getCurrentUser());
             query2.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> goalData, ParseException e) {
                     if (e == null) {
