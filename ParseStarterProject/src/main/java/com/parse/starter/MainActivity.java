@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Log.i("profiles on start",""+prefs.getString("profiles", "empty "));
 
+
         String profString = (prefs.getString("profiles", " "));
         if(profString.contains("1")){
             prof1.setVisibility(View.VISIBLE);

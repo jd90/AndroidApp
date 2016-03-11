@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseAnalytics;
@@ -28,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SettingsScrn extends AppCompatActivity implements View.OnClickListener{
     EditText username;
@@ -191,6 +193,8 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
         ArrayList<JSONObject> JSONFuturegoals = new ArrayList<>();
         ArrayList<JSONObject> JSONPastTotals = new ArrayList<>();
 
+        ArrayList<String> profilenames= new ArrayList<>();
+
         for (int i = 0; i < count; i++) {
 
             Log.i("6705saveToCloud", "inside loop");
@@ -198,19 +202,50 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
             JSONgoals.add(convertGoalsToJSON(i));
             JSONFuturegoals.add(convertFutureGoalsToJSON(i));
             JSONPastTotals.add(convertPastTotalsToJSON(i));
+            int num=i+1;
+            profilenames.add(prefs.getString("prof"+num+"Text", " "));
 
             }
 
         Log.i("6705saveToCloudJSON", "" + JSONPastTotals.size());
 
+
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("GoalData");
+            query.whereNotContainedIn("username", profilenames);
+            query.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> goalData, ParseException e) {
+                    if (e == null) {
+                        Log.d("score", "Retrieved " + goalData.size() + " scores");
+                        for (ParseObject goalRow : goalData) {
+                            try{
+                            goalRow.delete();}catch(ParseException ee){Toast t = Toast.makeText(getApplication(), "Error!: "+e, Toast.LENGTH_SHORT);}
+                        }
+                    } else {
+                        Log.d("score", "Error: " + e.getMessage());
+                    }
+                }
+            });
+
+
         for(int ii = 0; ii<count; ii++) {
 
-                ParseObject goal = new ParseObject("GoalData");
-            goal.put("Goals", JSONgoals.get(ii));
-            goal.put("username", ParseUser.getCurrentUser().toString());
-            goal.put("Profile", ii);
-            goal.put("FutureGoals", JSONFuturegoals.get(ii));
-            //goal.put("PastTotals", JSONPastTotals.get(ii));
+
+            ParseQuery<ParseObject> query2 = ParseQuery.getQuery("GoalData");
+            query2.whereContainedIn("username", profilenames);
+            query2.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> goalData, ParseException e) {
+                    if (e == null) {
+                        Log.d("score", "Retrieved " + goalData.size() + " scores");
+                    //    for (ParseObject goalRow : goalData) {
+                        //    try{
+                                //update each goal here}
+                    //    }
+                    } else {
+                        Log.d("score", "Error: " + e.getMessage());
+                    }
+                }
+            });
+
 
             //i should wipe parse data here? or preferably after saving?
             //do a loop and search for profile 0 , 1, 2 etc - according to what i have to save
@@ -220,6 +255,14 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
             // - could maybe do without profile numbers then? just use them instead..?
 
 
+            ParseObject goal = new ParseObject("GoalData");
+            goal.put("Goals", JSONgoals.get(ii));
+            goal.put("username", ParseUser.getCurrentUser().toString());
+            int num = ii+1;
+            String profilename=prefs.getString("prof"+num + "Text", " ");
+            goal.put("Profile", profilename);
+            goal.put("FutureGoals", JSONFuturegoals.get(ii));
+            goal.put("PastTotals", JSONPastTotals.get(ii));
 
             goal.saveInBackground(new SaveCallback() {
                 @Override
@@ -234,10 +277,6 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
                     }}
             });
         }
-
-        //JSONgoals.get(0).toString();
-        //JSONFuturegoals.get(0).toString();
-        //JSONPastTotals.get(0).toString();
 
 
 
@@ -388,7 +427,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
         boolean cancel = false;
         int pos = 0;
 
-        String strJson = "{\"Goals\":[";
+        String strJson = "{\"Past\":[";
 
         while (c != null && cancel == false) {
 
@@ -398,9 +437,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
                 if (pos == 0) {strJson += "{";} else {strJson += ",{";}
 
                 strJson += "" +
-                        "\"pastTotal\":" + c.getInt(totalsIndex);
-
-                        if(pos!=15){strJson += "},";}else{strJson="}";}
+                        "\"pastTotal\":" + c.getInt(totalsIndex) +"}";
 
             } catch (Exception e) {
                 cancel = true;
