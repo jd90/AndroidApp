@@ -36,6 +36,8 @@ public class GoalStore1 {
         dayofyear = calendar.get(Calendar.DAY_OF_YEAR);
         day = calendar.get(Calendar.DAY_OF_WEEK);
 
+        Log.i("pastTotalsSize", ""+pastTotals.size());
+
         setUpGoalStore();
 // this lets you see a graph of pastTotals if it is too early to have data
 
@@ -248,6 +250,12 @@ boolean cancel=false;
                     pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);
                     pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);
                     pastTotals.add(50);
+                    for(int i=0; i<pastTotals.size(); i++){
+                        myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
+                    }
+
+
+                    Log.i("pastTotalsSize1", "" + pastTotals.size());
 
 
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3))");
@@ -286,6 +294,7 @@ Log.i("6705reset", "day is greater");
                         Log.i("6705reset", "day is greater2");
 
                         this.loadFromFutureDatabase();
+                        this.loadPastTotalsFromDB();
 
                         refreshDay = dayofyear + daysToRefresh();
 
@@ -293,13 +302,13 @@ Log.i("6705reset", "day is greater");
                             refreshDay -= 365;
                         }
                         myDatabase.execSQL("delete from refreshDay");
-                        myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES ("+refreshDay+")");
+                        myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDay + ")");
 
-                        loadPastTotalsFromDB();
 
                     } else{
                         //dont refresh goals
                         this.loadFromDatabase();
+                        this.loadPastTotalsFromDB();
                     }
                 }}}
         catch(Exception e){e.printStackTrace();}
@@ -344,7 +353,7 @@ Log.i("6705reset", "day is greater");
         }
 
 
-
+    Log.i("pastTotalsSize", ""+pastTotals.size());
 
 
 

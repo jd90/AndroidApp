@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.LogOutCallback;
@@ -179,21 +180,21 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    static ArrayList<String> profilenames= new ArrayList<>();
+    static ArrayList<JSONObject> JSONgoals = new ArrayList<>();
+    static ArrayList<JSONObject> JSONFuturegoals = new ArrayList<>();
+    static ArrayList<JSONObject> JSONPastTotals = new ArrayList<>();
+    static SharedPreferences prefs;
+    static int count;
+
     public void saveToCloud() {
 
-        Log.i("6705saveToCloud", "called");
-
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
-        int count= prefs.getInt("count", 0);
+        count= prefs.getInt("count", 0);
         Log.i("6705saveToCloud", "calledcount:" + count);
 
-        ArrayList<JSONObject> JSONgoals = new ArrayList<>();
-        ArrayList<JSONObject> JSONFuturegoals = new ArrayList<>();
-        ArrayList<JSONObject> JSONPastTotals = new ArrayList<>();
 
-        ArrayList<String> profilenames= new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
 
@@ -202,85 +203,63 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
             JSONgoals.add(convertGoalsToJSON(i));
             JSONFuturegoals.add(convertFutureGoalsToJSON(i));
             JSONPastTotals.add(convertPastTotalsToJSON(i));
-            int num=i+1;
-            profilenames.add(prefs.getString("prof"+num+"Text", " "));
+            profilenames.add(prefs.getString("prof"+i+"Text", " "));
+
+            Log.i("6705del", "profilenames: " +profilenames.get(i));
 
             }
 
         Log.i("6705saveToCloudJSON", "" + JSONPastTotals.size());
 
 
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("GoalData");
-            query.whereNotContainedIn("profile", profilenames);
-            query.whereEqualTo("username", ParseUser.getCurrentUser().toString());
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("GoalData");
+            query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
+          //  query.whereNotContainedIn("Profile", profilenames);
             query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> goalData, ParseException e) {
                     if (e == null) {
-                        Log.d("score", "Retrieved " + goalData.size() + " scores");
+                        Log.d("6705del", goalData.size() + " scores dont match");
                         for (ParseObject goalRow : goalData) {
-                            try{
-                            goalRow.delete();}catch(ParseException ee){Toast t = Toast.makeText(getApplication(), "Error!: "+e, Toast.LENGTH_SHORT);}
-                        }
-                    } else {
-                        Log.d("score", "Error: " + e.getMessage());
-                    }
-                }
-            });
+                            try{Log.i("6705del", goalRow.toString() + " being deleted?");
+                            goalRow.deleteInBackground(new DeleteCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e == null) {
+                                        Log.i("6705del", "save goals called");
+                                        for (int ii = 0; ii < count; ii++) {
 
 
-        for(int ii = 0; ii<count; ii++) {
+                                            //if goalData size is zero - call save method. else, delete then call save method
+
+                                            ParseObject goal = new ParseObject("GoalData");
+                                            goal.put("Goals", JSONgoals.get(ii));
+                                            goal.put("username", ParseUser.getCurrentUser().getUsername());
+                                            int num = ii;
+                                            String profilename = prefs.getString("prof" + num + "Text", " ");
+                                            goal.put("Profile", profilename);
+                                            goal.put("FutureGoals", JSONFuturegoals.get(ii));
+                                            goal.put("PastTotals", JSONPastTotals.get(ii));
+
+                                            goal.saveInBackground(new SaveCallback() {
+                                                @Override
+                                                public void done(ParseException e) {
+                                                    if (e == null) {
+                                                        Toast t = Toast.makeText(getApplicationContext(), "Saved yer Goals fur ye!", Toast.LENGTH_SHORT);
+                                                        t.show();
+                                                    } else {
+                                                        Toast t = Toast.makeText(getApplicationContext(), "Trouble savin yer goals pal, sorry!", Toast.LENGTH_SHORT);
+                                                        e.printStackTrace();
+                                                        t.show();
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
 
 
-            ParseQuery<ParseObject> query2 = ParseQuery.getQuery("GoalData");
-            query2.whereContainedIn("profile", profilenames);
-            query2.whereEqualTo("username", ParseUser.getCurrentUser());
-            query2.findInBackground(new FindCallback<ParseObject>() {
-                public void done(List<ParseObject> goalData, ParseException e) {
-                    if (e == null) {
-                        Log.d("score", "Retrieved " + goalData.size() + " scores");
-                    //    for (ParseObject goalRow : goalData) {
-                        //    try{
-                                //update each goal here}
-                    //    }
-                    } else {
-                        Log.d("score", "Error: " + e.getMessage());
-                    }
-                }
-            });
-
-
-            //i should wipe parse data here? or preferably after saving?
-            //do a loop and search for profile 0 , 1, 2 etc - according to what i have to save
-            //delete excess data for profiles i dont have - eg profile = 4;
-            //query and update profiles 0,1,2 as per new data.
-            //need to save profile names too... :(
-            // - could maybe do without profile numbers then? just use them instead..?
-
-
-            ParseObject goal = new ParseObject("GoalData");
-            goal.put("Goals", JSONgoals.get(ii));
-            goal.put("username", ParseUser.getCurrentUser().toString());
-            int num = ii+1;
-            String profilename=prefs.getString("prof"+num + "Text", " ");
-            goal.put("Profile", profilename);
-            goal.put("FutureGoals", JSONFuturegoals.get(ii));
-            goal.put("PastTotals", JSONPastTotals.get(ii));
-
-            goal.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if(e==null) {
-                        Toast t = Toast.makeText(getApplicationContext(), "Saved yer Goals fur ye!", Toast.LENGTH_SHORT);
-                        t.show();
-                    }
-                else{Toast t = Toast.makeText(getApplicationContext(), "Trouble savin yer goals pal, sorry!", Toast.LENGTH_SHORT);
-                        e.printStackTrace();
-                        t.show();
-                    }}
-            });
-        }
-
-
+                                }
+                            });}catch(Exception ee){}}}}
+                            });
 
     }
 
