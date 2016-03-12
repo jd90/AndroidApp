@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
+    >
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="209dp"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingBottom="30dp"
+    android:gravity="center"
+    android:background="#ff47aff3"
+    android:layout_marginBottom="10dp">
+        <ImageView
+            android:id="@+id/windowTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:src="@drawable/shark_logo"
+            android:textColor="#ff000000"
+            />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="'If it stops achieving, it dies'"
+        android:textSize="30dp"
+        android:textColor="#ff000000"/>
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
+    android:gravity="center"
+    android:layout_weight="10">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/prof1"
+        android:visibility="gone"
+        android:layout_weight="2"
+        android:background="#ff989898"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:textSize="20dp"
+            android:paddingBottom="5dp"
+            android:id="@+id/prof1Text"
+            android:background="#ffffdd36"
+            android:layout_marginBottom="1.5dp" />
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+            android:visibility="gone"
+            android:background="#ff989898"
+            android:layout_weight="2"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/prof2"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:textSize="20dp"
+            android:paddingBottom="5dp"
+            android:id="@+id/prof2Text"
+            android:background="#ffffb61c"
+            android:layout_marginBottom="1.5dp" />
+        </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+
+        android:visibility="gone"
+        android:background="#ff989898"
+        android:layout_weight="2"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/prof3"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:textSize="20dp"
+            android:paddingBottom="5dp"
+            android:id="@+id/prof3Text"
+            android:background="#ffff8324"
+            android:layout_marginBottom="1.5dp" />
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+            android:visibility="gone"
+            android:background="#ff989898"
+            android:layout_weight="2"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/prof4"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="20dp"
+            android:id="@+id/prof4Text"
+            android:background="#fff46645"
+            android:layout_marginBottom="1.5dp" />
+    </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottomButtons"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_weight="1">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Add New Profile"
+            android:background="@drawable/bottom_button"
+            android:id="@+id/newGoalButton"/>
+
+
+    </LinearLayout>
+</LinearLayout>
