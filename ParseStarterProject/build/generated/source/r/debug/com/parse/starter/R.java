@@ -2034,6 +2034,7 @@ containing a value of this type.
         public static final int w2=0x7f020061;
     }
     public static final class id {
+        public static final int account=0x7f0d00ca;
         public static final int action0=0x7f0d008a;
         public static final int action_bar=0x7f0d0057;
         public static final int action_bar_activity_content=0x7f0d0000;
@@ -2190,7 +2191,6 @@ containing a value of this type.
         public static final int search_src_text=0x7f0d0060;
         public static final int search_voice_btn=0x7f0d0064;
         public static final int select_dialog_listview=0x7f0d0065;
-        public static final int settings=0x7f0d00ca;
         public static final int settingsGroup=0x7f0d00c9;
         public static final int sharkFin=0x7f0d00ad;
         public static final int sharkFinPic=0x7f0d00b2;

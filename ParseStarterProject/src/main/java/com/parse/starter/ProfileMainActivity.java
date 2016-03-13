@@ -132,8 +132,10 @@ public class ProfileMainActivity extends AppCompatActivity {
         Log.i("6705reorder", "ayyyp");
 
         switch(String.valueOf(item.getTitle())){
-            case "settings":
-                
+            case "Account":
+
+                Intent intentAccount = new Intent(this, SettingsScrn.class)              ;
+                startActivity(intentAccount);
 
                 break;
             case "Re-order Goals":

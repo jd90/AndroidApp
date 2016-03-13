@@ -42,16 +42,12 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
     Button save;
     Button load;
 
-    static ArrayList<String> profilenames= new ArrayList<>();
     static ArrayList<JSONObject> JSONgoals = new ArrayList<>();
     static ArrayList<JSONObject> JSONFuturegoals = new ArrayList<>();
     static ArrayList<JSONObject> JSONPastTotals = new ArrayList<>();
-    static SharedPreferences prefs;
     static int count;
     static int size;
     static int counter;
-    static String profString;
-    static ArrayList<Integer> profileNames= new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +55,6 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.settings_scrn);
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        count= prefs.getInt("count", 0);
-        Log.i("6705del", "calledcount1:" + count);
-        profString = (prefs.getString("profiles", " "));
-        Log.i("6705del", "profString =" + profString);
 
         user=(TextView)findViewById(R.id.textView2);
         username =(EditText) findViewById(R.id.username);
@@ -94,8 +85,6 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
         checkSignedIn();
 
     }
-
-
 
     public void signInOrSignUp(View v){
         Button sign = (Button)v;
@@ -183,41 +172,13 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
 
     public void saveToCloud() {
 
-//this section searches through all 4 possible profiles.
-//and if they exist, it adds its details to the JSONobjects using JSONmethods()
 
 //this must be cleared?? otherwise if you decrease the size and it hasnt been shut to stop persistence then its still got more in it = nullpointer because its used as the loop i<?
-        JSONgoals.clear();JSONFuturegoals.clear();JSONPastTotals.clear();profileNames.clear();
+        JSONgoals.clear();JSONFuturegoals.clear();JSONPastTotals.clear();
 
-        for (int i = 0; i < 4; i++) {
-
-
-            switch(i){
-                case 0:
-                    if(profString.contains("0")){
-                        profileNames.add(0);
-                        Log.i("6705del", "contains 0 called");
-                    toJSONMethods(0);}
-                    break;
-                case 1:
-                    if(profString.contains("1")){
-                        profileNames.add(1);
-                        Log.i("6705del", "contains 1 called");
-                        toJSONMethods(1);}
-                    break;
-                case 2:
-                    if(profString.contains("2")){
-                        profileNames.add(2);
-                        Log.i("6705del", "contains 2 called");
-                        toJSONMethods(2);}
-                    break;
-                case 3:
-                    if(profString.contains("3")){
-                        profileNames.add(3);
-                        Log.i("6705del", "contains 3 called");
-                        toJSONMethods(3);}
-                    break;
-            }
+        for (int i = 0; i < MainActivity.profileDatastore.profiles.size(); i++) {
+            int profileID= MainActivity.profileDatastore.profiles.get(i).databaseNum;
+            toJSONMethods(profileID);
         }
 
 //this section wipes goals that are already in the user's Parse cloud
@@ -264,7 +225,6 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
         JSONgoals.add(convertGoalsToJSON(x));
         JSONFuturegoals.add(convertFutureGoalsToJSON(x));
         JSONPastTotals.add(convertPastTotalsToJSON(x));
-        profilenames.add(prefs.getString("prof" + x + "Text", " "));
         Log.i("6705del", "JSONMETHOD" + JSONgoals.toString());
     }
 
@@ -326,7 +286,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
         catch(Exception e){e.printStackTrace();
 Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
 
-            Log.i("6705del", "NULL OBJECT "+e.toString());
+            Log.i("6705del", "NULL OBJECT " + e.toString());
 
             return null;}
 
@@ -437,6 +397,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
 
         Log.i("6705del", "save goals called");
         Log.i("6705del", "save goals called "+JSONgoals.size());
+        if(JSONgoals.size()==0){Toast t = Toast.makeText(getApplicationContext(), "Yu'v nae goals tae save, ya chancer!", Toast.LENGTH_SHORT);t.show();}
         for (int ii = 0; ii < JSONgoals.size(); ii++) {
 
             Log.i("6705del", "save goals called loop");
@@ -447,8 +408,11 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
             Log.i("6705del", "save goals called looppast");
             goal.put("username", ParseUser.getCurrentUser().getUsername());
 
-            String profilename = prefs.getString("prof" + profileNames.get(ii) + "Text", " ");
-            goal.put("Profile", profilename);
+            String profileName =MainActivity.profileDatastore.profiles.get(ii).name;
+            int profileID =MainActivity.profileDatastore.profiles.get(ii).databaseNum;
+            goal.put("ProfileID", profileID);
+            goal.put("ProfileName", profileName);
+            goal.put("Count", MainActivity.profileDatastore.count);
             goal.put("FutureGoals", JSONFuturegoals.get(ii));
             goal.put("PastTotals", JSONPastTotals.get(ii));
 
@@ -468,6 +432,8 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
         }
     }
 
+    static SQLiteDatabase database;
+
     public void loadFromCloud(){
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("GoalData");
@@ -476,7 +442,9 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
             public void done(List<ParseObject> goalData, ParseException e) {
                 if (e == null) {
 
-                    String name="";
+                    int profileID;
+                    String profileName;
+                    String goalName="";
                     int total=800;
                     int done=800;
                     double percent=800;
@@ -492,92 +460,132 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                     Log.d("6705del", goalData.size() + " scores loading down");
                     if (goalData.size() < 1) {
                         //do something if no rows returned
+                        Log.d("6705del", goalData.size() + "no goals to load");
+                        Toast t = Toast.makeText(getApplicationContext(), "Yu'v nae goals tae load, ya pudding!", Toast.LENGTH_SHORT);
+                        t.show();
                     } else {
 
-                        SharedPreferences.Editor editor= prefs.edit();
-                        editor.clear();
-                        editor.apply();
+                        MainActivity.profileDatastore.profiles.clear();
 
-                        int count=0;
-                        String profileString="";
                         for (ParseObject goalRow : goalData) {
 
-                            profileString = profileString + count;
-                            editor.putString("prof" + count + "Text", goalRow.getString("Profile"));
+
                             count++;
 
                             try {
                                 JSONObject goal = goalRow.getJSONObject("Goals");
                                 Log.i("6705del", "JSONobject WORKED1" + goalRow.getJSONObject("Goals"));
                                 JSONArray jsonArray1 = goal.optJSONArray("Goals");
-                                Log.i("wheres the error", ""+0);
+
+                                int profileCount=0;
+
+                                profileID = goalRow.getInt("ProfileID");
+                                profileName = goalRow.getString("ProfileName");
+                                Profile prof =new Profile(profileName, profileID);
+                                MainActivity.profileDatastore.profiles.add(prof);
+                                MainActivity.profileDatastore.count= goalRow.getInt("Count");
+
+                                database.deleteDatabase(getApplicationContext().getDatabasePath("GoalApp" + profileID));
+
+                                database = getApplicationContext().openOrCreateDatabase("GoalApp" + profileID, MODE_PRIVATE, null);
+
+                                database.execSQL("CREATE TABLE IF NOT EXISTS goalsStarted (started INT(1))");
+                                database.execSQL("delete from goalsStarted");
+                                database.execSQL("INSERT INTO goalsStarted (started) VALUES (1)");
+                                int refreshDayOfYear = ProfileMainActivity.goalStore.dayofyear + ProfileMainActivity.goalStore.daysToRefresh();
+                                database.execSQL("CREATE TABLE IF NOT EXISTS refreshDay (day INT(1))");
+                                database.execSQL("delete from refreshDay");
+                                database.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDayOfYear + ")");
+                                database.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3))");
+                                database.execSQL("delete from pastTotalsTbl");
+                                database.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3))");
+                                database.execSQL("delete from goalsTbl");
+
+                                database.execSQL("CREATE TABLE IF NOT EXISTS FgoalsStarted (started INT(1))");
+                                database.execSQL("delete from FgoalsStarted");
+                                database.execSQL("INSERT INTO FgoalsStarted (started) VALUES (1)");
+                                database.execSQL("CREATE TABLE IF NOT EXISTS FgoalsTbl (name VARCHAR, total INT(3))");
+                                database.execSQL("delete from FgoalsTbl");
+
                                 //Iterate the jsonArray and print the info of JSONObjects
                                 for (int i = 0; i < jsonArray1.length()-1; i++) {
                                     JSONObject jsonObject = jsonArray1.getJSONObject(i);
 
-                                    Log.i("wheres the error", ""+1);
-                                    name = jsonObject.optString("name");
-                                    Log.i("wheres the error", ""+2+ " " +name);
+                                    goalName = jsonObject.optString("name");
                                     if(jsonObject.optString("total").equals("")){
                                         Log.i("6705del", "reporting empty profile");
                                     }else{
                                     total = Integer.parseInt(jsonObject.optString("total"));
-                                    Log.i("wheres the error", ""+3);
                                     done = Integer.parseInt(jsonObject.optString("done"));
-                                    Log.i("wheres the error", ""+4);
                                     percent = Double.parseDouble(jsonObject.optString("percent"));
-                                    Log.i("wheres the error", ""+5);
                                     b0 = Integer.parseInt(jsonObject.optString("b0"));
-                                    Log.i("wheres the error", ""+6);
                                     b1 = Integer.parseInt(jsonObject.optString("b1"));
-                                    Log.i("wheres the error", ""+7);
                                     b2 = Integer.parseInt(jsonObject.optString("b2"));
-                                    Log.i("wheres the error", ""+8);
                                     b3 = Integer.parseInt(jsonObject.optString("b3"));
-                                    Log.i("wheres the error", ""+9);
                                     b4 = Integer.parseInt(jsonObject.optString("b4"));
-                                    Log.i("wheres the error", ""+10);
                                     b5 = Integer.parseInt(jsonObject.optString("b5"));
-                                    Log.i("wheres the error", ""+11);
                                     b6 = Integer.parseInt(jsonObject.optString("b6"));
-                                    Log.i("wheres the error", ""+13);
+
+                                        database.execSQL("INSERT INTO goalsTbl (name, done, total, b0,b1,b2,b3,b4,b5,b6, percent) VALUES ('"
+                                                    +goalName+"', "
+                                                    +done+", "
+                                                    +total+", "
+                                                    +b0+", "
+                                                    +b1+", "
+                                                    +b2+", "
+                                                    +b3+", "
+                                                    +b4+", "
+                                                    +b5+", "
+                                                    +b6+", "
+                                                    +percent+")");
+                                        }
                                     //end of a goal
                                     }
-                                }//end of all goals - a profile's goals.
+
+                                profileCount++;
+                                //end of all goals - a profile's goals.
+
                             } catch (Exception e1) {
-                                Log.i("6705del", " problem making JSONobject1" + e1.toString());}
+                                Log.i("6705del", " problem loading profile/goals" + e1.toString());}
                                 try {
                                     JSONObject futureGoal = goalRow.getJSONObject("FutureGoals");
-                                    Log.i("6705del", "JSONobject WORKED2" + goalRow.getJSONObject("FutureGoals"));
                                     JSONArray jsonArray2 = futureGoal.optJSONArray("Goals");
                                     //Iterate the jsonArray and print the info of JSONObjects
                                     for (int i = 0; i < jsonArray2.length()-1; i++) {
                                         JSONObject jsonObject = jsonArray2.getJSONObject(i);
-                                        name = jsonObject.optString("name");
+                                        goalName = jsonObject.optString("name");
                                         total = Integer.parseInt(jsonObject.optString("total"));
+
+                                        database.execSQL("INSERT INTO FgoalsTbl (name, total) VALUES ('"
+                                                +goalName+"', "
+                                                +total+")");
+
                                     }
                                 } catch (Exception e2) {
                                     Log.i("6705del", " problem making JSONobject2" + e2.toString());}
-                                    try {
-                                        JSONObject pastTotalsObject = goalRow.getJSONObject("PastTotals");
-                                        Log.i("6705del", "JSONobject WORKED3" + goalRow.getJSONObject("PastTotals"));
-                                        JSONArray jsonArray3 = pastTotalsObject.optJSONArray("Past");
+                                   // try {
+                                  //      JSONObject pastTotalsObject = goalRow.getJSONObject("PastTotals");
+                                  //      Log.i("6705del", "JSONobject WORKED3" + goalRow.getJSONObject("PastTotals"));
+                                 //       JSONArray jsonArray3 = pastTotalsObject.optJSONArray("Past");
                                         //Iterate the jsonArray and print the info of JSONObjects
-                                        for (int i = 0; i < jsonArray3.length()-1; i++) {
-                                            JSONObject jsonObject = jsonArray3.getJSONObject(i);
-                                            pastTotals = Integer.parseInt(jsonObject.optString("pastTotal"));
-                                        }
-                                    } catch (Exception e3) {
-                                        Log.i("6705del", " problem making JSONobject3" + e3.toString());}
+                                 //       for (int i = 0; i < jsonArray3.length()-1; i++) {
+                                //            JSONObject jsonObject = jsonArray3.getJSONObject(i);
+                               //             pastTotals = Integer.parseInt(jsonObject.optString("pastTotal"));
+                                //        }
+                                //   } catch (Exception e3) {
+                                 //       Log.i("6705del", " problem making JSONobject3" + e3.toString());}
 
-
-                            editor.putString("profiles", profileString);
-                            editor.putInt("count", count);
-                            editor.apply();
 
                         //end of looping through rows
 
                         }
+                        MainActivity.saveCount();
+                        MainActivity.saveProfiles();
+                        //ProfileMainActivity.goalStore.loadFromDatabase();
+                        MainActivity.adapter.notifyDataSetChanged();
+                        //Fragment2.reload();
+                        Toast t = Toast.makeText(getApplicationContext(), "Load Successful!", Toast.LENGTH_SHORT);t.show();
+
                     }
                 }
             }

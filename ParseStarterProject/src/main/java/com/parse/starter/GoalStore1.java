@@ -13,15 +13,15 @@ import java.util.List;
  */
 public class GoalStore1 {
 
-    List<Goal> list;
+    static List<Goal> list;
     SQLiteDatabase myDatabase;
     Cursor c;
 
-    ArrayList<Integer> pastTotals = new ArrayList<>();
+    static ArrayList<Integer> pastTotals = new ArrayList<>();
     boolean firstweek = false;
     Calendar calendar = Calendar.getInstance();
-    int dayofyear;
-    int day;
+    static int dayofyear;
+    static int day;
 
 
     public GoalStore1(SQLiteDatabase x, boolean y) {
@@ -149,15 +149,6 @@ boolean cancel=false;
         c = myDatabase.rawQuery("SELECT * FROM FgoalsTbl", null);
         int nameIndex = c.getColumnIndex("name");
         int totalIndex = c.getColumnIndex("total");
-        int doneIndex = c.getColumnIndex("done");
-        int percentIndex = c.getColumnIndex("percent");
-        int b0Index = c.getColumnIndex("b0");
-        int b1Index = c.getColumnIndex("b1");
-        int b2Index = c.getColumnIndex("b2");
-        int b3Index = c.getColumnIndex("b3");
-        int b4Index = c.getColumnIndex("b4");
-        int b5Index = c.getColumnIndex("b5");
-        int b6Index = c.getColumnIndex("b6");
         c.moveToFirst();
         int pos = 0;
         boolean cancel = false;
@@ -165,15 +156,6 @@ boolean cancel=false;
             try {// why must i have this?? and the cancel bit too... tidy this all up
                 Log.i("6705 2 load1", c.getString(nameIndex));
                 this.add(new Goal(c.getString(nameIndex), c.getInt(totalIndex)));
-                this.getAt(pos).done = c.getInt(doneIndex);
-                this.getAt(pos).percent = c.getDouble(percentIndex);
-                this.getAt(pos).setButton(0, c.getInt(b0Index));
-                this.getAt(pos).setButton(1, c.getInt(b1Index));
-                this.getAt(pos).setButton(2, c.getInt(b2Index));
-                this.getAt(pos).setButton(3, c.getInt(b3Index));
-                this.getAt(pos).setButton(4, c.getInt(b4Index));
-                this.getAt(pos).setButton(5, c.getInt(b5Index));
-                this.getAt(pos).setButton(6, c.getInt(b6Index));
                 pos++;
                 c.moveToNext();
             }catch(Exception e){cancel = true; Log.i("6705why", "canceled from index out of bounds exception");}
@@ -181,7 +163,7 @@ boolean cancel=false;
         }
         this.saveToDatabase();//better here as its called whenever this is, rather than listing it a-new whenever loadfromfuture is called
     }
-    public int daysToRefresh(){
+    public static int daysToRefresh(){
         int daysToRefresh=0;
         switch(day) {
             case 2:daysToRefresh += 6;
