@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
+    >
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="209dp"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        android:paddingBottom="30dp"
+        android:gravity="center"
+        android:background="#ff47aff3"
+        android:layout_marginBottom="10dp"
+        android:weightSum="10">
+        <ImageView
+            android:id="@+id/windowTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:src="@drawable/shark_logo"
+            android:textColor="#ff000000"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="'If it stops achieving, it dies'"
+            android:textSize="30dp"
+            android:textColor="#ff000000"/>
+    </LinearLayout>
+
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:dividerHeight="0dp"
+        android:divider="@null"
+        android:layout_weight="3.20" />
+
+    <LinearLayout
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/bottomButtons"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_weight="6.80">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Add New Profile"
+            android:background="@drawable/bottom_button"
+            android:id="@+id/newProfileButton"/>
+
+    </LinearLayout>
 </LinearLayout>
