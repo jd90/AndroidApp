@@ -13,7 +13,6 @@ import java.util.List;
 public class GoalStore2 {
 
     List<Goal> list;
-
     SQLiteDatabase myDatabase;
     Cursor c;
 
@@ -22,9 +21,7 @@ public class GoalStore2 {
     public GoalStore2(SQLiteDatabase x, boolean y) {
         myDatabase = x;
         list=new ArrayList<Goal>();
-        //test if database exists
-        //if empty fill arraylist and fill database
-        //if full fill arraylist from database
+
         setUpGoalStore();
 
     }

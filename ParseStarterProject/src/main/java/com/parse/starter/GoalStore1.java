@@ -13,35 +13,27 @@ import java.util.List;
  */
 public class GoalStore1 {
 
-    boolean firstweek = false;
-
     List<Goal> list;
-
     SQLiteDatabase myDatabase;
     Cursor c;
 
+    ArrayList<Integer> pastTotals = new ArrayList<>();
+    boolean firstweek = false;
     Calendar calendar = Calendar.getInstance();
     int dayofyear;
     int day;
-    ArrayList<Integer> pastTotals = new ArrayList<>();
 
 
     public GoalStore1(SQLiteDatabase x, boolean y) {
         myDatabase = x;
         list=new ArrayList<Goal>();
-        //test if database exists
-        //if empty fill arraylist and fill database
-        //if full fill arraylist from database
 
-        dayofyear = calendar.get(Calendar.DAY_OF_YEAR);
-        day = calendar.get(Calendar.DAY_OF_WEEK);
-
-        Log.i("pastTotalsSize", ""+pastTotals.size());
+        setDayVariables();
 
         setUpGoalStore();
-// this lets you see a graph of pastTotals if it is too early to have data
 
     }
+
 
     public boolean add(Goal g) {
         this.list.add(g);
@@ -56,14 +48,10 @@ public class GoalStore1 {
     public int getSize(){return this.list.size();}
 
     public void reorderUp(int i){
-
-        Log.i("6705reorderU", "bef:"+list.toString());
-
         Goal g2 = list.get(i);
         list.remove(i);
         list.add(i - 1, g2);
 
-        Log.i("6705reorderU", "aft:" + list.toString());
         this.saveToDatabase();
     }
     public void reorderDown(int i){
@@ -79,23 +67,13 @@ public class GoalStore1 {
 
 
     public double getTotalPercentage() {
-        /**int sum=0;
-        for (Goal g:this.list)
-            sum+=(int) g.percent;
-        return sum;
-         */
         double sum =0;
         for(Goal g:this.list){
             sum+=(int) g.percent;
         Log.i("6705percent", ""+sum);
         }
-        //check if this casting works/is right in a separate small netbeans window
-
-        Log.i("6705percentfinal1", "" + (sum / this.getSize()) + (sum % this.getSize()));
-        Log.i("6705percentfinal2", "" + (int) (sum / this.getSize()) + (sum % this.getSize()));
 
         return (int) (sum/this.getSize()); //+ (sum%this.getSize());
-
     }
 
     public void saveToDatabase(){
@@ -159,10 +137,10 @@ boolean cancel=false;
                 c.moveToNext();
                 }catch(Exception e){cancel = true; Log.i("6705why", "canceled from index out of bounds exception");}
             }
-        Log.i("6705 1 load2", "goalstore length "+this.getSize());
+
         }
     public void loadFromFutureDatabase(){
-        Log.i("6705reset", "loadfromfuture called");
+
         firstweek = false;
 
         savePastTotalstoDB();
@@ -201,7 +179,6 @@ boolean cancel=false;
             }catch(Exception e){cancel = true; Log.i("6705why", "canceled from index out of bounds exception");}
 
         }
-        Log.i("6705 2 load2", "goalstore length "+this.getSize());
         this.saveToDatabase();//better here as its called whenever this is, rather than listing it a-new whenever loadfromfuture is called
     }
     public int daysToRefresh(){
@@ -224,8 +201,6 @@ boolean cancel=false;
         }
         //return daysToRefresh;
         return 1;
-        //this is temporary, to test that it does a daily reset properly,
-        // then it would follow that the above would work every monday, test that too after success from the daily
     }
 
     public void setUpGoalStore(){
@@ -238,7 +213,6 @@ boolean cancel=false;
                 if (cur.getInt (0) == 0) {
 // Zero count means empty table.
                     myDatabase.execSQL("INSERT INTO goalsStarted (started) VALUES (1)");
-                    Log.i("6705 2", "started set");
 
                     int refreshDayOfYear = dayofyear + daysToRefresh();
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS refreshDay (day INT(1))");
@@ -255,43 +229,23 @@ boolean cancel=false;
                     }
 
 
-                    Log.i("pastTotalsSize1", "" + pastTotals.size());
-
 
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3))");
-                    //this should make a "nae goals started" screen
 
                     firstweek = true;
 
                 }
                 else {
 
-                    //firstweek = false;//this is possibly redundant - as the data does not persist
-//not empty table
-                    Log.i("6705 2", "already started- moving on");
 
 
-
-
-//this could likely be a shorter query, single result etc... rather than needing a cursor?
                     c = myDatabase.rawQuery("SELECT * FROM refreshDay", null);
                     int refreshIndex = c.getColumnIndex("day");
                     c.moveToFirst();
                     int refreshDay =c.getInt(refreshIndex);
 
-Log.i("6705 today", ""+dayofyear);
-Log.i("6705 refreshdate", ""+refreshDay);
                     if (dayofyear >= refreshDay) {
-                        //refresh goals
-                        //and refresh refreshDay
-Log.i("6705reset", "day is greater");
-                        int newTotal = (int) this.getTotalPercentage();
-                     //   myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3))");
-                        //if this was empty - it would mean that app has started, but one week
-                        // has not passed yet.. could set a boolean for first week or something? - need to be put above this tho - in the isnt passsed refresh check
-                      //  myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + newTotal + ")");
 
-                        Log.i("6705reset", "day is greater2");
 
                         this.loadFromFutureDatabase();
                         this.loadPastTotalsFromDB();
@@ -306,7 +260,6 @@ Log.i("6705reset", "day is greater");
 
 
                     } else{
-                        //dont refresh goals
                         this.loadFromDatabase();
                         this.loadPastTotalsFromDB();
                     }
@@ -314,12 +267,10 @@ Log.i("6705reset", "day is greater");
         catch(Exception e){e.printStackTrace();}
     }
 
-
-
-
-
-
-
+    public void setDayVariables(){
+        dayofyear = calendar.get(Calendar.DAY_OF_YEAR);
+        day = calendar.get(Calendar.DAY_OF_WEEK);
+    }
 
     public void loadPastTotalsFromDB(){
 
@@ -342,16 +293,12 @@ Log.i("6705reset", "day is greater");
 //if its greater than zero... so that it doesnt save when you are first starting your goals profile
             pastTotals.remove(0);
             pastTotals.add(15, (int)this.getTotalPercentage());
-
-
         }
-
         myDatabase.execSQL("delete from pastTotalsTbl");
 
         for(int i=0; i<pastTotals.size(); i++){
             myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
         }
-
 
     Log.i("pastTotalsSize", ""+pastTotals.size());
 

@@ -32,55 +32,7 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        /**
-         View goal_row_view = inflater.inflate(R.layout.goal_list_item, parent, false);
-         //i should use a viewholder
-         TextView titleView = (TextView) goal_row_view.findViewById(R.id.goalTitle);
-         titleView.setText(goalStore.getAt(position).name);
-         TextView percentTextView = (TextView) goal_row_view.findViewById(R.id.goalPercent);
-         percentTextView.setText(goalStore.getAt(position).getPercentage());
-         TextView targetsTextView = (TextView) goal_row_view.findViewById(R.id.goalTargets);
-         targetsTextView.setText(goalStore.getAt(position).getTargets());
 
-
-         ProgressBar progress = (ProgressBar) goal_row_view.findViewById(R.id.progressBar1);
-         progress.setMax(100);
-         progress.setProgress((int) goalStore.getAt(position).percent);
-
-         LinearLayout linearLayout = (LinearLayout) goal_row_view.findViewById(R.id.buttonsLayout);
-         linearLayout.setTag(position);
-         Button b1 = (Button) goal_row_view.findViewById((R.id.button1));
-         Button b2 = (Button) goal_row_view.findViewById((R.id.button2));
-         Button b3 = (Button) goal_row_view.findViewById((R.id.button3));
-         Button b4 = (Button) goal_row_view.findViewById((R.id.button4));
-         Button b5 = (Button) goal_row_view.findViewById((R.id.button5));
-         Button b6 = (Button) goal_row_view.findViewById((R.id.button6));
-         Button b7 = (Button) goal_row_view.findViewById((R.id.button7));
-
-         b1.setOnClickListener(this);
-         b1.setTag(0);
-         b2.setOnClickListener(this);
-         b2.setTag(1);
-         b3.setOnClickListener(this);
-         b3.setTag(2);
-         b4.setOnClickListener(this);
-         b4.setTag(3);
-         b5.setOnClickListener(this);
-         b5.setTag(4);
-         b6.setOnClickListener(this);
-         b6.setTag(5);
-         b7.setOnClickListener(this);
-         b7.setTag(6);
-
-         b1.setPressed(goalStore.getAt(position).buttons[0]);
-         b2.setPressed(goalStore.getAt(position).buttons[1]);
-         b3.setPressed(goalStore.getAt(position).buttons[2]);
-         b4.setPressed(goalStore.getAt(position).buttons[3]);
-         b5.setPressed(goalStore.getAt(position).buttons[4]);
-         b6.setPressed(goalStore.getAt(position).buttons[5]);
-         b7.setPressed(goalStore.getAt(position).buttons[6]);
-
-         **/
 
         ViewHolder holder;
 
