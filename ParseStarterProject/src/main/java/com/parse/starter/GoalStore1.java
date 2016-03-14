@@ -202,10 +202,10 @@ boolean cancel=false;
 
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3))");
 
-                    pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);
-                    pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);
-                    pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);pastTotals.add(50);
-                    pastTotals.add(50);
+                    pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);
+                    pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);
+                    pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);
+                    pastTotals.add(0);
                     for(int i=0; i<pastTotals.size(); i++){
                         myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
                     }
@@ -265,16 +265,16 @@ boolean cancel=false;
             try{
                 pastTotals.add(c.getInt(totalsIndex));
             c.moveToNext();
-            }catch(Exception e){cancel = true; Log.i("6705why", "canceled from index out of bounds exception");}
+            }catch(Exception e){cancel = true; Log.i("6705whyPASTTOTALSgstore", "canceled index out of bounds exception");}
         }
     }
 
     public void savePastTotalstoDB(){
 
-        if(this.list.size() >0){
+        if(this.list.size() == 0){
 //if its greater than zero... so that it doesnt save when you are first starting your goals profile
-            pastTotals.remove(0);
-            pastTotals.add(15, (int)this.getTotalPercentage());
+            pastTotals.remove(15);
+            pastTotals.add(0, (int)this.getTotalPercentage());
         }
         myDatabase.execSQL("delete from pastTotalsTbl");
 

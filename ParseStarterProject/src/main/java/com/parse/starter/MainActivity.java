@@ -170,6 +170,7 @@ public class MainActivity extends ListActivity implements View.OnClickListener, 
     }
 
 
+
     public void checkSignedInStatus() {
 
         if (ParseUser.getCurrentUser() != null) {

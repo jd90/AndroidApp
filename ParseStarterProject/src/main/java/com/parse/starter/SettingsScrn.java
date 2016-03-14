@@ -1,10 +1,8 @@
 package com.parse.starter;
 
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -26,7 +24,6 @@ import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -396,14 +393,14 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
         try {return new JSONObject(strJson);}
         catch(Exception e) {e.printStackTrace();}
 
-        return null;
+        return null;//probably dont need all of these try catches...
 
     }
 
     public void saveToParseE(){
 
         Log.i("6705del", "save goals called");
-        Log.i("6705del", "save goals called "+JSONgoals.size());
+        Log.i("6705del", "save goals called " + JSONgoals.size());
         if(JSONgoals.size()==0){Toast t = Toast.makeText(getApplicationContext(), "Yu'v nae goals tae save, ya chancer!", Toast.LENGTH_SHORT);t.show();}
         for (int ii = 0; ii < JSONgoals.size(); ii++) {
 
@@ -592,18 +589,24 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                                     }
                                 } catch (Exception e2) {
                                     Log.i("6705del", " problem making JSONobject2" + e2.toString());}
-                                   // try {
-                                  //      JSONObject pastTotalsObject = goalRow.getJSONObject("PastTotals");
-                                  //      Log.i("6705del", "JSONobject WORKED3" + goalRow.getJSONObject("PastTotals"));
-                                 //       JSONArray jsonArray3 = pastTotalsObject.optJSONArray("Past");
+                            ArrayList<Integer> pastTotalsArray = new ArrayList<>();
+                                    try {
+                                        JSONObject pastTotalsObject = goalRow.getJSONObject("PastTotals");
+                                        Log.i("6705del", "JSONobject WORKED3" + goalRow.getJSONObject("PastTotals"));
+                                        JSONArray jsonArray3 = pastTotalsObject.optJSONArray("Past");
                                         //Iterate the jsonArray and print the info of JSONObjects
-                                 //       for (int i = 0; i < jsonArray3.length()-1; i++) {
-                                //            JSONObject jsonObject = jsonArray3.getJSONObject(i);
-                               //             pastTotals = Integer.parseInt(jsonObject.optString("pastTotal"));
-                                //        }
-                                //   } catch (Exception e3) {
-                                 //       Log.i("6705del", " problem making JSONobject3" + e3.toString());}
 
+                                        for (int i = 0; i < jsonArray3.length()-1; i++) {
+                                            JSONObject jsonObject = jsonArray3.getJSONObject(i);
+                                            pastTotals = Integer.parseInt(jsonObject.optString("pastTotal"));
+                                            pastTotalsArray.add(i, pastTotals);
+                                        }
+                                   } catch (Exception e3) {
+                                        Log.i("6705del", " problem making JSONobject3" + e3.toString());}
+
+                            for(int i=0; i<pastTotalsArray.size(); i++) {
+                                database.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotalsArray.get(i) + ")");
+                            }
 
                         //end of looping through rows
 
@@ -621,7 +624,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
         });
     }
 
-    public static int daysToRefresh(int day){
+    public static int daysToRefresh(int day){//doesnt need to be static here, maybe even in goalstore too
         int daysToRefresh=0;
         switch(day) {
             case 2:daysToRefresh += 6;
