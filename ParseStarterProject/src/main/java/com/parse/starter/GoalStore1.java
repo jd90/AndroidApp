@@ -181,7 +181,7 @@ boolean cancel=false;
             case 1:daysToRefresh += 7;
                 break;
         }
-        //return daysToRefresh;
+        //return daysToRefresh; // also change in settingsScrn
         return 1;
     }
 

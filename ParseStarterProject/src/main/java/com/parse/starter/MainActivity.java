@@ -15,6 +15,11 @@ import android.app.ListActivity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.parse.ParseUser;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends ListActivity implements View.OnClickListener, View.OnLongClickListener {
 
@@ -22,6 +27,8 @@ public class MainActivity extends ListActivity implements View.OnClickListener, 
     static ProfileDatastore profileDatastore;
     static CustomArrayAdapterProfiles adapter;
     static SQLiteDatabase profilesDatabase;
+
+    TextView userStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +49,10 @@ public class MainActivity extends ListActivity implements View.OnClickListener, 
         sharkLogo.setOnClickListener(this);
         sharkLogo.setTag("Accounts");
 
+        userStatus =(TextView) findViewById(R.id.user_status);
+        userStatus.setTag("Accounts");
+        userStatus.setOnClickListener(this);
+        checkSignedInStatus();
 
         adapter = new CustomArrayAdapterProfiles(this, profileDatastore.profiles);
         setListAdapter(adapter);
@@ -157,4 +168,16 @@ public class MainActivity extends ListActivity implements View.OnClickListener, 
     public boolean onLongClick(View v) {
         return false;
     }
+
+
+    public void checkSignedInStatus() {
+
+        if (ParseUser.getCurrentUser() != null) {
+            userStatus.setText("signed in as " + ParseUser.getCurrentUser().getUsername());
+        } else {
+            userStatus.setText("Click to Sign In");
+        }
+
+    }
+
 }

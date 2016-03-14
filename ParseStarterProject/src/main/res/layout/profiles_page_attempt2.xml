@@ -11,12 +11,21 @@
         android:layout_width="match_parent"
         android:layout_height="209dp"
         android:orientation="vertical"
-        android:paddingTop="10dp"
         android:paddingBottom="30dp"
         android:gravity="center"
         android:background="#ff47aff3"
         android:layout_marginBottom="10dp"
         android:weightSum="10">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:layout_gravity="right"
+            android:id="@+id/user_status" />
+
         <ImageView
             android:id="@+id/windowTitle"
             android:layout_width="match_parent"

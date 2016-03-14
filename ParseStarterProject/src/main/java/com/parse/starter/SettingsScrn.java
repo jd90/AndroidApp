@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class SettingsScrn extends AppCompatActivity implements View.OnClickListener{
@@ -253,10 +254,10 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
 
         strJson="{\"Goals\":[";
 
-        while (cancel == false) {
+        while (c!=null && cancel == false) {
 
             try {
-                Log.i("6705saveToCloud", "inside Json loop");
+                Log.i("6705saveToCloud", "inside Json loop1");
                     if (pos == 0){strJson += "{";}else{strJson += ",{";}
 //strings need to be held inside \" \" to allow for spaces?!!
                     strJson += "" +
@@ -273,8 +274,9 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
                             "\"b6\":" + c.getInt(b6Index) +
                             "}";}
             catch (Exception e) {
-                cancel = true;Log.i("6705why", "canceled from index out of bounds exception/or Json Error");e.printStackTrace();
+                cancel = true;Log.i("6705why1", "canceled from index out of bounds exception/or Json Error");e.printStackTrace();
                 strJson +="}";
+                c.close();myDatabase.close();
             }
 
             pos++;
@@ -327,9 +329,11 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
 
             } catch (Exception e) {
                 cancel = true;
-                Log.i("6705why", "canceled from index out of bounds exception/or Json Error");
+                Log.i("6705why2", "canceled from index out of bounds exception/or Json Error");
                 e.printStackTrace();
                 strJson +="}";
+
+                c.close();myDatabase.close();
             }
 
             pos++;
@@ -369,15 +373,18 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                     } else {
                         strJson += ",{";
                     }
+                    pos++;
 
                     strJson += "" +
                             "\"pastTotal\":" + c.getInt(totalsIndex) + "}";
 
                 } catch (Exception e) {
                     cancel = true;
-                    Log.i("6705why", "canceled from index out of bounds exception/or Json Error");
+                    Log.i("6705why3pasttotals", "canceled from index out of bounds exception/or Json Error");
                     e.printStackTrace();
                     strJson += "}";
+
+                    c.close();myDatabase.close();
                 }
 
                 pos++;
@@ -410,7 +417,14 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
 
             String profileName =MainActivity.profileDatastore.profiles.get(ii).name;
             int profileID =MainActivity.profileDatastore.profiles.get(ii).databaseNum;
+
+
+            Calendar calendar= Calendar.getInstance();
+            int dayofyear = calendar.get(Calendar.DAY_OF_YEAR);
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
+            int refreshDay = dayofyear + daysToRefresh(day);
             goal.put("ProfileID", profileID);
+            goal.put("RefreshDay", refreshDay);
             goal.put("ProfileName", profileName);
             goal.put("Count", MainActivity.profileDatastore.count);
             goal.put("FutureGoals", JSONFuturegoals.get(ii));
@@ -485,6 +499,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                                 MainActivity.profileDatastore.profiles.add(prof);
                                 MainActivity.profileDatastore.count= goalRow.getInt("Count");
 
+
                                 database.deleteDatabase(getApplicationContext().getDatabasePath("GoalApp" + profileID));
 
                                 database = getApplicationContext().openOrCreateDatabase("GoalApp" + profileID, MODE_PRIVATE, null);
@@ -492,10 +507,12 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                                 database.execSQL("CREATE TABLE IF NOT EXISTS goalsStarted (started INT(1))");
                                 database.execSQL("delete from goalsStarted");
                                 database.execSQL("INSERT INTO goalsStarted (started) VALUES (1)");
-                                int refreshDayOfYear = ProfileMainActivity.goalStore.dayofyear + ProfileMainActivity.goalStore.daysToRefresh();
+                                //int refreshDayOfYear = ProfileMainActivity.goalStore.dayofyear + ProfileMainActivity.goalStore.daysToRefresh();
                                 database.execSQL("CREATE TABLE IF NOT EXISTS refreshDay (day INT(1))");
                                 database.execSQL("delete from refreshDay");
-                                database.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDayOfYear + ")");
+                                //database.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDayOfYear + ")");
+                                //Test and fix this if not working. - Must save refreshDay and refresh to no progress/future goals if it is past the saved refresh day
+
                                 database.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3))");
                                 database.execSQL("delete from pastTotalsTbl");
                                 database.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3))");
@@ -508,8 +525,20 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                                 database.execSQL("delete from FgoalsTbl");
 
                                 //Iterate the jsonArray and print the info of JSONObjects
-                                for (int i = 0; i < jsonArray1.length()-1; i++) {
+
+                                //THIS BENEFITS FROM THE EMPTY GOAL AT THE END? MEANING ITS STARTED, ELSE IT IS EMPTY COMPLETELY?
+                                if(jsonArray1.length()==0){database.deleteDatabase(getApplicationContext().getDatabasePath("GoalApp" + profileID));}//this line checks if profile is empty and sets it to be unstarted(Y)
+
+                                //if i did length -1 then it wouldnt include that daft wee bit at the end? as a temp solution to that? although it doesnt cause issues
+                                // because of a check later on to see if total is empty...
+
+                                for (int i = 0; i <= jsonArray1.length(); i++) {
                                     JSONObject jsonObject = jsonArray1.getJSONObject(i);
+
+                                    int refreshDayOfYear = goalRow.getInt("RefreshDay");
+
+                                    database.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDayOfYear + ")");
+
 
                                     goalName = jsonObject.optString("name");
                                     if(jsonObject.optString("total").equals("")){
@@ -590,6 +619,28 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                 }
             }
         });
+    }
+
+    public static int daysToRefresh(int day){
+        int daysToRefresh=0;
+        switch(day) {
+            case 2:daysToRefresh += 6;
+                break;
+            case 3:daysToRefresh += 5;
+                break;
+            case 4:daysToRefresh += 4;
+                break;
+            case 5:daysToRefresh += 3;
+                break;
+            case 6:daysToRefresh += 2;
+                break;
+            case 7:daysToRefresh += 1;
+                break;
+            case 1:daysToRefresh += 7;
+                break;
+        }
+        //return daysToRefresh;
+        return 1;
     }
 
 }
