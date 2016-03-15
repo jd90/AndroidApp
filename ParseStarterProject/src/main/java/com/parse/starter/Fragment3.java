@@ -237,7 +237,12 @@ if(v.getTag() == "sharkSwim") {
             weektotalTitle.setText("Week Total:");
             TextView totalPercentAve = (TextView) view.findViewById(R.id.totalPercentAve);
             int aveTotal=0;
-            for(int i=7; i>=4; i-- ){
+
+            Log.i("HEREYEGOARRAY", " "+ProfileMainActivity.goalStore.pastTotals.toString());
+            Log.i("HEREYEGOARRAY", " "+ProfileMainActivity.goalStore.pastTotals.size());
+
+
+            for(int i=5; i>=1; i-- ){
 
                 aveTotal += ProfileMainActivity.goalStore.pastTotals.get(i);
             }

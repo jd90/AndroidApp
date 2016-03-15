@@ -17,7 +17,7 @@ public class GoalStore1 {
     SQLiteDatabase myDatabase;
     Cursor c;
 
-    static ArrayList<Integer> pastTotals = new ArrayList<>();
+    ArrayList<Integer> pastTotals = new ArrayList<>();
     boolean firstweek = false;
     Calendar calendar = Calendar.getInstance();
     static int dayofyear;
@@ -46,7 +46,6 @@ public class GoalStore1 {
         this.list.clear();
     }
     public int getSize(){return this.list.size();}
-
     public void reorderUp(int i){
         Goal g2 = list.get(i);
         list.remove(i);
@@ -64,8 +63,6 @@ public class GoalStore1 {
         Log.i("6705reorderD", "aft:" + list.toString());
         this.saveToDatabase();
     }
-
-
     public double getTotalPercentage() {
         double sum =0;
         for(Goal g:this.list){
@@ -141,9 +138,12 @@ boolean cancel=false;
         }
     public void loadFromFutureDatabase(){
 
+        if(!firstweek){savePastTotalstoDB();}
+
         firstweek = false;
 
-        savePastTotalstoDB();
+
+        //
 
         this.clear();
         c = myDatabase.rawQuery("SELECT * FROM FgoalsTbl", null);
@@ -186,7 +186,8 @@ boolean cancel=false;
     }
 
     public void setUpGoalStore(){
-        Log.i("6705 1", "called setupgoalstore1");
+
+
         myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsStarted (started INT(1))");
         try {
             Cursor cur = myDatabase.rawQuery("SELECT COUNT(*) FROM goalsStarted", null);
@@ -202,24 +203,20 @@ boolean cancel=false;
 
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3))");
 
-                    pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);
-                    pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);
-                    pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);pastTotals.add(0);
-                    pastTotals.add(0);
-                    for(int i=0; i<pastTotals.size(); i++){
+                    pastTotals.add(1);pastTotals.add(2);pastTotals.add(3);pastTotals.add(4);pastTotals.add(5);
+                    pastTotals.add(6);pastTotals.add(7);pastTotals.add(8);pastTotals.add(9);pastTotals.add(10);
+                    pastTotals.add(11);pastTotals.add(12);pastTotals.add(13);pastTotals.add(14);pastTotals.add(15);
+                    pastTotals.add(16);
+                    Log.i("HEREYEGOARRAY", " size " +pastTotals.size());
+                    for(int i=0; i<16; i++){
                         myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
                     }
-
-
 
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3))");
 
                     firstweek = true;
-
                 }
                 else {
-
-
 
                     c = myDatabase.rawQuery("SELECT * FROM refreshDay", null);
                     int refreshIndex = c.getColumnIndex("day");
@@ -227,23 +224,16 @@ boolean cancel=false;
                     int refreshDay =c.getInt(refreshIndex);
 
                     if (dayofyear >= refreshDay) {
-
-
                         this.loadFromFutureDatabase();
-                        this.loadPastTotalsFromDB();
 
                         refreshDay = dayofyear + daysToRefresh();
-
                         if (refreshDay > 365) {
                             refreshDay -= 365;
                         }
                         myDatabase.execSQL("delete from refreshDay");
                         myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDay + ")");
-
-
                     } else{
                         this.loadFromDatabase();
-                        this.loadPastTotalsFromDB();
                     }
                 }}}
         catch(Exception e){e.printStackTrace();}
@@ -259,35 +249,34 @@ boolean cancel=false;
         Cursor c = myDatabase.rawQuery("SELECT * FROM pastTotalsTbl", null);
         int totalsIndex = c.getColumnIndex("totalPercent");
         c.moveToFirst();
-        boolean cancel = false;
 
+        pastTotals.clear();
+        boolean cancel = false;
         while (c != null && cancel == false) {
             try{
+
                 pastTotals.add(c.getInt(totalsIndex));
             c.moveToNext();
             }catch(Exception e){cancel = true; Log.i("6705whyPASTTOTALSgstore", "canceled index out of bounds exception");}
         }
     }
 
-    public void savePastTotalstoDB(){
+    public void savePastTotalstoDB() {
 
-        if(this.list.size() == 0){
-//if its greater than zero... so that it doesnt save when you are first starting your goals profile
-            pastTotals.remove(15);
-            pastTotals.add(0, (int)this.getTotalPercentage());
-        }
+
+        pastTotals.remove(0);
+        pastTotals.add(15, (int) this.getTotalPercentage());
+
         myDatabase.execSQL("delete from pastTotalsTbl");
 
-        for(int i=0; i<pastTotals.size(); i++){
+        for (int i = 0; i < pastTotals.size(); i++) {
             myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
+
         }
-
-    Log.i("pastTotalsSize", ""+pastTotals.size());
-
+        Log.i("pastTotalsSize", "" + pastTotals.size());
 
 
     }
-
 
 
 }
