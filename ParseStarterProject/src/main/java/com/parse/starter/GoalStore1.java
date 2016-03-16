@@ -24,7 +24,7 @@ public class GoalStore1 {
     static int day;
 
 
-    public GoalStore1(SQLiteDatabase x, boolean y) {
+    public GoalStore1(SQLiteDatabase x) {
         myDatabase = x;
         list=new ArrayList<Goal>();
 
@@ -138,27 +138,35 @@ boolean cancel=false;
         }
     public void loadFromFutureDatabase(){
 
-        if(!firstweek){savePastTotalstoDB();}
+        if(!firstweek){
+            loadFromDatabase();
+            loadPastTotalsFromDB();
+            Log.i("8888", "not first week");
+            savePastTotalstoDB();}
 
         firstweek = false;
 
-
-        //
+        Log.i("8888", "outside loop1");
 
         this.clear();
+        Log.i("8888", "outside loop2");
         c = myDatabase.rawQuery("SELECT * FROM FgoalsTbl", null);
+        Log.i("8888", "outside loop3");
         int nameIndex = c.getColumnIndex("name");
+
+        Log.i("8888", "outside loop4");
         int totalIndex = c.getColumnIndex("total");
+        Log.i("8888", "outside loop5");
         c.moveToFirst();
-        int pos = 0;
+        Log.i("8888", "outside loop6");
         boolean cancel = false;
         while (c != null && cancel==false) {
             try {// why must i have this?? and the cancel bit too... tidy this all up
-                Log.i("6705 2 load1", c.getString(nameIndex));
+                Log.i("8888", "adding: " + c.getString(nameIndex));
                 this.add(new Goal(c.getString(nameIndex), c.getInt(totalIndex)));
-                pos++;
+
                 c.moveToNext();
-            }catch(Exception e){cancel = true; Log.i("6705why", "canceled from index out of bounds exception");}
+            }catch(Exception e){cancel = true; Log.i("8888", "canceled from index out of bounds exception");}
 
         }
         this.saveToDatabase();//better here as its called whenever this is, rather than listing it a-new whenever loadfromfuture is called
@@ -224,6 +232,8 @@ boolean cancel=false;
                     int refreshDay =c.getInt(refreshIndex);
 
                     if (dayofyear >= refreshDay) {
+
+                        Log.i("8888", "moved to future load");
                         this.loadFromFutureDatabase();
 
                         refreshDay = dayofyear + daysToRefresh();
@@ -233,6 +243,7 @@ boolean cancel=false;
                         myDatabase.execSQL("delete from refreshDay");
                         myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDay + ")");
                     } else{
+                        Log.i("8888", "moved to load");
                         this.loadFromDatabase();
                     }
                 }}}
@@ -264,6 +275,7 @@ boolean cancel=false;
     public void savePastTotalstoDB() {
 
 
+        Log.i("8888", "" + pastTotals.size());
         pastTotals.remove(0);
         pastTotals.add(15, (int) this.getTotalPercentage());
 
@@ -273,7 +285,7 @@ boolean cancel=false;
             myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
 
         }
-        Log.i("pastTotalsSize", "" + pastTotals.size());
+        Log.i("8888", "" + pastTotals.size());
 
 
     }

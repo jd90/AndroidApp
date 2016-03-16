@@ -443,7 +443,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
         }
     }
 
-    static SQLiteDatabase database;
+    SQLiteDatabase database;
 
     public void loadFromCloud(){
 
@@ -529,12 +529,14 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                                 //if i did length -1 then it wouldnt include that daft wee bit at the end? as a temp solution to that? although it doesnt cause issues
                                 // because of a check later on to see if total is empty...
 
+                                int refreshDayOfYear = goalRow.getInt("RefreshDay");
+
+                                database.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDayOfYear + ")");
+
                                 for (int i = 0; i <= jsonArray1.length(); i++) {
                                     JSONObject jsonObject = jsonArray1.getJSONObject(i);
 
-                                    int refreshDayOfYear = goalRow.getInt("RefreshDay");
 
-                                    database.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDayOfYear + ")");
 
 
                                     goalName = jsonObject.optString("name");

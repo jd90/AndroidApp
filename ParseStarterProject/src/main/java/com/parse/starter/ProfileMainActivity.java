@@ -36,8 +36,8 @@ public class ProfileMainActivity extends AppCompatActivity {
 
 
         myDatabase = this.openOrCreateDatabase("GoalApp"+profile, MODE_PRIVATE, null);
-        goalStore = new GoalStore1(myDatabase, false);
-        fgoalStore = new GoalStore2(myDatabase, true);
+        goalStore = new GoalStore1(myDatabase);
+        fgoalStore = new GoalStore2(myDatabase);
 
 //THIS IS CHECKING IF IT IS THE FIRST WEEK -- strange place for this to go?
         if(goalStore.firstweek){

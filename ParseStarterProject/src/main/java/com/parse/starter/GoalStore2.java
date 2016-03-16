@@ -16,9 +16,8 @@ public class GoalStore2 {
     SQLiteDatabase myDatabase;
     Cursor c;
 
-    boolean whichDatastore;
 
-    public GoalStore2(SQLiteDatabase x, boolean y) {
+    public GoalStore2(SQLiteDatabase x) {
         myDatabase = x;
         list=new ArrayList<Goal>();
 
