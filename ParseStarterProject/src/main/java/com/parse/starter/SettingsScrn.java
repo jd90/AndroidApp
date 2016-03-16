@@ -615,11 +615,8 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                         }
                         MainActivity.saveCount();
                         MainActivity.saveProfiles();
-                        //ProfileMainActivity.goalStore.loadFromDatabase();
                         MainActivity.adapter.notifyDataSetChanged();
-                        //Fragment2.reload();
                         Toast t = Toast.makeText(getApplicationContext(), "Load Successful!", Toast.LENGTH_SHORT);t.show();
-
                     }
                 }
             }

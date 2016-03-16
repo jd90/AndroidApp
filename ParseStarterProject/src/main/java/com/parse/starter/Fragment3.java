@@ -242,7 +242,7 @@ if(v.getTag() == "sharkSwim") {
             Log.i("HEREYEGOARRAY", " "+ProfileMainActivity.goalStore.pastTotals.size());
 
 
-            for(int i=11; i<15; i++ ){
+            for(int i=12; i<16; i++ ){
 
                 aveTotal += ProfileMainActivity.goalStore.pastTotals.get(i);
             }
