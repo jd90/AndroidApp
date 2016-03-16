@@ -39,6 +39,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
     Button logout;
     Button save;
     Button load;
+    SQLiteDatabase database;
 
     static ArrayList<JSONObject> JSONgoals = new ArrayList<>();
     static ArrayList<JSONObject> JSONFuturegoals = new ArrayList<>();
@@ -134,7 +135,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
                     saveToCloud();
                     break;
                 case "load":
-                    loadFromCloud();
+                    loadFromParse();
                     break;
             }
 
@@ -190,7 +191,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
                         counter = 1;
                         Log.d("6705del", goalData.size() + " scores dont match");
                         if (goalData.size() < 1) {
-                            saveToParseE();
+                            saveToParse();
                         } else {
                             for (ParseObject goalRow : goalData) {
                                 try {
@@ -201,7 +202,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
                                             if (e == null) {
 //this inner section calls saveToParseE() once the cloud data has been wiped. Also done above, if it has nothing to wipe.
                                                 if (counter == size) {
-                                                    saveToParseE();
+                                                    saveToParse();
                                                 }
                                                 counter++;
                                             }
@@ -397,7 +398,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
 
     }
 
-    public void saveToParseE(){
+    public void saveToParse(){
 
         Log.i("6705del", "save goals called");
         Log.i("6705del", "save goals called " + JSONgoals.size());
@@ -443,9 +444,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
         }
     }
 
-    SQLiteDatabase database;
-
-    public void loadFromCloud(){
+    public void loadFromParse(){
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("GoalData");
         query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());

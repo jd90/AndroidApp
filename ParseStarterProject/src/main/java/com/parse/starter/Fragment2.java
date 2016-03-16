@@ -11,11 +11,10 @@ import android.widget.ListView;
 public class Fragment2 extends ListFragment {
 
     static CustomArrayAdapter2 adapter;
-    // Required empty public constructor
+
     public Fragment2() {
+    // Required empty public constructor
     }
-
-
 
     GoalStore1 goalStore;
 
@@ -33,21 +32,8 @@ public class Fragment2 extends ListFragment {
         super.onViewCreated(view, savedInstanceState);
 
         getListView().setDivider(null);
-
-       // final ListView  lv=getListView();
-
-        ///this is used to long click - could be used to make a toast of your reasons for undertaking a goal
-
-     //   lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
-      //      public boolean onItemLongClick(AdapterView<?> arg0, View v,
-                            //               int index, long arg3) {
-
-        //        Toast.makeText(getActivity(), lv.getItemAtPosition(index).toString(), Toast.LENGTH_LONG).show();
-           //     return false;
-       //     }
-      //  });
     }
+
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
 

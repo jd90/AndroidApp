@@ -61,10 +61,10 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
         }
     }
 
-    //this is somewhat set up to be opened from action bar as an activity_for_result. and below code sends it back with intent data
-   // public void onBackButton(View view) {
-  //      onBackPressed();
-  //  }
+    public void onClick(View view){
+
+        onBackPressed();
+    }
     public void onBackPressed() {
 
         Button startButton = (Button) findViewById(R.id.startButton);
@@ -74,37 +74,9 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
             exit();
         }
         else{
-           popUpConfirm();
+            popUpConfirm();
         }
     }
-
-
-    public void onClick(View view){
-
-
-        onBackPressed();
-
-        /**else {
-            AlertDialog.Builder confirm = new AlertDialog.Builder(this);
-            confirm.setTitle("Save and Start");
-            confirm.setMessage("Are you sure you want to commit to these Goals? \n" +
-                    "Next refresh is in " + ProfileMainActivity.goalStore.daysToRefresh() + " days");
-            confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    exitFirstWeekInput();
-                }
-            })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setCancelable(false)
-                    .show();
-        }**/
-    }
-
     public void popUpConfirm(){
 
             AlertDialog.Builder confirm = new AlertDialog.Builder(this);
@@ -124,7 +96,6 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
     }
-
     public void exit(){String message = "some message text";
         Intent intentBack = new Intent();
         intentBack.putExtra("Message", message);

@@ -36,10 +36,5 @@ public class CustomArrayAdapter1 extends ArrayAdapter<Goal> implements View.OnCl
     @Override
     public void onClick(View v) {
 
-        //this blue doesnt stick because it isnt modelled within the datastore. the goal object must hold which days have been put down so it can reset it at creation/refresh
-        //v.setBackgroundColor(Color.BLUE);
-
-        //  notifyDataSetChanged();
-
     }
 }

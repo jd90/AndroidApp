@@ -99,9 +99,6 @@ public class CustomArrayAdapter5 extends ArrayAdapter<Goal> implements View.OnCl
                     notifyDataSetChanged();
 
 
-
-
-
         }
 
     }

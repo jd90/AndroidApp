@@ -21,7 +21,7 @@ import com.parse.ParseUser;
 
 import org.w3c.dom.Text;
 
-public class MainActivity extends ListActivity implements View.OnClickListener, View.OnLongClickListener {
+public class MainActivity extends ListActivity implements View.OnClickListener {
 
 
     static ProfileDatastore profileDatastore;
@@ -75,7 +75,6 @@ public class MainActivity extends ListActivity implements View.OnClickListener, 
             }catch(Exception e){cancel = true; Log.i("6705why", "canceled from index out of bounds exception");}
         }
     }
-
     public void loadProfiles(){
         profileDatastore.profiles.clear();
         Cursor c = profilesDatabase.rawQuery("SELECT * FROM profilesTbl", null);
@@ -91,23 +90,19 @@ public class MainActivity extends ListActivity implements View.OnClickListener, 
             }catch(Exception e){cancel = true; Log.i("6705why", "canceled from index out of bounds exception");}
         }
     }
-
     public static void saveCount(){
         profilesDatabase.execSQL("delete from countTbl");
         profilesDatabase.execSQL("INSERT INTO countTbl (count) VALUES (" + profileDatastore.count + ")");
     }
-
     public static void saveProfiles(){
 
         profilesDatabase.execSQL("delete from profilesTbl");
-
 
             for(int i=0; i<profileDatastore.profiles.size(); i++){
                 Profile prof = profileDatastore.profiles.get(i);
                 profilesDatabase.execSQL("INSERT INTO profilesTbl (name, databaseNum) VALUES ('" + prof.name + "', " + prof.databaseNum + ")");
         }
     }
-
 
 
     public void onClick(final View view){
@@ -162,15 +157,6 @@ public class MainActivity extends ListActivity implements View.OnClickListener, 
         }
 
     }
-
-
-    @Override
-    public boolean onLongClick(View v) {
-        return false;
-    }
-
-
-
     public void checkSignedInStatus() {
 
         if (ParseUser.getCurrentUser() != null) {

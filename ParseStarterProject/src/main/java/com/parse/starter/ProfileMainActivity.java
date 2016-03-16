@@ -23,7 +23,6 @@ public class ProfileMainActivity extends AppCompatActivity {
     static GoalStore2 fgoalStore;
     static SQLiteDatabase myDatabase;
     static Context context;
-    Cursor c;
     int profile;
 
     @Override

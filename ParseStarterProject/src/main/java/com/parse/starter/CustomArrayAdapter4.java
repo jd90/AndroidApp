@@ -43,8 +43,6 @@ public class CustomArrayAdapter4 extends ArrayAdapter<Goal> implements View.OnCl
 
         //these two lines help to get the fragmentManager for using a dialogFragment
 
-
-
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View row_view = inflater.inflate(R.layout.new_goal_list_item, parent, false);
 
@@ -86,7 +84,6 @@ public class CustomArrayAdapter4 extends ArrayAdapter<Goal> implements View.OnCl
 
                         //make an edit future goal button to go beside delete button
 
-
                     }
                     break;
                 case "delete":
@@ -101,20 +98,5 @@ public class CustomArrayAdapter4 extends ArrayAdapter<Goal> implements View.OnCl
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

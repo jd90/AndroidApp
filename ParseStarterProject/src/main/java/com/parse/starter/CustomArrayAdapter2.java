@@ -44,12 +44,6 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
             holder.numberOutOfView = (TextView) convertView.findViewById(R.id.goalTargets);
             holder.percentView = (TextView) convertView.findViewById(R.id.goalPercent);
             holder.percentageBar = (ProgressBar) convertView.findViewById(R.id.progressBar1);
-            // holder.b0 = (Button) convertView.findViewById(R.id.button1);
-            //    holder.b1 = (Button) convertView.findViewById(R.id.button2);
-            //    holder.b2 = (Button) convertView.findViewById(R.id.button3);
-            //     holder.b3 = (Button) convertView.findViewById(R.id.button4);
-            //      holder.b4 = (Button) convertView.findViewById(R.id.button5);
-            //       holder.b5 = (Button) convertView.findViewById(R.id.button6);
 
             holder.b0 = (ImageView) convertView.findViewById(R.id.button1);
             holder.b1 = (ImageView) convertView.findViewById(R.id.button2);
@@ -122,7 +116,6 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
 
                 ProfileMainActivity.goalStore.saveToDatabase();
 
-                //ProfileMainActivity.updateGoalStore(Integer.parseInt(l.getTag().toString()));
                 notifyDataSetChanged();
 
             }
@@ -138,7 +131,6 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
         private TextView goalTitleView;
         private TextView numberOutOfView;
         private TextView percentView;
-        //private Button b0,b1,b2,b3,b4,b5, b6;
         private ImageView b0,b1,b2,b3,b4,b5,b6;
         private ProgressBar percentageBar;
     }

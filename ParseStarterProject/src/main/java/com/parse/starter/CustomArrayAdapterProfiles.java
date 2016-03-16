@@ -30,6 +30,8 @@ public class CustomArrayAdapterProfiles extends ArrayAdapter<Goal> implements Vi
 
     static LinearLayout profileContainer;
 
+    //reuse one instance of confirm builder alert dialog - in all classes, that is
+
     public CustomArrayAdapterProfiles (Context context, ArrayList profiles) {
         super(context, R.layout.goal_list_item, profiles);
 
