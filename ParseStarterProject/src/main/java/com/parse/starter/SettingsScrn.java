@@ -2,12 +2,14 @@ package com.parse.starter;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +41,10 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
     Button logout;
     Button save;
     Button load;
+    ImageView cloud;
     SQLiteDatabase database;
+
+    boolean loader;
 
     static ArrayList<JSONObject> JSONgoals = new ArrayList<>();
     static ArrayList<JSONObject> JSONFuturegoals = new ArrayList<>();
@@ -76,10 +81,13 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
         load.setTag("load");
         save.setOnClickListener(this);
         load.setOnClickListener(this);
-        save.setVisibility(View.GONE);
-        load.setVisibility(View.GONE);
-        signin.setVisibility(View.VISIBLE);
-        signup.setVisibility(View.VISIBLE);
+        cloud = (ImageView) findViewById(R.id.cloud);
+        //cloud.setVisibility(View.GONE);
+        //save.setVisibility(View.GONE);
+        //load.setVisibility(View.GONE);
+       //signin.setVisibility(View.VISIBLE);
+       //signup.setVisibility(View.VISIBLE);
+       //logout.setVisibility(View.GONE);
 
         checkSignedIn();
 
@@ -133,6 +141,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
             switch(v.getTag().toString()){
                 case "save":
                     saveToCloud();
+                    saveLoader();
                     break;
                 case "load":
                     loadFromParse();
@@ -157,6 +166,8 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
             user.setText("signed in as " + ParseUser.getCurrentUser().getUsername());
             save.setVisibility(View.VISIBLE);
             load.setVisibility(View.VISIBLE);
+            cloud.setVisibility(View.VISIBLE);
+            logout.setVisibility(View.VISIBLE);
 
         }else{
             user.setText("not signed in");
@@ -164,8 +175,11 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
             signup.setVisibility(View.VISIBLE);
             username.setVisibility(View.VISIBLE);
             password.setVisibility(View.VISIBLE);
+            logout.setVisibility(View.VISIBLE);
             save.setVisibility(View.GONE);
             load.setVisibility(View.GONE);
+            cloud.setVisibility(View.GONE);
+            logout.setVisibility(View.GONE);
         }
     }
 
@@ -642,6 +656,20 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
         }
         //return daysToRefresh;
         return 1;
+    }
+
+
+    public void saveLoader(){
+
+        //ImageView saveArrow =(ImageView) findViewById(R.id.save_arrow);
+
+        //while(loader){
+          //  saveArrow.animate().translationY(80).setDuration(600);
+            //saveArrow.setVisibility(View.INVISIBLE);
+            //saveArrow.animate().translationY(-80).setDuration(1);
+            //saveArrow.setVisibility(View.VISIBLE);
+
+        //}
     }
 
 }

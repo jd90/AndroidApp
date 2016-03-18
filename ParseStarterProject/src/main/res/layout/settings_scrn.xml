@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="10">
+    android:orientation="vertical">
 
 
     <LinearLayout
@@ -13,7 +12,6 @@
         android:paddingBottom="30dp"
         android:gravity="center"
         android:background="#ff47aff3"
-        android:layout_marginBottom="10dp"
         android:weightSum="10">
 
 
@@ -35,6 +33,16 @@
             />
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="11.5">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1.5">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -46,7 +54,8 @@
         android:layout_height="40dp"
         android:text="Log Out"
         android:id="@+id/logout"
-        android:layout_gravity="right" />
+        android:layout_gravity="right"
+        android:background="@drawable/bottom_button" />
 </LinearLayout>
     <EditText
         android:layout_width="match_parent"
@@ -57,7 +66,8 @@
         android:paddingLeft="99dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:singleLine="false" />
+        android:singleLine="false"
+        android:layout_marginTop="30dp" />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -84,18 +94,36 @@
         android:id="@+id/signup"
         android:layout_gravity="center_horizontal" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cloud"
+            android:layout_gravity="top|center_horizontal"
+            android:src="@drawable/cloud" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="bottom"
+        android:layout_weight="10">
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:text="Save To Cloud"
         android:id="@+id/save"
-        android:layout_gravity="center_horizontal" />
+        android:background="@drawable/bottom_button"
+        android:layout_weight="5"
+        android:layout_gravity="bottom" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:text="Load From Cloud"
         android:id="@+id/load"
-        android:layout_gravity="center_horizontal" />
-
+        android:background="@drawable/bottom_button"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_weight="5" />
+</LinearLayout>
+    </LinearLayout>
 </LinearLayout>
