@@ -460,6 +460,9 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
 
     public void loadFromParse(){
 
+
+        //get profiles and delete them and their associated databases here?
+
         ParseQuery<ParseObject> query = ParseQuery.getQuery("GoalData");
         query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
         query.findInBackground(new FindCallback<ParseObject>() {
