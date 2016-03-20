@@ -13,6 +13,15 @@ public class Goal {
     public double percentNum;
     public double percent;
 
+    //have a type variable - enum?
+    //have an array for numberInputforDay - aligns with buttons array
+    //this adds to the done
+    //when variable type is selected the onclick will open an Alert Dialog with a numberinput spinner thing
+    //when reopening this pop up it will take its value from the numberinputforday array and you can add to or subtract from it
+    //figure out what is needed to save and load this from the cloud
+    //save draft and try implementing and testing it
+
+
     public Goal(String n, int t){
         this.name = n;
         this.done = 0;

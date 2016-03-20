@@ -303,8 +303,8 @@ if(v.getTag() == "sharkSwim") {
         t.show();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Past Week");
-        builder.setMessage("" + y + "%");
+        builder.setTitle("Past Week: " + y + "%");
+        builder.setMessage("");
 
         //this will inflate a whole dialog for me
         LayoutInflater inflater = getActivity().getLayoutInflater();
