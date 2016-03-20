@@ -3,6 +3,9 @@ package com.parse.starter;
 /**
  * Created by Borris on 04/02/2016.
  */
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -295,8 +299,65 @@ if(v.getTag() == "sharkSwim") {
         LinearLayout l = (LinearLayout)v;
         int x = Integer.parseInt(l.getTag().toString());
         int y = ProfileMainActivity.goalStore.pastTotals.get(x);
-        Toast t = Toast.makeText(getActivity(), y+"%", Toast.LENGTH_SHORT);
+        Toast t = Toast.makeText(getActivity(), y + "%", Toast.LENGTH_SHORT);
         t.show();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Past Week");
+        builder.setMessage("" + y + "%");
+
+        //this will inflate a whole dialog for me
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.goal_list_item, null));
+        //i should put this into a wee scrollpane so that it only displays two or three goals and you scroll through them?
+        //keeping the pop up quite small?
+
+        /**
+
+        holder.goalTitleView.setText(g.name);
+        holder.numberOutOfView.setText(g.getTargets());
+        holder.percentView.setText(g.getPercentage());
+        holder.percentageBar.setProgress((int) g.percent);
+        holder.b0.setOnClickListener(this);
+        holder.b0.setTag(0);
+        if(g.buttons[0]) {
+            holder.b0.setImageResource(R.drawable.m1);}
+        else{holder.b0.setImageResource(R.drawable.m2);}
+        holder.b1.setOnClickListener(this);
+        holder.b1.setTag(1);
+        if(g.buttons[1]) {
+            holder.b1.setImageResource(R.drawable.t1);}
+        else{holder.b1.setImageResource(R.drawable.t2);}
+        holder.b2.setOnClickListener(this);
+        holder.b2.setTag(2);
+        if(g.buttons[2]) {
+            holder.b2.setImageResource(R.drawable.w1);}
+        else{holder.b2.setImageResource(R.drawable.w2);}
+        holder.b3.setOnClickListener(this);
+        holder.b3.setTag(3);
+        if(g.buttons[3]) {
+            holder.b3.setImageResource(R.drawable.t1);}
+        else{holder.b3.setImageResource(R.drawable.t2);}
+        holder.b4.setOnClickListener(this);
+        holder.b4.setTag(4);
+        if(g.buttons[4]) {
+            holder.b4.setImageResource(R.drawable.f1);}
+        else{holder.b4.setImageResource(R.drawable.f2);}
+        holder.b5.setOnClickListener(this);
+        holder.b5.setTag(5);
+        if(g.buttons[5]) {
+            holder.b5.setImageResource(R.drawable.s1);}
+        else{holder.b5.setImageResource(R.drawable.s2);}
+        holder.b6.setOnClickListener(this);
+        holder.b6.setTag(6);
+        if(g.buttons[6]) {
+            holder.b6.setImageResource(R.drawable.s1);}
+        else{holder.b6.setImageResource(R.drawable.s2);}
+
+         */
+
+        builder.show();
+
 
         return false;
     }

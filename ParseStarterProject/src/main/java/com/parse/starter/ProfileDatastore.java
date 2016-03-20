@@ -25,7 +25,9 @@ public class ProfileDatastore {
         count++;
     }
 
-    public void getProfile(){};
+    public Profile getProfile(int i){
+        return profiles.get(i);
+    };
 
 
     public void removeProfile(Profile profileToRemove){

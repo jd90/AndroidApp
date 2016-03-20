@@ -22,6 +22,7 @@ public class Profile {
 
 
         //could create database and goalStore right here? probably should...
+        //i would then open dictate the correct goalstore by using the databaseNum?
     }
 
     public void renameProfile(String newName){

@@ -33,7 +33,7 @@ public class ProfileMainActivity extends AppCompatActivity {
 
         profile = getIntent().getExtras().getInt("profile");
 
-
+//these three lines could just go inside of the profile class?? consider, save draft and attempt? (make sure to test fully tho.. could cause big issues)
         myDatabase = this.openOrCreateDatabase("GoalApp"+profile, MODE_PRIVATE, null);
         goalStore = new GoalStore1(myDatabase);
         fgoalStore = new GoalStore2(myDatabase);

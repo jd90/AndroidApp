@@ -44,8 +44,6 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
     ImageView cloud;
     SQLiteDatabase database;
 
-    boolean loader;
-
     static ArrayList<JSONObject> JSONgoals = new ArrayList<>();
     static ArrayList<JSONObject> JSONFuturegoals = new ArrayList<>();
     static ArrayList<JSONObject> JSONPastTotals = new ArrayList<>();
@@ -141,7 +139,6 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
             switch(v.getTag().toString()){
                 case "save":
                     saveToCloud();
-                    saveLoader();
                     break;
                 case "load":
                     loadFromParse();
@@ -414,6 +411,9 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
 
     public void saveToParse(){
 
+
+
+
         Log.i("6705del", "save goals called");
         Log.i("6705del", "save goals called " + JSONgoals.size());
         if(JSONgoals.size()==0){Toast t = Toast.makeText(getApplicationContext(), "Yu'v nae goals tae save, ya chancer!", Toast.LENGTH_SHORT);t.show();}
@@ -492,8 +492,11 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                         t.show();
                     } else {
 
+                        for(int i=0; i<MainActivity.profileDatastore.profiles.size(); i++){
+                            //this removes all the profiles and deletes their databases - should stop the profiles reoppening now, between accounts etc.
+                            MainActivity.profileDatastore.removeProfile(MainActivity.profileDatastore.getProfile(i));
+                        }//fix this to reference an instance of profileDatastore? rather than contacting MainActivity so much.
                         MainActivity.profileDatastore.profiles.clear();
-
                         for (ParseObject goalRow : goalData) {
 
 
@@ -624,6 +627,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
 
                             for(int i=0; i<pastTotalsArray.size(); i++) {
                                 database.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotalsArray.get(i) + ")");
+
                             }
 
                         //end of looping through rows
@@ -633,6 +637,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                         MainActivity.saveProfiles();
                         MainActivity.adapter.notifyDataSetChanged();
                         Toast t = Toast.makeText(getApplicationContext(), "Load Successful!", Toast.LENGTH_SHORT);t.show();
+
                     }
                 }
             }
@@ -662,17 +667,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
     }
 
 
-    public void saveLoader(){
-
-        //ImageView saveArrow =(ImageView) findViewById(R.id.save_arrow);
-
-        //while(loader){
-          //  saveArrow.animate().translationY(80).setDuration(600);
-            //saveArrow.setVisibility(View.INVISIBLE);
-            //saveArrow.animate().translationY(-80).setDuration(1);
-            //saveArrow.setVisibility(View.VISIBLE);
-
-        //}
-    }
+  //make an on back pressed to go to profile page? so it can work from ingoal settings dropdown?
+    //that or remove that drop down access option
 
 }
