@@ -216,16 +216,20 @@ boolean cancel=false;
                     int refreshDayOfYear = dayofyear + daysToRefresh();
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS refreshDay (day INT(1))");
                     myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDayOfYear + ")");
-                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3))");
+                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3), id INT(2)");
                     pastTotals.add(1);pastTotals.add(2);pastTotals.add(3);pastTotals.add(4);pastTotals.add(5);
                     pastTotals.add(6);pastTotals.add(7);pastTotals.add(8);pastTotals.add(9);pastTotals.add(10);
                     pastTotals.add(11);pastTotals.add(12);pastTotals.add(13);pastTotals.add(14);pastTotals.add(15);
                     pastTotals.add(16);
-                    Log.i("HEREYEGOARRAY", " size " +pastTotals.size());
-                    for(int i=0; i<16; i++){
-                        myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
-                    }
-                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3))");
+
+                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastGoals (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3), id INT(2)");
+        Log.i("HEREYEGOARRAY", " size " + pastTotals.size());
+        for(int i=0; i<16; i++){
+            myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent, id) VALUES (" + pastTotals.get(i) + ", "+ i + ")");
+            myDatabase.execSQL("INSERT INTO pastGoals (id) VALUES ("+i+")");
+        }
+
+        myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3))");
                     firstweek = true;
                 }
 
@@ -293,10 +297,28 @@ boolean cancel=false;
         myDatabase.execSQL("delete from pastTotalsTbl");
 
         for (int i = 0; i < pastTotals.size(); i++) {
-            myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
+            myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent, id) VALUES (" + pastTotals.get(i) + "," + i + ")");
 
         }
         Log.i("8888", "" + pastTotals.size());
+
+        myDatabase.execSQL("delete from pastGoals");
+
+        for(int i=0; i<this.getSize(); i++){
+            myDatabase.execSQL("INSERT INTO pastGoals (name, done, total, b0,b1,b2,b3,b4,b5,b6, percent) VALUES ('"
+                    +this.getAt(i).name+"', "
+                    +this.getAt(i).done+", "
+                    +this.getAt(i).total+", "
+                    +this.getAt(i).getButton(0) +", "
+                    +this.getAt(i).getButton(1) +", "
+                    +this.getAt(i).getButton(2) +", "
+                    +this.getAt(i).getButton(3) +", "
+                    +this.getAt(i).getButton(4) +", "
+                    +this.getAt(i).getButton(5) +", "
+                    +this.getAt(i).getButton(6) +", "
+                    +this.getAt(i).percent+")");
+        }
+        Log.i("PastGoalsnull", "being updated");
 
 
     }
