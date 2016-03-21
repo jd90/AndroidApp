@@ -4,6 +4,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -321,6 +323,75 @@ boolean cancel=false;
         }
         Log.i("PastGoalsnull", "being updated");
 */
+        String strJson;
+        try {
+            Cursor c = myDatabase.rawQuery("SELECT * FROM goalsTbl", null);
+
+            int nameIndex = c.getColumnIndex("name");
+            int totalIndex = c.getColumnIndex("total");
+            int doneIndex = c.getColumnIndex("done");
+            int percentIndex = c.getColumnIndex("percent");
+            int b0Index = c.getColumnIndex("b0");
+            int b1Index = c.getColumnIndex("b1");
+            int b2Index = c.getColumnIndex("b2");
+            int b3Index = c.getColumnIndex("b3");
+            int b4Index = c.getColumnIndex("b4");
+            int b5Index = c.getColumnIndex("b5");
+            int b6Index = c.getColumnIndex("b6");
+
+            c.moveToFirst();
+            boolean cancel = false;
+            int pos = 0;
+
+            strJson="{\"Goals\":[";
+
+            while (c!=null && cancel == false) {
+
+                try {
+                    Log.i("6705saveToCloud", "inside Json loop1");
+                    if (pos == 0){strJson += "{";}else{strJson += ",{";}
+//strings need to be held inside \" \" to allow for spaces?!!
+                    strJson += "" +
+                            "\"name\":" + " \" " + c.getString(nameIndex) + " \" " + "," +
+                            "\"total\":" + c.getInt(totalIndex) + "," +
+                            "\"done\":" + c.getInt(doneIndex) + "," +
+                            "\"percent\":" + c.getDouble(percentIndex) + "," +
+                            "\"b0\":" + c.getInt(b0Index) + "," +
+                            "\"b1\":" + c.getInt(b1Index) + "," +
+                            "\"b2\":" + c.getInt(b2Index) + "," +
+                            "\"b3\":" + c.getInt(b3Index) + "," +
+                            "\"b4\":" + c.getInt(b4Index) + "," +
+                            "\"b5\":" + c.getInt(b5Index) + "," +
+                            "\"b6\":" + c.getInt(b6Index) +
+                            "}";}
+                catch (Exception e) {
+                    cancel = true;Log.i("6705why1", "canceled from index out of bounds exception/or Json Error");e.printStackTrace();
+                    strJson +="}";
+                    c.close();myDatabase.close();
+                }
+
+                pos++;
+                c.moveToNext();
+            }
+            strJson += "]}";
+        }catch(Exception e){strJson= "{\"Goals\":[]}";}//if nae table opened yet - eg profile made but not started = empty?
+        try {
+
+            new JSONObject(strJson);}
+        catch(Exception e){e.printStackTrace();
+            Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
+
+            Log.i("6705del", "NULL OBJECT " + e.toString());
+
+            }
+
+        //here i need to delete 0 and replace 15 with the new one, as above. and then ID isnt needed - i just use the arraylist positions which should correlate?
+        //myDatabase.execSQL("INSERT INTO pastGoals (id) VALUES ("+i+")");
+
+
+        //this is the Json string for all the goals upon loading past totals. strJson.
+
+
 
     }
 
