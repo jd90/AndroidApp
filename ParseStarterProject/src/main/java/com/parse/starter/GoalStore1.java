@@ -297,11 +297,12 @@ boolean cancel=false;
         myDatabase.execSQL("delete from pastTotalsTbl");
 
         for (int i = 0; i < pastTotals.size(); i++) {
-            myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent, id) VALUES (" + pastTotals.get(i) + "," + i + ")");
+            myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + "," + i + ")");
 
         }
         Log.i("8888", "" + pastTotals.size());
 
+        /*
         myDatabase.execSQL("delete from pastGoals");
 
         for(int i=0; i<this.getSize(); i++){
@@ -319,7 +320,7 @@ boolean cancel=false;
                     +this.getAt(i).percent+")");
         }
         Log.i("PastGoalsnull", "being updated");
-
+*/
 
     }
 
