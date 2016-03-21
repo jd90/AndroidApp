@@ -205,10 +205,13 @@ boolean cancel=false;
 
                     return false;
                 } else {
+                    Log.i("88888", "already started");
                     return true;
+
                 }
             }
         } catch (Exception E) {}
+        Log.i("888888", "problem");
         return false;
     }
 
@@ -218,18 +221,35 @@ boolean cancel=false;
                     int refreshDayOfYear = dayofyear + daysToRefresh();
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS refreshDay (day INT(1))");
                     myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDayOfYear + ")");
-                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3), id INT(2)");
+                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3))");
                     pastTotals.add(1);pastTotals.add(2);pastTotals.add(3);pastTotals.add(4);pastTotals.add(5);
                     pastTotals.add(6);pastTotals.add(7);pastTotals.add(8);pastTotals.add(9);pastTotals.add(10);
                     pastTotals.add(11);pastTotals.add(12);pastTotals.add(13);pastTotals.add(14);pastTotals.add(15);
                     pastTotals.add(16);
 
-                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastGoals (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3), id INT(2)");
+                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastGoals (goalsJson VARCHAR)");
         Log.i("HEREYEGOARRAY", " size " + pastTotals.size());
+
+        String strJson = "" +
+                "\"name\":  default goal   ," +
+                "\"total\":  8," +
+                "\"done\":  5," +
+                "\"percent\":  40," +
+                "\"b0\":  0," +
+                "\"b1\":  0," +
+                "\"b2\":  0," +
+                "\"b3\":  0," +
+                "\"b4\":  0," +
+                "\"b5\":  0," +
+                "\"b6\":  0," +
+                "}";
+
         for(int i=0; i<16; i++){
-            myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent, id) VALUES (" + pastTotals.get(i) + ", "+ i + ")");
-            myDatabase.execSQL("INSERT INTO pastGoals (id) VALUES ("+i+")");
+            myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) +" )");
+            myDatabase.execSQL("INSERT INTO pastGoals (goalsJson) VALUES ('" + strJson + "')");
         }
+
+
 
         myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3))");
                     firstweek = true;
@@ -299,7 +319,7 @@ boolean cancel=false;
         myDatabase.execSQL("delete from pastTotalsTbl");
 
         for (int i = 0; i < pastTotals.size(); i++) {
-            myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + "," + i + ")");
+            myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
 
         }
         Log.i("8888", "" + pastTotals.size());
@@ -367,7 +387,6 @@ boolean cancel=false;
                 catch (Exception e) {
                     cancel = true;Log.i("6705why1", "canceled from index out of bounds exception/or Json Error");e.printStackTrace();
                     strJson +="}";
-                    c.close();myDatabase.close();
                 }
 
                 pos++;

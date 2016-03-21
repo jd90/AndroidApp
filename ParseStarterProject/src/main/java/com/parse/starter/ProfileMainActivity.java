@@ -33,6 +33,7 @@ public class ProfileMainActivity extends AppCompatActivity {
 
         profile = getIntent().getExtras().getInt("profile");
 
+        Log.i("888888", "profilenum opening: " + profile);
 //these three lines could just go inside of the profile class?? consider, save draft and attempt? (make sure to test fully tho.. could cause big issues)
         myDatabase = this.openOrCreateDatabase("GoalApp"+profile, MODE_PRIVATE, null);
         goalStore = new GoalStore1(myDatabase);
@@ -122,6 +123,7 @@ public class ProfileMainActivity extends AppCompatActivity {
 
 
     public static void deleteDatabase(int profileN){
+        Log.i("88888", "deleting from profmainact num: " + profileN);
         myDatabase.deleteDatabase(context.getDatabasePath("GoalApp"+profileN));
 
     }
