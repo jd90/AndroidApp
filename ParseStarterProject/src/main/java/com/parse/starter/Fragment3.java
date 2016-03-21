@@ -21,8 +21,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -30,6 +35,13 @@ public class Fragment3 extends Fragment implements View.OnClickListener, View.On
 
     View view;
     LinearLayout sharkFin;
+
+    RelativeLayout relativeLayout;
+    TextView goalTitleView;
+    TextView numberOutOfView;
+    TextView percentView;
+    ImageView b0,b1,b2,b3,b4,b5,b6;
+    ProgressBar percentageBar;
 
     public Fragment3() {
         // Required empty public constructor
@@ -308,57 +320,88 @@ if(v.getTag() == "sharkSwim") {
 
         //this will inflate a whole dialog for me
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        builder.setView(inflater.inflate(R.layout.goal_list_item, null));
+        View dialogView = inflater.inflate(R.layout.goal_list_item, null);
+        builder.setView(dialogView);
+
+
+
         //i should put this into a wee scrollpane so that it only displays two or three goals and you scroll through them?
         //keeping the pop up quite small?
 
-        /**
 
-        holder.goalTitleView.setText(g.name);
-        holder.numberOutOfView.setText(g.getTargets());
-        holder.percentView.setText(g.getPercentage());
-        holder.percentageBar.setProgress((int) g.percent);
-        holder.b0.setOnClickListener(this);
-        holder.b0.setTag(0);
-        if(g.buttons[0]) {
-            holder.b0.setImageResource(R.drawable.m1);}
-        else{holder.b0.setImageResource(R.drawable.m2);}
-        holder.b1.setOnClickListener(this);
-        holder.b1.setTag(1);
-        if(g.buttons[1]) {
-            holder.b1.setImageResource(R.drawable.t1);}
-        else{holder.b1.setImageResource(R.drawable.t2);}
-        holder.b2.setOnClickListener(this);
-        holder.b2.setTag(2);
-        if(g.buttons[2]) {
-            holder.b2.setImageResource(R.drawable.w1);}
-        else{holder.b2.setImageResource(R.drawable.w2);}
-        holder.b3.setOnClickListener(this);
-        holder.b3.setTag(3);
-        if(g.buttons[3]) {
-            holder.b3.setImageResource(R.drawable.t1);}
-        else{holder.b3.setImageResource(R.drawable.t2);}
-        holder.b4.setOnClickListener(this);
-        holder.b4.setTag(4);
-        if(g.buttons[4]) {
-            holder.b4.setImageResource(R.drawable.f1);}
-        else{holder.b4.setImageResource(R.drawable.f2);}
-        holder.b5.setOnClickListener(this);
-        holder.b5.setTag(5);
-        if(g.buttons[5]) {
-            holder.b5.setImageResource(R.drawable.s1);}
-        else{holder.b5.setImageResource(R.drawable.s2);}
-        holder.b6.setOnClickListener(this);
-        holder.b6.setTag(6);
-        if(g.buttons[6]) {
-            holder.b6.setImageResource(R.drawable.s1);}
-        else{holder.b6.setImageResource(R.drawable.s2);}
 
-         */
+
+        relativeLayout = (RelativeLayout) dialogView.findViewById(R.id.goal_Layout_Relative);
+        goalTitleView = (TextView) dialogView.findViewById(R.id.goalTitle);
+        numberOutOfView = (TextView) dialogView.findViewById(R.id.goalTargets);
+        percentView = (TextView) dialogView.findViewById(R.id.goalPercent);
+        b0 =(ImageView) dialogView.findViewById(R.id.button1);
+        b1 =(ImageView) dialogView.findViewById(R.id.button2);
+        b2 =(ImageView) dialogView.findViewById(R.id.button3);
+        b3 =(ImageView) dialogView.findViewById(R.id.button4);
+        b4 =(ImageView) dialogView.findViewById(R.id.button5);
+        b5 =(ImageView) dialogView.findViewById(R.id.button6);
+        b6 =(ImageView) dialogView.findViewById(R.id.button7);
+        percentageBar = (ProgressBar) dialogView.findViewById(R.id.progressBar1);
+
+
+        try {
+            JSONObject jsonRootObject = new JSONObject(ProfileMainActivity.goalStore.pastGoals.get(0));
+            JSONArray jsonArray = jsonRootObject.optJSONArray("Goals");
+
+            Log.i("888888", "jsonlength1" + jsonArray.length());
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                Log.i("888888", "jsonlength2" + jsonArray.length());
+                goalTitleView.setText(jsonObject.optString("name"));
+
+                Log.i("888888", "jsonlength3" + jsonArray.length());
+                if (jsonObject.optString("total").equals("")) {
+                    Log.i("88888", "reporting empty profile");
+                } else {
+                    Log.i("888888", "jsonlength33" + jsonArray.length());
+                    //numberOutOfView.setText(Integer.parseInt(jsonObject.optString("total")));
+                    Log.i("888888", "jsonlength4" + jsonArray.length());
+                    percentView.setText(String.valueOf(Double.parseDouble(jsonObject.optString("percent"))));
+                    Log.i("888888", "jsonlength5" + jsonArray.length());
+                    percentageBar.setProgress((int) Double.parseDouble(jsonObject.optString("percent")));
+
+                    Log.i("888888", "jsonlength6" + jsonArray.length());
+                    if(Integer.parseInt(jsonObject.optString("b0"))==0) {
+                        b0.setImageResource(R.drawable.m1);}
+                    else{b0.setImageResource(R.drawable.m2);}
+                    if(Integer.parseInt(jsonObject.optString("b0"))==0) {
+                        b1.setImageResource(R.drawable.t1);}
+                    else{b1.setImageResource(R.drawable.t2);}
+                    if(Integer.parseInt(jsonObject.optString("b0"))==0) {
+                        b2.setImageResource(R.drawable.w1);}
+                    else{b2.setImageResource(R.drawable.w2);}
+                    if(Integer.parseInt(jsonObject.optString("b0"))==0) {
+                        b3.setImageResource(R.drawable.t1);}
+                    else{b3.setImageResource(R.drawable.t2);}
+                    if(Integer.parseInt(jsonObject.optString("b0"))==0) {
+                        b4.setImageResource(R.drawable.f1);}
+                    else{b4.setImageResource(R.drawable.f2);}
+                    if(Integer.parseInt(jsonObject.optString("b0"))==0) {
+                        b5.setImageResource(R.drawable.s1);}
+                    else{b5.setImageResource(R.drawable.s2);}
+                    if(Integer.parseInt(jsonObject.optString("b0"))==0) {
+                        b6.setImageResource(R.drawable.s1);}
+                    else{b6.setImageResource(R.drawable.s2);}
+
+                }
+            }
+        }catch(Exception e){Log.i("888888","jsonlength error" +e.toString());}
+
 
         builder.show();
 
 
         return false;
     }
+
+
+
 }

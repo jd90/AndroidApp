@@ -17,6 +17,7 @@ public class GoalStore1 {
 
     static List<Goal> list;
     ArrayList<Integer> pastTotals = new ArrayList<>();
+    ArrayList<String> pastGoals = new ArrayList<>();
     SQLiteDatabase myDatabase;
     Cursor c;
     boolean firstweek = false;
@@ -230,23 +231,30 @@ boolean cancel=false;
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastGoals (goalsJson VARCHAR)");
         Log.i("HEREYEGOARRAY", " size " + pastTotals.size());
 
-        String strJson = "" +
-                "\"name\":  default goal   ," +
-                "\"total\":  8," +
-                "\"done\":  5," +
-                "\"percent\":  40," +
-                "\"b0\":  0," +
-                "\"b1\":  0," +
-                "\"b2\":  0," +
-                "\"b3\":  0," +
-                "\"b4\":  0," +
-                "\"b5\":  0," +
-                "\"b6\":  0," +
-                "}";
+        String strJson="{\"Goals\":[";
+         strJson += "{" +
+                 "\"name\":" + "\"defaultgoal\""+"," +
+                "\"total\":8," +
+                "\"done\":5," +
+                "\"percent\":40," +
+                "\"b0\":0," +
+                "\"b1\":0," +
+                "\"b2\":0," +
+                "\"b3\":0," +
+                "\"b4\":0," +
+                "\"b5\":0," +
+                "\"b6\":0" +
+                "}]";
+        strJson += "}";
+
+        pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);
+        pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);
+        pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);
+        pastGoals.add(strJson);
 
         for(int i=0; i<16; i++){
             myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) +" )");
-            myDatabase.execSQL("INSERT INTO pastGoals (goalsJson) VALUES ('" + strJson + "')");
+            myDatabase.execSQL("INSERT INTO pastGoals (goalsJson) VALUES ('" + pastGoals.get(i) + "')");
         }
 
 
@@ -283,9 +291,6 @@ boolean cancel=false;
     }
 
 
-
-
-
     public void setDayVariables(){
         dayofyear = calendar.get(Calendar.DAY_OF_YEAR);
         day = calendar.get(Calendar.DAY_OF_WEEK);
@@ -307,6 +312,24 @@ boolean cancel=false;
             c.moveToNext();
             }catch(Exception e){cancel = true; Log.i("6705whyPASTTOTALSgstore", "canceled index out of bounds exception");}
         }
+        Cursor c2 = myDatabase.rawQuery("SELECT * FROM pastGoals", null);
+        int goalsIndex = c2.getColumnIndex("goalsJson");
+        c2.moveToFirst();
+
+        pastGoals.clear();
+        boolean cancel2 = false;
+        while (c2 != null && cancel2 == false) {
+            try{
+                String goalJson= c2.getString(goalsIndex);
+                pastGoals.add(goalJson);
+                c2.moveToNext();
+            }catch(Exception e){cancel2 = true; Log.i("6705whyPASTGOALSgstore", "canceled index out of bounds exception");}
+        }
+
+        Log.i("8888", "pastGoalsArray "+pastGoals.toString());
+
+
+
     }
 
     public void savePastTotalstoDB() {
@@ -316,33 +339,23 @@ boolean cancel=false;
         pastTotals.remove(0);
         pastTotals.add(15, (int) this.getTotalPercentage());
 
+        pastGoals.remove(0);
+        pastGoals.add(15, convertGoalsToJson());
         myDatabase.execSQL("delete from pastTotalsTbl");
 
         for (int i = 0; i < pastTotals.size(); i++) {
             myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
 
+            myDatabase.execSQL("INSERT INTO pastGoals (name, done, total, b0,b1,b2,b3,b4,b5,b6, percent) VALUES ('" + pastGoals.get(i) + "')");
+
         }
         Log.i("8888", "" + pastTotals.size());
 
-        /*
-        myDatabase.execSQL("delete from pastGoals");
 
-        for(int i=0; i<this.getSize(); i++){
-            myDatabase.execSQL("INSERT INTO pastGoals (name, done, total, b0,b1,b2,b3,b4,b5,b6, percent) VALUES ('"
-                    +this.getAt(i).name+"', "
-                    +this.getAt(i).done+", "
-                    +this.getAt(i).total+", "
-                    +this.getAt(i).getButton(0) +", "
-                    +this.getAt(i).getButton(1) +", "
-                    +this.getAt(i).getButton(2) +", "
-                    +this.getAt(i).getButton(3) +", "
-                    +this.getAt(i).getButton(4) +", "
-                    +this.getAt(i).getButton(5) +", "
-                    +this.getAt(i).getButton(6) +", "
-                    +this.getAt(i).percent+")");
-        }
-        Log.i("PastGoalsnull", "being updated");
-*/
+}
+
+
+    public String convertGoalsToJson(){
         String strJson;
         try {
             Cursor c = myDatabase.rawQuery("SELECT * FROM goalsTbl", null);
@@ -402,16 +415,14 @@ boolean cancel=false;
 
             Log.i("6705del", "NULL OBJECT " + e.toString());
 
-            }
+        }
 
         //here i need to delete 0 and replace 15 with the new one, as above. and then ID isnt needed - i just use the arraylist positions which should correlate?
         //myDatabase.execSQL("INSERT INTO pastGoals (id) VALUES ("+i+")");
 
 
         //this is the Json string for all the goals upon loading past totals. strJson.
-
-
-
+        return strJson;
     }
 
 
