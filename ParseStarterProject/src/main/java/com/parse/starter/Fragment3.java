@@ -362,7 +362,7 @@ if(v.getTag() == "sharkSwim") {
                     Log.i("88888", "reporting empty profile");
                 } else {
                     Log.i("888888", "jsonlength33" + jsonArray.length());
-                    //numberOutOfView.setText(Integer.parseInt(jsonObject.optString("total")));
+                    numberOutOfView.setText(jsonObject.optString("total"));
                     Log.i("888888", "jsonlength4" + jsonArray.length());
                     percentView.setText(String.valueOf(Double.parseDouble(jsonObject.optString("percent"))));
                     Log.i("888888", "jsonlength5" + jsonArray.length());
