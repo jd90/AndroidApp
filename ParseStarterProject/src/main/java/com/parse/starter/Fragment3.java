@@ -330,29 +330,13 @@ if(v.getTag() == "sharkSwim") {
 
         //i should put this into a wee scrollpane so that it only displays two or three goals and you scroll through them?
         //keeping the pop up quite small?
+        String name;
+        String total;
+        String done;
+        String percent;
+        String b0,b1,b2,b3,b4,b5,b6;
 
-        Dialog dialog = new Dialog(getActivity());
-        dialog.setContentView(R.layout.goals_layout);
-
-        ListView lv = (ListView) dialog.findViewById(R.id.listview);
-        lv.setAdapter(new CustomArrayAdapterPast(this.getActivity(), ProfileMainActivity.goalStore.pastGoals, x));
-        dialog.setCancelable(true);
-        dialog.setTitle("Past Week: " + y + "%");
-        dialog.show();
-/*
-        relativeLayout = (RelativeLayout) dialogView.findViewById(R.id.goal_Layout_Relative);
-        goalTitleView = (TextView) dialogView.findViewById(R.id.goalTitle);
-        numberOutOfView = (TextView) dialogView.findViewById(R.id.goalTargets);
-        percentView = (TextView) dialogView.findViewById(R.id.goalPercent);
-        b0 =(ImageView) dialogView.findViewById(R.id.button1);
-        b1 =(ImageView) dialogView.findViewById(R.id.button2);
-        b2 =(ImageView) dialogView.findViewById(R.id.button3);
-        b3 =(ImageView) dialogView.findViewById(R.id.button4);
-        b4 =(ImageView) dialogView.findViewById(R.id.button5);
-        b5 =(ImageView) dialogView.findViewById(R.id.button6);
-        b6 =(ImageView) dialogView.findViewById(R.id.button7);
-        percentageBar = (ProgressBar) dialogView.findViewById(R.id.progressBar1);
-
+        ArrayList<Goal> pastGoalARRAY = new ArrayList<>();
 
         try {
             JSONObject jsonRootObject = new JSONObject(ProfileMainActivity.goalStore.pastGoals.get(x));
@@ -363,51 +347,41 @@ if(v.getTag() == "sharkSwim") {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                Log.i("888888", "jsonlength2" + jsonArray.length());
-                goalTitleView.setText(jsonObject.optString("name"));
+                name =(jsonObject.optString("name"));
+                total=(jsonObject.optString("total"));
+                percent=(String.valueOf(Double.parseDouble(jsonObject.optString("percent"))));
+                b0 =(jsonObject.optString("b0"));
+                b1 =(jsonObject.optString("b1"));
+                b2 =(jsonObject.optString("b2"));
+                b3 =(jsonObject.optString("b3"));
+                b4 =(jsonObject.optString("b4"));
+                b5 =(jsonObject.optString("b5"));
+                b6 =(jsonObject.optString("b6"));
 
-                Log.i("888888", "jsonlength3" + jsonArray.length());
-                if (jsonObject.optString("total").equals("")) {
-                    Log.i("88888", "reporting empty profile");
-                } else {
-                    Log.i("888888", "jsonlength33" + jsonArray.length());
-                    numberOutOfView.setText(jsonObject.optString("total"));
-                    Log.i("888888", "jsonlength4" + jsonArray.length());
-                    percentView.setText(String.valueOf(Double.parseDouble(jsonObject.optString("percent"))));
-                    Log.i("888888", "jsonlength5" + jsonArray.length());
-                    percentageBar.setProgress((int) Double.parseDouble(jsonObject.optString("percent")));
-
-                    if(Integer.parseInt(jsonObject.optString("b0"))==0) {
-                        b0.setImageResource(R.drawable.m1);}
-                    else{b0.setImageResource(R.drawable.m2);}
-                    if(Integer.parseInt(jsonObject.optString("b1"))==0) {
-                        b1.setImageResource(R.drawable.t1);}
-                    else{b1.setImageResource(R.drawable.t2);}
-                    if(Integer.parseInt(jsonObject.optString("b2"))==0) {
-                        b2.setImageResource(R.drawable.w1);}
-                    else{b2.setImageResource(R.drawable.w2);}
-                    if(Integer.parseInt(jsonObject.optString("b3"))==0) {
-                        b3.setImageResource(R.drawable.t1);}
-                    else{b3.setImageResource(R.drawable.t2);}
-                    if(Integer.parseInt(jsonObject.optString("b4"))==0) {
-                        b4.setImageResource(R.drawable.f1);}
-                    else{b4.setImageResource(R.drawable.f2);}
-                    if(Integer.parseInt(jsonObject.optString("b5"))==0) {
-                        b5.setImageResource(R.drawable.s1);}
-                    else{b5.setImageResource(R.drawable.s2);}
-                    if(Integer.parseInt(jsonObject.optString("b6"))==0) {
-                        b6.setImageResource(R.drawable.s1);}
-                    else{b6.setImageResource(R.drawable.s2);}
-
-                }
+                Goal g = new Goal(name, Integer.parseInt(total));
+                g.setButton(0, Integer.parseInt(b0));
+                g.setButton(1, Integer.parseInt(b1));
+                g.setButton(2, Integer.parseInt(b2));
+                g.setButton(3, Integer.parseInt(b3));
+                g.setButton(4, Integer.parseInt(b4));
+                g.setButton(5, Integer.parseInt(b5));
+                g.setButton(6, Integer.parseInt(b6));
+                g.total=Integer.parseInt(total);
+                pastGoalARRAY.add(g);
             }
+
         }catch(Exception e){Log.i("888888","jsonlength error" +e.toString());}
 
+        Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.goals_layout);
 
-        builder.show();
+        ListView lv = (ListView) dialog.findViewById(R.id.listview);
+        lv.setAdapter(new CustomArrayAdapterPast(this.getActivity(), pastGoalARRAY, x));
+        dialog.setCancelable(true);
+        dialog.setTitle("Past Week: " + y + "%");
+        dialog.show();
 
 
-    */
         return false;
 
     }

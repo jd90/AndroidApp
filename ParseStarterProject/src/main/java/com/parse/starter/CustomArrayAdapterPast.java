@@ -26,7 +26,10 @@ public class CustomArrayAdapterPast extends ArrayAdapter<Goal> implements View.O
 private final Context context;
 //holds a reference to mainAct goalStore. and when updated here, it updates there. i think.
 //this is because it has been made static - so accessible from whole app (previously i implemented a callback interface to frag2, then accessed its getActivity to edit in mainAct. bad.
-private  List pastGoals;
+
+    //i should use the passed List that i create rather than accessing the PastGoals thing - which conveniently has the same length and so works...
+
+    private  List pastGoals;
     int clickedPosition;
 
 public CustomArrayAdapterPast(Context context, List g, int x) {
