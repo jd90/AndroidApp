@@ -236,7 +236,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
         JSONgoals.add(convertGoalsToJSON(x));
         JSONFuturegoals.add(convertFutureGoalsToJSON(x));
         JSONPastTotals.add(convertPastTotalsToJSON(x));
-        JSONPastGoals.add(convertPastGoalsToJSON(x));
+        //JSONPastGoals.add(convertPastGoalsToJSON(x));
         Log.i("6705del", "JSONMETHOD" + JSONgoals.toString());
     }
 
@@ -414,48 +414,53 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
     public JSONObject convertPastGoalsToJSON(int i){
 //this section is ok? it opens the profilename I's database and saves to the JSONobject
         SQLiteDatabase myDatabase = this.openOrCreateDatabase("GoalApp" + i, MODE_PRIVATE, null);
-        String strJson;
+        String goalJson="{\"Past\":[";
         try {
-            Cursor c = myDatabase.rawQuery("SELECT * FROM pastGoals", null);
+            Cursor c2 = myDatabase.rawQuery("SELECT * FROM pastGoals", null);
+            int goalsIndex = c2.getColumnIndex("goalsJson");
+            c2.moveToFirst();    boolean cancel = false;    int pos = 0;
+            while (c2!=null && cancel == false) {
 
-            int goalsJsonIndex = c.getColumnIndex("goalsJson");
+/////////////////
 
-            c.moveToFirst();
-            boolean cancel = false;
-            int pos = 0;
+                try {// why must i have this?? and the cancel bit too... tidy this all up
+                    Log.i("6705saveToCloud", "inside Json loop");
 
-            strJson="{\"PastGoals\":['"; // i stuck a ' in there to prevent it from closing itself - as it has Json inside Json - clever
+                    if (pos == 0) {
+                        goalJson += "";
+                    } else {
+                        goalJson += ",";
+                    }
+                    pos++;
 
-            while (c!=null && cancel == false) {
+                    goalJson += c2.getString(goalsIndex);
 
-                try {
-                    Log.i("6705saveToCloud", "inside Json loop1");
-                    if (pos == 0){strJson += "{";}else{strJson += ",{";}
-//strings need to be held inside \" \" to allow for spaces?!!
-                    strJson += "" +
-                            "\"pastGoal\":" + " \" " + c.getString(goalsJsonIndex) + " \" " + "," +
-                            "}";}
-                catch (Exception e) {
-                    cancel = true;Log.i("6705why1", "canceled from index out of bounds exception/or Json Error");e.printStackTrace();
-                    strJson +="}";
-                    c.close();myDatabase.close();
+                } catch (Exception e) {
+                    cancel = true;
+                    Log.i("6705why3pastgoals", "canceled from index out of bounds exception/or Json Error");
+                    e.printStackTrace();
+
+                    c2.close();myDatabase.close();
                 }
 
                 pos++;
-                c.moveToNext();
+                c2.moveToNext();
             }
-            strJson += "']}";
-        }catch(Exception e){strJson= "{\"pastGoals\":[]}";}//if nae table opened yet - eg profile made but not started = empty?
-        try {return new JSONObject(strJson);}
-        catch(Exception e){Log.i("8888", e.toString());
-            Log.i("9999", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
+            goalJson += "{}]}";
 
-            Log.i("9999", "NULL OBJECT " + e.toString());
+        }catch(Exception e){goalJson="{\"Past\":[]}";}//this makes sure that if table isnt created beyond profile being made, then it passes an empty JSON object rahter than erroring at TableNotCreated
+        try {return new JSONObject(goalJson);}
+        catch(Exception e) {e.printStackTrace();}
 
-            return null;}
-
+        return null;//probably dont need all of these try catches...
 
     }
+
+
+           ///////////////
+
+
+
 
     public void saveToParse(){
 
@@ -489,7 +494,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
             goal.put("Count", MainActivity.profileDatastore.count);
             goal.put("FutureGoals", JSONFuturegoals.get(ii));
             goal.put("PastTotals", JSONPastTotals.get(ii));
-            goal.put("PastGoals", JSONPastGoals.get(ii));
+            //goal.put("PastGoals", JSONPastGoals.get(ii));
 
             goal.saveInBackground(new SaveCallback() {
                 @Override
@@ -532,7 +537,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                     int b5=800;
                     int b6=800;
                     int pastTotals=800;
-                    String pastGoal="";
+                    JSONObject pastGoal;
 
                     Log.d("6705del", goalData.size() + " scores loading down");
                     if (goalData.size() < 1) {
@@ -684,25 +689,31 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                                 database.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotalsArray.get(i) + ")");
 
                             }
+
+                            /*
                             ArrayList<String> pastGoalsArray = new ArrayList<>();
                             try {
                                 JSONObject pastGoalsObject = goalRow.getJSONObject("PastGoals");
                                 Log.i("6705del", "JSONobject WORKED3" + goalRow.getJSONObject("PastGoals"));
-                                JSONArray jsonArray3 = pastGoalsObject.optJSONArray("PastGoals");
+                                JSONArray jsonArray4 = pastGoalsObject.optJSONArray("Past");
                                 //Iterate the jsonArray and print the info of JSONObjects
 
-                                for (int i = 0; i < jsonArray3.length()-1; i++) {
-                                    JSONObject jsonObject = jsonArray3.getJSONObject(i);
-                                    pastGoal = (jsonObject.optString("pastGoal"));
-                                    pastGoalsArray.add(i, pastGoal);
+                                for (int i = 0; i < jsonArray4.length()-1; i++) {
+                                    JSONObject jsonObject = jsonArray4.getJSONObject(i);
+                                    //String pastGoals = (jsonObject.optString("Goals"));
+                                    //pastGoalsArray.add(i, pastGoals);
+                                    pastGoalsArray.add(i, jsonObject.toString());
                                 }
                             } catch (Exception e3) {
                                 Log.i("6705del", " problem making JSONobject3" + e3.toString());}
 
-                            for(int i=0; i<pastTotalsArray.size(); i++) {
-                                database.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotalsArray.get(i) + ")");
+                            for(int i=0; i<pastGoalsArray.size(); i++) {
+                                Log.i("9999 jsonhi", pastGoalsArray.get(i).toString());
+
+                                database.execSQL("INSERT INTO pastGoals (goalsJson) VALUES ('" + pastGoalsArray.get(i) + "')");
 
                             }
+                            */
 
                         //end of looping through rows
 

@@ -4,8 +4,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -16,10 +14,10 @@ import java.util.List;
 public class GoalStore1 {
 
     static List<Goal> list;
-    ArrayList<Integer> pastTotals = new ArrayList<>();
-    ArrayList<String> pastGoals = new ArrayList<>();
     SQLiteDatabase myDatabase;
     Cursor c;
+
+    ArrayList<Integer> pastTotals = new ArrayList<>();
     boolean firstweek = false;
     Calendar calendar = Calendar.getInstance();
     static int dayofyear;
@@ -32,14 +30,7 @@ public class GoalStore1 {
 
         setDayVariables();
 
-        if(!checkIfStarted()){
-
-            startNewInstance();
-
-        }else{
-            loadFromAppropriateDB();
-        }
-
+        setUpGoalStore();
 
     }
 
@@ -150,18 +141,24 @@ boolean cancel=false;
         if(!firstweek){
             loadFromDatabase();
             loadPastTotalsFromDB();
-            savePastTotalstoDB();
-        }
+            Log.i("8888", "not first week");
+            savePastTotalstoDB();}
 
         firstweek = false;
-        loadPastTotalsFromDB();//added 220316
-        savePastTotalstoDB(); //added 220316
+
+        Log.i("8888", "outside loop1");
 
         this.clear();
+        Log.i("8888", "outside loop2");
         c = myDatabase.rawQuery("SELECT * FROM FgoalsTbl", null);
+        Log.i("8888", "outside loop3");
         int nameIndex = c.getColumnIndex("name");
+
+        Log.i("8888", "outside loop4");
         int totalIndex = c.getColumnIndex("total");
+        Log.i("8888", "outside loop5");
         c.moveToFirst();
+        Log.i("8888", "outside loop6");
         boolean cancel = false;
         while (c != null && cancel==false) {
             try {// why must i have this?? and the cancel bit too... tidy this all up
@@ -196,7 +193,7 @@ boolean cancel=false;
         return 1;
     }
 
-    public boolean checkIfStarted() {
+    public void setUpGoalStore(){
 
 
         myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsStarted (started INT(1))");
@@ -204,92 +201,54 @@ boolean cancel=false;
             Cursor cur = myDatabase.rawQuery("SELECT COUNT(*) FROM goalsStarted", null);
             if (cur != null) {
                 cur.moveToFirst();                       // Always one row returned.
-                if (cur.getInt(0) == 0) {
-
-                    return false;
-                } else {
-                    Log.i("88888", "already started");
-                    return true;
-
-                }
-            }
-        } catch (Exception E) {}
-        Log.i("888888", "problem");
-        return false;
-    }
-
-    public void startNewInstance(){
-
+                if (cur.getInt (0) == 0) {
+// Zero count means empty table.
                     myDatabase.execSQL("INSERT INTO goalsStarted (started) VALUES (1)");
+
                     int refreshDayOfYear = dayofyear + daysToRefresh();
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS refreshDay (day INT(1))");
                     myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDayOfYear + ")");
+
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3))");
+
                     pastTotals.add(1);pastTotals.add(2);pastTotals.add(3);pastTotals.add(4);pastTotals.add(5);
                     pastTotals.add(6);pastTotals.add(7);pastTotals.add(8);pastTotals.add(9);pastTotals.add(10);
                     pastTotals.add(11);pastTotals.add(12);pastTotals.add(13);pastTotals.add(14);pastTotals.add(15);
                     pastTotals.add(16);
+                    Log.i("HEREYEGOARRAY", " size " +pastTotals.size());
+                    for(int i=0; i<16; i++){
+                        myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
+                    }
 
-                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastGoals (goalsJson VARCHAR)");
-        Log.i("HEREYEGOARRAY", " size " + pastTotals.size());
+                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3))");
 
-        for(int i=0; i<16; i++){
-        String strJson="{\"Goals\":[";
-         strJson += "{" +
-                 "\"name\":" + "\"defaultgoal\"," +
-                "\"total\":"+i+"," +
-                "\"done\":5," +
-                "\"percent\":40," +
-                "\"b0\":0," +
-                "\"b1\":1," +
-                "\"b2\":1," +
-                "\"b3\":0," +
-                "\"b4\":0," +
-                "\"b5\":1," +
-                "\"b6\":0" +
-                "}]";
-        strJson += "}";
-
-        pastGoals.add(strJson);}
-
-        for(int i=0; i<16; i++){
-            myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) +" )");
-            myDatabase.execSQL("INSERT INTO pastGoals (goalsJson) VALUES ('" + pastGoals.get(i) + "')");
-        }
-
-
-
-        myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3))");
                     firstweek = true;
                 }
+                else {
 
-    public void loadFromAppropriateDB(){
+                    c = myDatabase.rawQuery("SELECT * FROM refreshDay", null);
+                    int refreshIndex = c.getColumnIndex("day");
+                    c.moveToFirst();
+                    int refreshDay =c.getInt(refreshIndex);
 
+                    if (dayofyear >= refreshDay) {
 
-            c = myDatabase.rawQuery("SELECT * FROM refreshDay", null);
-            int refreshIndex = c.getColumnIndex("day");
-            c.moveToFirst();
-            int refreshDay =c.getInt(refreshIndex);
+                        Log.i("8888", "moved to future load");
+                        this.loadFromFutureDatabase();
 
-            if (dayofyear >= refreshDay) {
-
-                Log.i("8888", "moved to future load");
-                this.loadFromFutureDatabase();
-
-                refreshDay = dayofyear + daysToRefresh();
-                if (refreshDay > 365) {
-                    refreshDay -= 365;
-                }
-                myDatabase.execSQL("delete from refreshDay");
-                myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDay + ")");
-            } else{
-            Log.i("8888", "moved to load");
-                this.loadFromDatabase();
-            }
-
-
+                        refreshDay = dayofyear + daysToRefresh();
+                        if (refreshDay > 365) {
+                            refreshDay -= 365;
+                        }
+                        myDatabase.execSQL("delete from refreshDay");
+                        myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDay + ")");
+                    } else{
+                        Log.i("8888", "moved to load");
+                        this.loadFromDatabase();
+                    }
+                }}}
+        catch(Exception e){e.printStackTrace();}
     }
-
 
     public void setDayVariables(){
         dayofyear = calendar.get(Calendar.DAY_OF_YEAR);
@@ -306,125 +265,33 @@ boolean cancel=false;
         boolean cancel = false;
         while (c != null && cancel == false) {
             try{
-                int percent= c.getInt(totalsIndex);
-                if(percent >100){percent =100;}
-                pastTotals.add(percent);
+
+                pastTotals.add(c.getInt(totalsIndex));
             c.moveToNext();
             }catch(Exception e){cancel = true; Log.i("6705whyPASTTOTALSgstore", "canceled index out of bounds exception");}
         }
-        Cursor c2 = myDatabase.rawQuery("SELECT * FROM pastGoals", null);
-        int goalsIndex = c2.getColumnIndex("goalsJson");
-        c2.moveToFirst();
-
-        pastGoals.clear();
-        boolean cancel2 = false;
-        while (c2 != null && cancel2 == false) {
-            try{
-                String goalJson= c2.getString(goalsIndex);
-                pastGoals.add(goalJson);
-                c2.moveToNext();
-            }catch(Exception e){cancel2 = true; Log.i("6705whyPASTGOALSgstore", "canceled index out of bounds exception");}
-        }
-
-        Log.i("8888", "pastTotalsArray "+pastTotals.toString());
-        Log.i("8888", "pastGoalsArray "+pastGoals.toString());
-
-
-
     }
 
     public void savePastTotalstoDB() {
 
 
-        Log.i("8888", "totals" + pastTotals.size());
+        Log.i("8888", "" + pastTotals.size());
         pastTotals.remove(0);
-        pastTotals.add(15, (int) this.getTotalPercentage());
+        double percent;
+        if(this.getTotalPercentage() >100){
+            percent = 100;}
+        else{percent = this.getTotalPercentage();}
+        pastTotals.add(15, (int) percent);
+
         myDatabase.execSQL("delete from pastTotalsTbl");
 
-        Log.i("8888", "goals" + pastGoals.size());
-        pastGoals.remove(0);
-        pastGoals.add(15, convertGoalsToJson());
-        myDatabase.execSQL("delete from pastGoals");
         for (int i = 0; i < pastTotals.size(); i++) {
             myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
-
-            myDatabase.execSQL("INSERT INTO pastGoals (goalsJson) VALUES ('" + pastGoals.get(i) + "')");
 
         }
         Log.i("8888", "" + pastTotals.size());
 
 
-}
-
-
-    public String convertGoalsToJson(){
-        String strJson;
-        try {
-            Cursor c = myDatabase.rawQuery("SELECT * FROM goalsTbl", null);
-
-            int nameIndex = c.getColumnIndex("name");
-            int totalIndex = c.getColumnIndex("total");
-            int doneIndex = c.getColumnIndex("done");
-            int percentIndex = c.getColumnIndex("percent");
-            int b0Index = c.getColumnIndex("b0");
-            int b1Index = c.getColumnIndex("b1");
-            int b2Index = c.getColumnIndex("b2");
-            int b3Index = c.getColumnIndex("b3");
-            int b4Index = c.getColumnIndex("b4");
-            int b5Index = c.getColumnIndex("b5");
-            int b6Index = c.getColumnIndex("b6");
-
-            c.moveToFirst();
-            boolean cancel = false;
-            int pos = 0;
-
-            strJson="{\"Goals\":[";
-
-            while (c!=null && cancel == false) {
-
-                try {
-                    Log.i("6705saveToCloud", "inside Json loop1");
-                    if (pos == 0){strJson += "{";}else{strJson += ",{";}
-//strings need to be held inside \" \" to allow for spaces?!!
-                    strJson += "" +
-                            "\"name\":" + " \" " + c.getString(nameIndex) + " \" " + "," +
-                            "\"total\":" + c.getInt(totalIndex) + "," +
-                            "\"done\":" + c.getInt(doneIndex) + "," +
-                            "\"percent\":" + c.getDouble(percentIndex) + "," +
-                            "\"b0\":" + c.getInt(b0Index) + "," +
-                            "\"b1\":" + c.getInt(b1Index) + "," +
-                            "\"b2\":" + c.getInt(b2Index) + "," +
-                            "\"b3\":" + c.getInt(b3Index) + "," +
-                            "\"b4\":" + c.getInt(b4Index) + "," +
-                            "\"b5\":" + c.getInt(b5Index) + "," +
-                            "\"b6\":" + c.getInt(b6Index) +
-                            "}";}
-                catch (Exception e) {
-                    cancel = true;Log.i("6705why1", "canceled from index out of bounds exception/or Json Error");e.printStackTrace();
-                    strJson +="}";
-                }
-
-                pos++;
-                c.moveToNext();
-            }
-            strJson += "]}";
-        }catch(Exception e){strJson= "{\"Goals\":[]}";}//if nae table opened yet - eg profile made but not started = empty?
-        try {
-
-            new JSONObject(strJson);}
-        catch(Exception e){e.printStackTrace();
-            Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
-
-            Log.i("6705del", "NULL OBJECT " + e.toString());
-
-        }
-
-        //here i need to delete 0 and replace 15 with the new one, as above. and then ID isnt needed - i just use the arraylist positions which should correlate?
-        //myDatabase.execSQL("INSERT INTO pastGoals (id) VALUES ("+i+")");
-
-
-        //this is the Json string for all the goals upon loading past totals. strJson.
-        return strJson;
     }
 
 

@@ -327,7 +327,7 @@ if(v.getTag() == "sharkSwim") {
         View dialogView = inflater.inflate(R.layout.goal_list_item, null);
         builder.setView(dialogView);
 
-
+/*
         //i should put this into a wee scrollpane so that it only displays two or three goals and you scroll through them?
         //keeping the pop up quite small?
         String name;
@@ -338,8 +338,8 @@ if(v.getTag() == "sharkSwim") {
 
         ArrayList<Goal> pastGoalARRAY = new ArrayList<>();
 
-        try {
-            JSONObject jsonRootObject = new JSONObject(ProfileMainActivity.goalStore.pastGoals.get(x));
+       try {
+           JSONObject jsonRootObject = new JSONObject(ProfileMainActivity.goalStore.pastGoals.get(x));
             JSONArray jsonArray = jsonRootObject.optJSONArray("Goals");
 
             Log.i("888888", "jsonlength1" + jsonArray.length());
@@ -371,12 +371,12 @@ if(v.getTag() == "sharkSwim") {
             }
 
         }catch(Exception e){Log.i("888888","jsonlength error" +e.toString());}
-
+*/
         Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.goals_layout);
 
         ListView lv = (ListView) dialog.findViewById(R.id.listview);
-        lv.setAdapter(new CustomArrayAdapterPast(this.getActivity(), pastGoalARRAY, x));
+       // lv.setAdapter(new CustomArrayAdapterPast(this.getActivity(), pastGoalARRAY, x));
         dialog.setCancelable(true);
         dialog.setTitle("Past Week: " + y + "%");
         dialog.show();

@@ -1,3 +1,5 @@
+/*
+
 package com.parse.starter;
 
 import android.content.Context;
@@ -19,11 +21,9 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-/**
- * Created by Borris on 22/03/2016.
- */
-public class CustomArrayAdapterPast extends ArrayAdapter<Goal> implements View.OnClickListener {
-private final Context context;
+
+//public class CustomArrayAdapterPast extends ArrayAdapter<Goal> implements View.OnClickListener {
+//private final Context context;
 //holds a reference to mainAct goalStore. and when updated here, it updates there. i think.
 //this is because it has been made static - so accessible from whole app (previously i implemented a callback interface to frag2, then accessed its getActivity to edit in mainAct. bad.
 
@@ -77,12 +77,12 @@ public View getView(int position, View convertView, ViewGroup parent) {
 
 
     try {
-        JSONObject jsonRootObject = new JSONObject(ProfileMainActivity.goalStore.pastGoals.get(clickedPosition));
-        JSONArray jsonArray = jsonRootObject.optJSONArray("Goals");
+        //JSONObject jsonRootObject = new JSONObject(ProfileMainActivity.goalStore.pastGoals.get(clickedPosition));
+       // JSONArray jsonArray = jsonRootObject.optJSONArray("Goals");
 
-        Log.i("888888", "jsonlength1" + jsonArray.length());
+       // Log.i("888888", "jsonlength1" + jsonArray.length());
 
-        for (int i = 0; i < jsonArray.length(); i++) {
+       // for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
 
             Log.i("888888", "jsonlength2" + jsonArray.length());
@@ -99,25 +99,25 @@ public View getView(int position, View convertView, ViewGroup parent) {
                 Log.i("888888", "jsonlength5" + jsonArray.length());
                 holder.percentageBar.setProgress((int) Double.parseDouble(jsonObject.optString("percent")));
 
-                if(Integer.parseInt(jsonObject.optString("b0"))==0) {
+                if(Integer.parseInt(jsonObject.optString("b0"))!=0) {
                     holder.b0.setImageResource(R.drawable.m1);}
                 else{holder.b0.setImageResource(R.drawable.m2);}
-                if(Integer.parseInt(jsonObject.optString("b1"))==0) {
+                if(Integer.parseInt(jsonObject.optString("b1"))!=0) {
                     holder.b1.setImageResource(R.drawable.t1);}
                 else{holder.b1.setImageResource(R.drawable.t2);}
-                if(Integer.parseInt(jsonObject.optString("b2"))==0) {
+                if(Integer.parseInt(jsonObject.optString("b2"))!=0) {
                     holder.b2.setImageResource(R.drawable.w1);}
                 else{holder.b2.setImageResource(R.drawable.w2);}
-                if(Integer.parseInt(jsonObject.optString("b3"))==0) {
+                if(Integer.parseInt(jsonObject.optString("b3"))!=0) {
                     holder.b3.setImageResource(R.drawable.t1);}
                 else{holder.b3.setImageResource(R.drawable.t2);}
-                if(Integer.parseInt(jsonObject.optString("b4"))==0) {
+                if(Integer.parseInt(jsonObject.optString("b4"))!=0) {
                     holder.b4.setImageResource(R.drawable.f1);}
                 else{holder.b4.setImageResource(R.drawable.f2);}
-                if(Integer.parseInt(jsonObject.optString("b5"))==0) {
+                if(Integer.parseInt(jsonObject.optString("b5"))!=0) {
                     holder.b5.setImageResource(R.drawable.s1);}
                 else{holder.b5.setImageResource(R.drawable.s2);}
-                if(Integer.parseInt(jsonObject.optString("b6"))==0) {
+                if(Integer.parseInt(jsonObject.optString("b6"))!=0) {
                     holder.b6.setImageResource(R.drawable.s1);}
                 else{holder.b6.setImageResource(R.drawable.s2);}
 
@@ -154,3 +154,4 @@ static class ViewHolder {
 
 
 }
+*/
