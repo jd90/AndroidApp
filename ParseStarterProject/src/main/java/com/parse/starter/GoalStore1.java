@@ -154,6 +154,8 @@ boolean cancel=false;
         }
 
         firstweek = false;
+        loadPastTotalsFromDB();//added 220316
+        savePastTotalstoDB(); //added 220316
 
         this.clear();
         c = myDatabase.rawQuery("SELECT * FROM FgoalsTbl", null);
@@ -231,26 +233,24 @@ boolean cancel=false;
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastGoals (goalsJson VARCHAR)");
         Log.i("HEREYEGOARRAY", " size " + pastTotals.size());
 
+        for(int i=0; i<16; i++){
         String strJson="{\"Goals\":[";
          strJson += "{" +
-                 "\"name\":" + "\"defaultgoal\""+"," +
-                "\"total\":8," +
+                 "\"name\":" + "\"defaultgoal\"," +
+                "\"total\":"+i+"," +
                 "\"done\":5," +
                 "\"percent\":40," +
                 "\"b0\":0," +
-                "\"b1\":0," +
-                "\"b2\":0," +
+                "\"b1\":1," +
+                "\"b2\":1," +
                 "\"b3\":0," +
                 "\"b4\":0," +
-                "\"b5\":0," +
+                "\"b5\":1," +
                 "\"b6\":0" +
                 "}]";
         strJson += "}";
 
-        pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);
-        pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);
-        pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);pastGoals.add(strJson);
-        pastGoals.add(strJson);
+        pastGoals.add(strJson);}
 
         for(int i=0; i<16; i++){
             myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) +" )");
@@ -326,6 +326,7 @@ boolean cancel=false;
             }catch(Exception e){cancel2 = true; Log.i("6705whyPASTGOALSgstore", "canceled index out of bounds exception");}
         }
 
+        Log.i("8888", "pastTotalsArray "+pastTotals.toString());
         Log.i("8888", "pastGoalsArray "+pastGoals.toString());
 
 
@@ -335,18 +336,19 @@ boolean cancel=false;
     public void savePastTotalstoDB() {
 
 
-        Log.i("8888", "" + pastTotals.size());
+        Log.i("8888", "totals" + pastTotals.size());
         pastTotals.remove(0);
         pastTotals.add(15, (int) this.getTotalPercentage());
-
-        pastGoals.remove(0);
-        pastGoals.add(15, convertGoalsToJson());
         myDatabase.execSQL("delete from pastTotalsTbl");
 
+        Log.i("8888", "goals" + pastGoals.size());
+        pastGoals.remove(0);
+        pastGoals.add(15, convertGoalsToJson());
+        myDatabase.execSQL("delete from pastGoals");
         for (int i = 0; i < pastTotals.size(); i++) {
             myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
 
-            myDatabase.execSQL("INSERT INTO pastGoals (name, done, total, b0,b1,b2,b3,b4,b5,b6, percent) VALUES ('" + pastGoals.get(i) + "')");
+            myDatabase.execSQL("INSERT INTO pastGoals (goalsJson) VALUES ('" + pastGoals.get(i) + "')");
 
         }
         Log.i("8888", "" + pastTotals.size());

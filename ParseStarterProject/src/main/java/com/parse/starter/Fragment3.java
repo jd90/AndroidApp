@@ -3,9 +3,12 @@ package com.parse.starter;
 /**
  * Created by Borris on 04/02/2016.
  */
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -21,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -308,7 +312,7 @@ if(v.getTag() == "sharkSwim") {
     @Override
     public boolean onLongClick(View v) {
 
-        LinearLayout l = (LinearLayout)v;
+        LinearLayout l = (LinearLayout) v;
         int x = Integer.parseInt(l.getTag().toString());
         int y = ProfileMainActivity.goalStore.pastTotals.get(x);
         Toast t = Toast.makeText(getActivity(), y + "%", Toast.LENGTH_SHORT);
@@ -324,13 +328,18 @@ if(v.getTag() == "sharkSwim") {
         builder.setView(dialogView);
 
 
-
         //i should put this into a wee scrollpane so that it only displays two or three goals and you scroll through them?
         //keeping the pop up quite small?
 
+        Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.goals_layout);
 
-
-
+        ListView lv = (ListView) dialog.findViewById(R.id.listview);
+        lv.setAdapter(new CustomArrayAdapterPast(this.getActivity(), ProfileMainActivity.goalStore.pastGoals, x));
+        dialog.setCancelable(true);
+        dialog.setTitle("Past Week: " + y + "%");
+        dialog.show();
+/*
         relativeLayout = (RelativeLayout) dialogView.findViewById(R.id.goal_Layout_Relative);
         goalTitleView = (TextView) dialogView.findViewById(R.id.goalTitle);
         numberOutOfView = (TextView) dialogView.findViewById(R.id.goalTargets);
@@ -346,7 +355,7 @@ if(v.getTag() == "sharkSwim") {
 
 
         try {
-            JSONObject jsonRootObject = new JSONObject(ProfileMainActivity.goalStore.pastGoals.get(0));
+            JSONObject jsonRootObject = new JSONObject(ProfileMainActivity.goalStore.pastGoals.get(x));
             JSONArray jsonArray = jsonRootObject.optJSONArray("Goals");
 
             Log.i("888888", "jsonlength1" + jsonArray.length());
@@ -368,26 +377,25 @@ if(v.getTag() == "sharkSwim") {
                     Log.i("888888", "jsonlength5" + jsonArray.length());
                     percentageBar.setProgress((int) Double.parseDouble(jsonObject.optString("percent")));
 
-                    Log.i("888888", "jsonlength6" + jsonArray.length());
                     if(Integer.parseInt(jsonObject.optString("b0"))==0) {
                         b0.setImageResource(R.drawable.m1);}
                     else{b0.setImageResource(R.drawable.m2);}
-                    if(Integer.parseInt(jsonObject.optString("b0"))==0) {
+                    if(Integer.parseInt(jsonObject.optString("b1"))==0) {
                         b1.setImageResource(R.drawable.t1);}
                     else{b1.setImageResource(R.drawable.t2);}
-                    if(Integer.parseInt(jsonObject.optString("b0"))==0) {
+                    if(Integer.parseInt(jsonObject.optString("b2"))==0) {
                         b2.setImageResource(R.drawable.w1);}
                     else{b2.setImageResource(R.drawable.w2);}
-                    if(Integer.parseInt(jsonObject.optString("b0"))==0) {
+                    if(Integer.parseInt(jsonObject.optString("b3"))==0) {
                         b3.setImageResource(R.drawable.t1);}
                     else{b3.setImageResource(R.drawable.t2);}
-                    if(Integer.parseInt(jsonObject.optString("b0"))==0) {
+                    if(Integer.parseInt(jsonObject.optString("b4"))==0) {
                         b4.setImageResource(R.drawable.f1);}
                     else{b4.setImageResource(R.drawable.f2);}
-                    if(Integer.parseInt(jsonObject.optString("b0"))==0) {
+                    if(Integer.parseInt(jsonObject.optString("b5"))==0) {
                         b5.setImageResource(R.drawable.s1);}
                     else{b5.setImageResource(R.drawable.s2);}
-                    if(Integer.parseInt(jsonObject.optString("b0"))==0) {
+                    if(Integer.parseInt(jsonObject.optString("b6"))==0) {
                         b6.setImageResource(R.drawable.s1);}
                     else{b6.setImageResource(R.drawable.s2);}
 
@@ -399,9 +407,10 @@ if(v.getTag() == "sharkSwim") {
         builder.show();
 
 
+    */
         return false;
-    }
 
+    }
 
 
 }
