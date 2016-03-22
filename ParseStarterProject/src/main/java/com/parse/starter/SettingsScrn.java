@@ -47,6 +47,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
     static ArrayList<JSONObject> JSONgoals = new ArrayList<>();
     static ArrayList<JSONObject> JSONFuturegoals = new ArrayList<>();
     static ArrayList<JSONObject> JSONPastTotals = new ArrayList<>();
+    static ArrayList<JSONObject> JSONPastGoals = new ArrayList<>();
     static int count;
     static int size;
     static int counter;
@@ -184,7 +185,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
 
 
 //this must be cleared?? otherwise if you decrease the size and it hasnt been shut to stop persistence then its still got more in it = nullpointer because its used as the loop i<?
-        JSONgoals.clear();JSONFuturegoals.clear();JSONPastTotals.clear();
+        JSONgoals.clear();JSONFuturegoals.clear();JSONPastTotals.clear();JSONPastGoals.clear();
 
         for (int i = 0; i < MainActivity.profileDatastore.profiles.size(); i++) {
             int profileID= MainActivity.profileDatastore.profiles.get(i).databaseNum;
@@ -235,6 +236,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
         JSONgoals.add(convertGoalsToJSON(x));
         JSONFuturegoals.add(convertFutureGoalsToJSON(x));
         JSONPastTotals.add(convertPastTotalsToJSON(x));
+        JSONPastGoals.add(convertPastGoalsToJSON(x));
         Log.i("6705del", "JSONMETHOD" + JSONgoals.toString());
     }
 
@@ -409,6 +411,52 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
 
     }
 
+    public JSONObject convertPastGoalsToJSON(int i){
+//this section is ok? it opens the profilename I's database and saves to the JSONobject
+        SQLiteDatabase myDatabase = this.openOrCreateDatabase("GoalApp" + i, MODE_PRIVATE, null);
+        String strJson;
+        try {
+            Cursor c = myDatabase.rawQuery("SELECT * FROM pastGoals", null);
+
+            int goalsJsonIndex = c.getColumnIndex("goalsJson");
+
+            c.moveToFirst();
+            boolean cancel = false;
+            int pos = 0;
+
+            strJson="{\"PastGoals\":['"; // i stuck a ' in there to prevent it from closing itself - as it has Json inside Json - clever
+
+            while (c!=null && cancel == false) {
+
+                try {
+                    Log.i("6705saveToCloud", "inside Json loop1");
+                    if (pos == 0){strJson += "{";}else{strJson += ",{";}
+//strings need to be held inside \" \" to allow for spaces?!!
+                    strJson += "" +
+                            "\"pastGoal\":" + " \" " + c.getString(goalsJsonIndex) + " \" " + "," +
+                            "}";}
+                catch (Exception e) {
+                    cancel = true;Log.i("6705why1", "canceled from index out of bounds exception/or Json Error");e.printStackTrace();
+                    strJson +="}";
+                    c.close();myDatabase.close();
+                }
+
+                pos++;
+                c.moveToNext();
+            }
+            strJson += "']}";
+        }catch(Exception e){strJson= "{\"pastGoals\":[]}";}//if nae table opened yet - eg profile made but not started = empty?
+        try {return new JSONObject(strJson);}
+        catch(Exception e){Log.i("8888", e.toString());
+            Log.i("9999", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
+
+            Log.i("9999", "NULL OBJECT " + e.toString());
+
+            return null;}
+
+
+    }
+
     public void saveToParse(){
 
 
@@ -441,6 +489,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
             goal.put("Count", MainActivity.profileDatastore.count);
             goal.put("FutureGoals", JSONFuturegoals.get(ii));
             goal.put("PastTotals", JSONPastTotals.get(ii));
+            goal.put("PastGoals", JSONPastGoals.get(ii));
 
             goal.saveInBackground(new SaveCallback() {
                 @Override
@@ -483,6 +532,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                     int b5=800;
                     int b6=800;
                     int pastTotals=800;
+                    String pastGoal="";
 
                     Log.d("6705del", goalData.size() + " scores loading down");
                     if (goalData.size() < 1) {
@@ -539,6 +589,11 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                                 database.execSQL("INSERT INTO FgoalsStarted (started) VALUES (1)");
                                 database.execSQL("CREATE TABLE IF NOT EXISTS FgoalsTbl (name VARCHAR, total INT(3))");
                                 database.execSQL("delete from FgoalsTbl");
+
+                                database.execSQL("CREATE TABLE IF NOT EXISTS pastGoals (goalsJson VARCHAR)");
+                                database.execSQL("delete from pastGoals");
+
+
 
                                 //Iterate the jsonArray and print the info of JSONObjects
 
@@ -624,6 +679,25 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                                         }
                                    } catch (Exception e3) {
                                         Log.i("6705del", " problem making JSONobject3" + e3.toString());}
+
+                            for(int i=0; i<pastTotalsArray.size(); i++) {
+                                database.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotalsArray.get(i) + ")");
+
+                            }
+                            ArrayList<String> pastGoalsArray = new ArrayList<>();
+                            try {
+                                JSONObject pastGoalsObject = goalRow.getJSONObject("PastGoals");
+                                Log.i("6705del", "JSONobject WORKED3" + goalRow.getJSONObject("PastGoals"));
+                                JSONArray jsonArray3 = pastGoalsObject.optJSONArray("PastGoals");
+                                //Iterate the jsonArray and print the info of JSONObjects
+
+                                for (int i = 0; i < jsonArray3.length()-1; i++) {
+                                    JSONObject jsonObject = jsonArray3.getJSONObject(i);
+                                    pastGoal = (jsonObject.optString("pastGoal"));
+                                    pastGoalsArray.add(i, pastGoal);
+                                }
+                            } catch (Exception e3) {
+                                Log.i("6705del", " problem making JSONobject3" + e3.toString());}
 
                             for(int i=0; i<pastTotalsArray.size(); i++) {
                                 database.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotalsArray.get(i) + ")");
