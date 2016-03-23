@@ -44,6 +44,8 @@ public class Goal {
     public void changePercent(Boolean b){
         if(b){percent += percentNum;}
         else{percent -= percentNum;}
+
+        if(percent > 100){percent =100;}
     }
 
     public String toString(){
