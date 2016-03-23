@@ -247,13 +247,13 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
         SQLiteDatabase myDatabase = this.openOrCreateDatabase("GoalApp" + i, MODE_PRIVATE, null);
 
         Cursor reDay = myDatabase.rawQuery("SELECT * FROM refreshDay", null);
-        int refreshIndex = reDay.getColumnIndex("name");
+        int refreshIndex = reDay.getColumnIndex("day");
 
         reDay.moveToFirst();
 
         try {
             refreshdayTemp = reDay.getInt(refreshIndex);
-        }catch(Exception e){refreshdayTemp=400;}
+        }catch(Exception e){refreshdayTemp=400; Log.i("400", " "+e.toString());}
 
         return refreshdayTemp;
 

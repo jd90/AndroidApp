@@ -1,6 +1,8 @@
 package com.parse.starter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
@@ -108,6 +110,23 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
     @Override
     public void onClick(View v) {
 
+
+
+
+        if(ProfileMainActivity.goalStore.refreshDay == 366){
+            AlertDialog.Builder confirm = new AlertDialog.Builder(getContext());
+            confirm.setTitle("Holiday Mode");
+            confirm.setMessage("Sorry, Holiday Mode is Activated!\n Deactivate to Proceed with Goals");
+            confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    //could stick a deactivation button right here?? if i have time or think its better
+                }
+            })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+
+        }else{
+
         LinearLayout l = (LinearLayout)v.getParent();
         Goal g = goalStore.getAt(Integer.parseInt(l.getTag().toString()));
         for(int i=0; i < goalStore.getSize(); i++){
@@ -119,6 +138,7 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
                 notifyDataSetChanged();
 
             }
+        }
         }
 
     }
