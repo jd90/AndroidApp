@@ -51,6 +51,8 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
     static int count;
     static int size;
     static int counter;
+    ArrayList<Integer> refreshdayArray = new ArrayList<>();
+    int refreshdayTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,14 +238,32 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
         JSONgoals.add(convertGoalsToJSON(x));
         JSONFuturegoals.add(convertFutureGoalsToJSON(x));
         JSONPastTotals.add(convertPastTotalsToJSON(x));
+        refreshdayArray.add(getRefreshDays(x));
         //JSONPastGoals.add(convertPastGoalsToJSON(x));
         Log.i("6705del", "JSONMETHOD" + JSONgoals.toString());
+    }
+
+    public int getRefreshDays(int i){
+        SQLiteDatabase myDatabase = this.openOrCreateDatabase("GoalApp" + i, MODE_PRIVATE, null);
+
+        Cursor reDay = myDatabase.rawQuery("SELECT * FROM refreshDay", null);
+        int refreshIndex = reDay.getColumnIndex("name");
+
+        reDay.moveToFirst();
+
+        try {
+            refreshdayTemp = reDay.getInt(refreshIndex);
+        }catch(Exception e){refreshdayTemp=400;}
+
+        return refreshdayTemp;
+
     }
 
     public JSONObject convertGoalsToJSON(int i){
 //this section is ok? it opens the profilename I's database and saves to the JSONobject
         SQLiteDatabase myDatabase = this.openOrCreateDatabase("GoalApp" + i, MODE_PRIVATE, null);
-        String strJson;
+
+            String strJson;
         try {
             Cursor c = myDatabase.rawQuery("SELECT * FROM goalsTbl", null);
 
@@ -260,7 +280,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
         int b6Index = c.getColumnIndex("b6");
 
         c.moveToFirst();
-        boolean cancel = false;
+        Boolean cancel = false;
         int pos = 0;
 
         strJson="{\"Goals\":[";
@@ -469,7 +489,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
 
         Log.i("6705del", "save goals called");
         Log.i("6705del", "save goals called " + JSONgoals.size());
-        if(JSONgoals.size()==0){Toast t = Toast.makeText(getApplicationContext(), "Yu'v nae goals tae save, ya chancer!", Toast.LENGTH_SHORT);t.show();}
+        if(JSONgoals.size()==0){Toast t = Toast.makeText(getApplicationContext(), "Yu'v nae profiles tae save, ya chancer!", Toast.LENGTH_SHORT);t.show();}
         for (int ii = 0; ii < JSONgoals.size(); ii++) {
 
             Log.i("6705del", "save goals called loop");
@@ -487,9 +507,9 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
             Calendar calendar= Calendar.getInstance();
             int dayofyear = calendar.get(Calendar.DAY_OF_YEAR);
             int day = calendar.get(Calendar.DAY_OF_WEEK);
-            int refreshDay = dayofyear + daysToRefresh(day);
+            //int refreshDay = dayofyear + daysToRefresh(day);//cant use this, has to get specific profile's refresh days...
             goal.put("ProfileID", profileID);
-            goal.put("RefreshDay", refreshDay);
+            goal.put("RefreshDay", refreshdayArray.get(ii));
             goal.put("ProfileName", profileName);
             goal.put("Count", MainActivity.profileDatastore.count);
             goal.put("FutureGoals", JSONFuturegoals.get(ii));

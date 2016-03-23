@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.security.acl.Group;
+
 public class ProfileMainActivity extends AppCompatActivity {
 
     static GoalStore1 goalStore;
@@ -24,12 +26,15 @@ public class ProfileMainActivity extends AppCompatActivity {
     static SQLiteDatabase myDatabase;
     static Context context;
     int profile;
+    static MenuItem holiday;
+    static Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context =this.getApplicationContext();
+
 
         profile = getIntent().getExtras().getInt("profile");
 
@@ -59,10 +64,21 @@ public class ProfileMainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
-        return true;
 
+        this.menu = menu;//overcame an issue here, was trying to find menu item from menu being called before menu was inflated..
+        MenuItem holiday = menu.findItem(R.id.holiday).setTitle("hiya");
+
+        if(ProfileMainActivity.goalStore.holidaymode){
+
+            holiday.setTitle("Holiday Mode: ACTIVE");
+        }else{holiday.setTitle("Holiday Mode: DISABLED");}
+
+
+return true;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -146,9 +162,40 @@ public class ProfileMainActivity extends AppCompatActivity {
                 startActivityForResult(intent, 8);
 
                 break;
+            case "Holiday Mode: DISABLED":
+                goalStore.setHolidayMode(true);
+
+                item.setTitle("Holiday Mode: ACTIVE");
+
+                break;
+            case "Holiday Mode: ACTIVE":
+                goalStore.setHolidayMode(false);
+
+                item.setTitle("Holiday Mode: DISABLED");
+
+                break;
         }
 
 
+    }
+
+    public static void setHolidayTitle(){
+
+
+
+        //MenuItem holiday = (MenuItem) menu.findItem(R.id.settingsGroup);
+        //MenuItem set = (MenuItem)menu.getItem(R.id.settingsGroup);
+        //MenuItem holiday = (MenuItem) set.getSubMenu().getItem(R.id.holiday);
+        // (MenuItem) set.getSubMenu().findItem(R.id.holiday);
+        //set.getSubMenu().removeItem(R.id.holiday);
+        //holiday =  menu.getItem(R.id.settingsGroup).getSubMenu().getItem(R.id.holiday);
+
+     //   MenuItem holiday = menu.findItem(R.id.holiday).setTitle("hiya");
+        //
+       // if(mode){
+
+     //       holiday.setTitle("Holiday Mode: ACTIVE");
+   //     }else{holiday.setTitle("Holiday Mode: DISABLED");}
     }
 
 }

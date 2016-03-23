@@ -2126,6 +2126,7 @@ containing a value of this type.
         public static final int goalTargets=0x7f0d0073;
         public static final int goalTitle=0x7f0d0072;
         public static final int goal_Layout_Relative=0x7f0d0071;
+        public static final int holiday=0x7f0d00ce;
         public static final int home=0x7f0d0004;
         public static final int homeAsUp=0x7f0d000e;
         public static final int icon=0x7f0d0042;

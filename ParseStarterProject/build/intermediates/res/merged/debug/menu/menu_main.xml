@@ -28,6 +28,9 @@
     <item android:id="@+id/reorder"
         android:title="Re-order Goals"
         android:onClick="menuDropdown"/>
+        <item android:id="@+id/holiday"
+            android:title="Holiday Mode: DISABLED"
+            android:onClick="menuDropdown"/>
 </group>
 
 

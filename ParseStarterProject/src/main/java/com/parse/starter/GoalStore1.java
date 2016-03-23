@@ -22,6 +22,9 @@ public class GoalStore1 {
     Calendar calendar = Calendar.getInstance();
     static int dayofyear;
     static int day;
+    int refreshDay;
+
+    static Boolean holidaymode;
 
 
     public GoalStore1(SQLiteDatabase x) {
@@ -31,6 +34,15 @@ public class GoalStore1 {
         setDayVariables();
 
         setUpGoalStore();
+
+        if(refreshDay >365){
+            holidaymode =(true);
+        }else{
+
+            holidaymode = (false);
+        }
+
+
 
     }
 
@@ -229,7 +241,7 @@ boolean cancel=false;
                     c = myDatabase.rawQuery("SELECT * FROM refreshDay", null);
                     int refreshIndex = c.getColumnIndex("day");
                     c.moveToFirst();
-                    int refreshDay =c.getInt(refreshIndex);
+                    refreshDay =c.getInt(refreshIndex);
 
                     if (dayofyear >= refreshDay) {
 
@@ -291,6 +303,23 @@ boolean cancel=false;
         }
         Log.i("8888", "" + pastTotals.size());
 
+
+    }
+
+    public void setHolidayMode(Boolean mode){
+
+        if(mode){
+            refreshDay = 366; //canna be reached
+
+        }else{
+
+            refreshDay = dayofyear + daysToRefresh();//refreshes it to restart, ye'll have a dead few days tho... possibly fine, could maybe change it to be a specialised first week if i have time
+            if (refreshDay > 365) {
+                refreshDay -= 365;
+            }
+        }
+        myDatabase.execSQL("delete from refreshDay");
+        myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDay + ")");
 
     }
 

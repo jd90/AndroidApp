@@ -631,6 +631,7 @@ int id goalPercent 0x7f0d0074
 int id goalTargets 0x7f0d0073
 int id goalTitle 0x7f0d0072
 int id goal_Layout_Relative 0x7f0d0071
+int id holiday 0x7f0d00ce
 int id home 0x7f0d0004
 int id homeAsUp 0x7f0d000e
 int id icon 0x7f0d0042
