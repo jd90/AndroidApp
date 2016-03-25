@@ -1,5 +1,7 @@
 package com.parse.starter;
 
+import android.util.Log;
+
 /**
  * Created by Borris on 21/02/2016.
  */
@@ -93,7 +95,7 @@ public class Goal {
 
     public void buttonClick(int s, int amount, boolean updown){
 
-        if(updown){
+        if(!updown){
             if(buttons[s]) {
                 buttons[s] = false;
                 changePercent(true, amount);
@@ -101,11 +103,12 @@ public class Goal {
                 buttonsThrough[s]=amount;}
         }else{
             buttons[s]=true;
-                changePercent(true, amount);
+                changePercent(false, amount);
                 done-= amount;
                 buttonsThrough[s]=amount;
         }
 
+        Log.i("3333", " buttonsthrough is"+buttonsThrough[s]);
         //this doesnae work. it has to change the amount and the done and the percent etc to what done is - and if numberpicker =0 it shouldnt subtract 0, but set it to 0
         if(buttonsThrough[s] == 0){    //dae this with the setValue of the numberpicker - compare it to the selected amount and work from there, etc.
             buttons[s]=false;}

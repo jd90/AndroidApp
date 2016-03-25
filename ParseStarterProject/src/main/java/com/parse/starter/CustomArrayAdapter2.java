@@ -144,13 +144,13 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
                         before=goalStore.getAt(i).buttonsThrough[(Integer.parseInt(v.getTag().toString()))];
                         numberPicker.setValue(before);
                         numberPicker.setWrapSelectorWheel(true);
-                        numberPicker.setOnValueChangedListener( new NumberPicker.
-                                OnValueChangeListener() {
-                            @Override
-                            public void onValueChange(NumberPicker picker, int
-                                    oldVal, int newVal) {
+                        //numberPicker.setOnValueChangedListener( new NumberPicker.
+                          //      OnValueChangeListener() {
+                            //@Override
+                            //public void onValueChange(NumberPicker picker, int
+                              //      oldVal, int newVal) {
 
-                            }});
+                            //}});
 
 
                         AlertDialog.Builder confirm = new AlertDialog.Builder(getContext());
@@ -158,13 +158,13 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
                         confirm.setView(numberPicker);
                         confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                int num = before-numberPicker.getValue();
+                                int num = numberPicker.getValue();//before-numberPicker.getValue();
                                 if(before>= numberPicker.getValue()){
 
-                                    g.buttonClick(Integer.parseInt(v.getTag().toString()), num, true);
+                                    g.buttonClick(Integer.parseInt(v.getTag().toString()), before-num, true);
                                 }else{
 
-                                    g.buttonClick(Integer.parseInt(v.getTag().toString()), num, false);
+                                    g.buttonClick(Integer.parseInt(v.getTag().toString()), num-before, false);
                                 }
 
                                 notifyDataSetChanged();
