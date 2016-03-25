@@ -56,9 +56,12 @@ public class GoalStore2 {
         myDatabase.execSQL("delete from FgoalsTbl");
         for(int i=0; i<this.getSize(); i++){
             Log.i("goalstore2future", "" + this.getSize());
-            myDatabase.execSQL("INSERT INTO FgoalsTbl (name, total) VALUES ('"
+            int type;
+            if(this.getAt(i).type){type=1;}else{type=0;}
+            myDatabase.execSQL("INSERT INTO FgoalsTbl (name, total, type) VALUES ('"
                     +this.getAt(i).name+"', "
-                    +this.getAt(i).total+")");
+                    +this.getAt(i).total+", "
+                    +type+")");
         }
 
         Log.i("goalstore2future", "being updated");
@@ -68,12 +71,14 @@ public class GoalStore2 {
         c = myDatabase.rawQuery("SELECT * FROM FgoalsTbl", null);
         int nameIndex = c.getColumnIndex("name");
         int totalIndex = c.getColumnIndex("total");
+        int typeIndex =c.getColumnIndex("type");
         c.moveToFirst();
         int pos = 0;
         while (c != null) {
             Log.i("goalstore2future", c.getString(nameIndex));
-
-            this.add(new Goal(c.getString(nameIndex), c.getInt(totalIndex)));
+            boolean type;
+            if(c.getInt(typeIndex)==1){type=true;}else{type=false;}
+            this.add(new Goal(c.getString(nameIndex), c.getInt(totalIndex), type));
             pos++;
             c.moveToNext();
         }
@@ -94,7 +99,7 @@ public class GoalStore2 {
                         myDatabase.execSQL("INSERT INTO FgoalsStarted (started) VALUES (1)");
                     Log.i("goalstore2future", "started set");
 
-                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS FgoalsTbl (name VARCHAR, total INT(3))");
+                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS FgoalsTbl (name VARCHAR, total INT(3), type INT(1))");
                 }
                 else {
 //not empty table

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -107,13 +108,15 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
         return convertView;
     }
 
+    static LinearLayout l;
+    static Goal g;
+    static View v;
     @Override
-    public void onClick(View v) {
+    public void onClick(View v1) {
 
+        v=v1;
 
-
-
-        if(ProfileMainActivity.goalStore.refreshDay == 366){
+        if (ProfileMainActivity.goalStore.refreshDay == 366) {
             AlertDialog.Builder confirm = new AlertDialog.Builder(getContext());
             confirm.setTitle("Holiday Mode");
             confirm.setMessage("Sorry, Holiday Mode is Activated!\n Deactivate to Proceed with Goals");
@@ -125,25 +128,55 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
 
-        }else{
+        } else {
 
-        LinearLayout l = (LinearLayout)v.getParent();
-        Goal g = goalStore.getAt(Integer.parseInt(l.getTag().toString()));
-        for(int i=0; i < goalStore.getSize(); i++){
-            if(goalStore.getAt(i).equals(g)){
-                g.buttonClick(Integer.parseInt(v.getTag().toString()));
+            l = (LinearLayout) v.getParent();
+            g = goalStore.getAt(Integer.parseInt(l.getTag().toString()));
+            for (int i = 0; i < goalStore.getSize(); i++) {
+                if (goalStore.getAt(i).equals(g)) {
 
-                ProfileMainActivity.goalStore.saveToDatabase();
+                    if (goalStore.getAt(i).type) {
 
-                notifyDataSetChanged();
+                        final NumberPicker numberPicker = new NumberPicker(getContext());
+                        numberPicker.setMaxValue(999);
+                        numberPicker.setMinValue(0);
+                        numberPicker.setValue(goalStore.getAt(i).buttonsThrough[(Integer.parseInt(v.getTag().toString()))]);
+                        numberPicker.setWrapSelectorWheel(true);
+                        numberPicker.setOnValueChangedListener( new NumberPicker.
+                                OnValueChangeListener() {
+                            @Override
+                            public void onValueChange(NumberPicker picker, int
+                                    oldVal, int newVal) {
 
+                            }});
+
+
+                        AlertDialog.Builder confirm = new AlertDialog.Builder(getContext());
+                        confirm.setTitle("Through the Week");
+                        confirm.setView(numberPicker);
+                        confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                g.buttonClick(Integer.parseInt(v.getTag().toString()), numberPicker.getValue());
+                                notifyDataSetChanged();
+                            }
+                        })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+
+                    } else {
+
+                        g.buttonClick(Integer.parseInt(v.getTag().toString()));
+
+                    }
+                    ProfileMainActivity.goalStore.saveToDatabase();
+
+                    notifyDataSetChanged();
+                }
             }
-        }
+
         }
 
     }
-
-
     static class ViewHolder {
         // this enables reuse. recyler view it is called? means that it only has to do a findviewbyid call once then reuse it, saving valuable processing time.
         //this means that things like scrolling etc are smoother

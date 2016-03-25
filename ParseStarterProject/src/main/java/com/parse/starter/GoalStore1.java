@@ -78,7 +78,7 @@ public class GoalStore1 {
     public double getTotalPercentage() {
         double sum =0;
         for(Goal g:this.list){
-            sum+=(int) g.percent;
+            sum+=(int) g.getPercentage2();
         Log.i("6705percent", ""+sum);
         }
 
@@ -88,7 +88,9 @@ public class GoalStore1 {
     public void saveToDatabase(){
         myDatabase.execSQL("delete from goalsTbl");
         for(int i=0; i<this.getSize(); i++){
-            myDatabase.execSQL("INSERT INTO goalsTbl (name, done, total, b0,b1,b2,b3,b4,b5,b6, percent) VALUES ('"
+            int type;
+            if(this.getAt(i).type){type=1;}else{type=0;}
+            myDatabase.execSQL("INSERT INTO goalsTbl (name, done, total, b0,b1,b2,b3,b4,b5,b6, percent, type) VALUES ('"
                     +this.getAt(i).name+"', "
                     +this.getAt(i).done+", "
                     +this.getAt(i).total+", "
@@ -99,7 +101,8 @@ public class GoalStore1 {
                     +this.getAt(i).getButton(4) +", "
                     +this.getAt(i).getButton(5) +", "
                     +this.getAt(i).getButton(6) +", "
-                    +this.getAt(i).percent+")");
+                    +this.getAt(i).percent+", "
+                    +type+")");
         }
         Log.i("goalsnull", "being updated");
     }
@@ -121,6 +124,7 @@ public class GoalStore1 {
             int b4Index = c.getColumnIndex("b4");
             int b5Index = c.getColumnIndex("b5");
             int b6Index = c.getColumnIndex("b6");
+            int typeIndex = c.getColumnIndex("type");
 
             c.moveToFirst();
 boolean cancel=false;
@@ -129,8 +133,12 @@ boolean cancel=false;
 
 
                 try {// why must i have this?? and the cancel bit too... tidy this all up
-
-                this.add(new Goal(c.getString(nameIndex), c.getInt(totalIndex)));
+                    boolean type;
+                    if (c.getInt(typeIndex) == 1) {
+                        type = true;
+                    } else {
+                        type = false;}
+                this.add(new Goal(c.getString(nameIndex), c.getInt(totalIndex), type));
                 //this.getAt(pos).name = c.getString(nameIndex);
                 //this.getAt(pos).total = c.getInt(totalIndex);
                 this.getAt(pos).done = c.getInt(doneIndex);
@@ -169,16 +177,19 @@ boolean cancel=false;
         Log.i("8888", "outside loop4");
         int totalIndex = c.getColumnIndex("total");
         Log.i("8888", "outside loop5");
+        int typeIndex = c.getColumnIndex("type");
         c.moveToFirst();
         Log.i("8888", "outside loop6");
         boolean cancel = false;
         while (c != null && cancel==false) {
             try {// why must i have this?? and the cancel bit too... tidy this all up
                 Log.i("8888", "adding: " + c.getString(nameIndex));
-                this.add(new Goal(c.getString(nameIndex), c.getInt(totalIndex)));
+                boolean type;
+                if(c.getInt(typeIndex)==1){type=true;}else{type=false;}
+                this.add(new Goal(c.getString(nameIndex), c.getInt(totalIndex), type));
 
                 c.moveToNext();
-            }catch(Exception e){cancel = true; Log.i("8888", "canceled from index out of bounds exception");}
+            }catch(Exception e){cancel = true; Log.i("8888", "canceled from index out of bounds exception"+e.toString());}
 
         }
         this.saveToDatabase();//better here as its called whenever this is, rather than listing it a-new whenever loadfromfuture is called
@@ -232,7 +243,7 @@ boolean cancel=false;
                         myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
                     }
 
-                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3))");
+                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3), type INT(1))");
 
                     firstweek = true;
                 }

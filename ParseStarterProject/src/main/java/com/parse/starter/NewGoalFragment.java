@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -17,10 +21,17 @@ public class NewGoalFragment extends DialogFragment implements View.OnClickListe
     EditText inputTitle;
     TextView warningMessage;
     Spinner freqSpin;
+    NumberPicker throughPick;
+    LinearLayout timesAWeek;
+    LinearLayout throughTheWeek;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.new_goal_popup, container, false);
+
+        timesAWeek =(LinearLayout) rootView.findViewById(R.id.timesAWeek);
+        throughTheWeek=(LinearLayout) rootView.findViewById(R.id.throughTheWeek);
 
         getDialog().setTitle("New Goal");
         inputTitle = (EditText) rootView.findViewById(R.id.titleInput);
@@ -35,7 +46,22 @@ public class NewGoalFragment extends DialogFragment implements View.OnClickListe
         okB.setTag("ok");
         cancelB.setTag("cancel");
 
+
+        timesAWeek.setVisibility(View.GONE);
+        throughTheWeek.setVisibility(View.GONE);
         freqSpin = (Spinner) rootView.findViewById(R.id.freqSpin);
+        throughPick=(NumberPicker) rootView.findViewById(R.id.numPick);
+        throughPick.setValue(0);
+        throughPick.setMaxValue(999);
+
+        RadioGroup rg= (RadioGroup) rootView.findViewById(R.id.radiogroup);
+
+        RadioButton rb1 = (RadioButton) rootView.findViewById(R.id.radioButton1);
+        RadioButton rb2 = (RadioButton) rootView.findViewById(R.id.radioButton2);
+        rb1.setTag("times");
+        rb2.setTag("through");
+        rb1.setOnClickListener(this);
+        rb2.setOnClickListener(this);
 
         this.setCancelable(false);
         return rootView;
@@ -44,33 +70,49 @@ public class NewGoalFragment extends DialogFragment implements View.OnClickListe
     @Override
     public void onClick(View v) {
 
+        if(v instanceof RadioButton){
+            if(v.getTag().equals("times")){
+                timesAWeek.setVisibility(View.VISIBLE);
+                throughTheWeek.setVisibility(View.GONE);
+            }else{
+                timesAWeek.setVisibility(View.GONE);
+                throughTheWeek.setVisibility(View.VISIBLE);
+            }
+        }else {
 
-        if (v instanceof Button) {
 
-            Button b = (Button) v;
+            if (v instanceof Button) {
+
+                Button b = (Button) v;
 
 
-            if (b.getTag().equals("ok")) {
+                if (b.getTag().equals("ok")) {
 
-                if (inputTitle.getText().toString().equals("")) {
+                    if (inputTitle.getText().toString().equals("")) {
 
-                    warningMessage.setVisibility(View.VISIBLE);
-                    inputTitle.addTextChangedListener(this);
+                        warningMessage.setVisibility(View.VISIBLE);
+                        inputTitle.addTextChangedListener(this);
 
+                    } else {
+                        //ProfileMainActivity.fgoalStore.add(new Goal(inputTitle.getText().toString(), 8));
+                        //ProfileMainActivity.fgoalStore.saveToDatabase();
+
+                        if(timesAWeek.getVisibility()==View.VISIBLE) {
+
+                            FutureGoals.fgoalStore.add(new Goal(inputTitle.getText().toString(), Integer.parseInt(freqSpin.getSelectedItem().toString()), false));
+
+                        }else{
+
+                            FutureGoals.fgoalStore.add(new Goal(inputTitle.getText().toString(), throughPick.getValue(), true));
+
+                        }
+                        FutureGoals.fgoalStore.saveToDatabase();
+                        dismiss();
+                    }
                 } else {
-                    //ProfileMainActivity.fgoalStore.add(new Goal(inputTitle.getText().toString(), 8));
-                    //ProfileMainActivity.fgoalStore.saveToDatabase();
-
-                    FutureGoals.fgoalStore.add(new Goal(inputTitle.getText().toString(), Integer.parseInt(freqSpin.getSelectedItem().toString())));
-
-                    FutureGoals.fgoalStore.saveToDatabase();
-
 
                     dismiss();
                 }
-            } else {
-
-                dismiss();
             }
         }
     }

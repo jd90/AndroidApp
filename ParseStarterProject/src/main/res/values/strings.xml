@@ -30,6 +30,8 @@
             <item>6</item>
             <item>7</item>
         </string-array>
+    <string name="through">Frequency?</string>  <!-- not being used -->
+
 
 
 </resources>

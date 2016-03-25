@@ -299,6 +299,11 @@
     <!-- From: file:/C:/Users/Borris/Desktop/ParseGoalApp/ParseStarterProject/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
     <eat-comment/>
     <string name="status_bar_notification_info_overflow">999+</string>
+    <!-- From: file:/C:/Users/Borris/Desktop/ParseGoalApp/ParseStarterProject/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="through">Frequency?</string>
+    <!-- From: file:/C:/Users/Borris/Desktop/ParseGoalApp/ParseStarterProject/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
+    <eat-comment/>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
     <style name="AlertDialog.AppCompat.Light" parent="Base.AlertDialog.AppCompat.Light"/>
     <style name="Animation.AppCompat.Dialog" parent="Base.Animation.AppCompat.Dialog"/>
