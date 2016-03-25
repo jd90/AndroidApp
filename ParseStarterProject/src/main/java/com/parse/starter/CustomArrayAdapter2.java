@@ -111,6 +111,7 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
     static LinearLayout l;
     static Goal g;
     static View v;
+    static int before;
     @Override
     public void onClick(View v1) {
 
@@ -140,7 +141,8 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
                         final NumberPicker numberPicker = new NumberPicker(getContext());
                         numberPicker.setMaxValue(999);
                         numberPicker.setMinValue(0);
-                        numberPicker.setValue(goalStore.getAt(i).buttonsThrough[(Integer.parseInt(v.getTag().toString()))]);
+                        before=goalStore.getAt(i).buttonsThrough[(Integer.parseInt(v.getTag().toString()))];
+                        numberPicker.setValue(before);
                         numberPicker.setWrapSelectorWheel(true);
                         numberPicker.setOnValueChangedListener( new NumberPicker.
                                 OnValueChangeListener() {
@@ -156,7 +158,15 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
                         confirm.setView(numberPicker);
                         confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                g.buttonClick(Integer.parseInt(v.getTag().toString()), numberPicker.getValue());
+                                int num = before-numberPicker.getValue();
+                                if(before>= numberPicker.getValue()){
+
+                                    g.buttonClick(Integer.parseInt(v.getTag().toString()), num, true);
+                                }else{
+
+                                    g.buttonClick(Integer.parseInt(v.getTag().toString()), num, false);
+                                }
+
                                 notifyDataSetChanged();
                             }
                         })

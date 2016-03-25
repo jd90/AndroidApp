@@ -91,16 +91,25 @@ public class Goal {
             done--;}
     }
 
-    public void buttonClick(int s, int amount){
-        if(buttons[s]) {
-            buttons[s] = false;
-            changePercent(true, amount);
-            done+= amount;
-        buttonsThrough[s]=amount;}
-        else{buttons[s]=true;
-            changePercent(false, amount);
-            done-= amount;
-            buttonsThrough[s]=amount;}
+    public void buttonClick(int s, int amount, boolean updown){
+
+        if(updown){
+            if(buttons[s]) {
+                buttons[s] = false;
+                changePercent(true, amount);
+                done+= amount;
+                buttonsThrough[s]=amount;}
+        }else{
+            buttons[s]=true;
+                changePercent(true, amount);
+                done-= amount;
+                buttonsThrough[s]=amount;
+        }
+
+        //this doesnae work. it has to change the amount and the done and the percent etc to what done is - and if numberpicker =0 it shouldnt subtract 0, but set it to 0
+        if(buttonsThrough[s] == 0){    //dae this with the setValue of the numberpicker - compare it to the selected amount and work from there, etc.
+            buttons[s]=false;}
+
     }
 
     public int getButton(int i){
