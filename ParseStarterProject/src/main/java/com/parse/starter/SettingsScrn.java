@@ -314,14 +314,15 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
                         "\"b3\":" + c.getInt(b3Index) + "," +
                         "\"b4\":" + c.getInt(b4Index) + "," +
                         "\"b5\":" + c.getInt(b5Index) + "," +
-                        "\"b6\":" + c.getInt(b6Index) +
+                        "\"b6\":" + c.getInt(b6Index) + "," +
                         "\"bt0\":" + c.getInt(bt0Index) + "," +
                         "\"bt1\":" + c.getInt(bt1Index) + "," +
                         "\"bt2\":" + c.getInt(bt2Index) + "," +
                         "\"bt3\":" + c.getInt(bt3Index) + "," +
                         "\"bt4\":" + c.getInt(bt4Index) + "," +
                         "\"bt5\":" + c.getInt(bt5Index) + "," +
-                        "\"bt6\":" + c.getInt(bt6Index) +
+                        "\"bt6\":" + c.getInt(bt6Index) + "," +
+                        "\"type\":" + c.getInt(typeIndex) +
                         "}";
                 Log.i("454545", "" + strJson);
             }
@@ -584,6 +585,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                     int bt4=800;
                     int bt5=800;
                     int bt6=800;
+                    int type=3;
                     int pastTotals=800;
                     JSONObject pastGoal;
 
@@ -636,13 +638,13 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                                 database.execSQL("delete from pastTotalsTbl");
                                 database.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), "+
                                         "b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), " +
-                                        "bt0 INT(1),bt1 INT(1),bt2 INT(1),bt3 INT(1),bt4 INT(1),bt5 INT(1),bt6 INT(1), percent INT(3))");
+                                        "bt0 INT(1),bt1 INT(1),bt2 INT(1),bt3 INT(1),bt4 INT(1),bt5 INT(1),bt6 INT(1), type INT(1), percent INT(3))");
                                 database.execSQL("delete from goalsTbl");
 
                                 database.execSQL("CREATE TABLE IF NOT EXISTS FgoalsStarted (started INT(1))");
                                 database.execSQL("delete from FgoalsStarted");
                                 database.execSQL("INSERT INTO FgoalsStarted (started) VALUES (1)");
-                                database.execSQL("CREATE TABLE IF NOT EXISTS FgoalsTbl (name VARCHAR, total INT(3))");
+                                database.execSQL("CREATE TABLE IF NOT EXISTS FgoalsTbl (name VARCHAR, total INT(3), type INT(1))");
                                 database.execSQL("delete from FgoalsTbl");
 
                                 database.execSQL("CREATE TABLE IF NOT EXISTS pastGoals (goalsJson VARCHAR)");
@@ -689,7 +691,8 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                                         bt4 = Integer.parseInt(jsonObject.optString("bt4"));
                                         bt5 = Integer.parseInt(jsonObject.optString("bt5"));
                                         bt6 = Integer.parseInt(jsonObject.optString("bt6"));
-                                        database.execSQL("INSERT INTO goalsTbl (name, done, total, b0,b1,b2,b3,b4,b5,b6,bt0,bt1,bt2,bt3,bt4,bt5,bt6, percent) VALUES ('"
+                                        type=Integer.parseInt(jsonObject.optString("type"));
+                                                database.execSQL("INSERT INTO goalsTbl (name, done, total, b0,b1,b2,b3,b4,b5,b6,bt0,bt1,bt2,bt3,bt4,bt5,bt6, type, percent) VALUES ('"
                                                     +goalName+"', "
                                                     +done+", "
                                                     +total+", "
@@ -707,6 +710,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                                                 +bt4+", "
                                                 +bt5+", "
                                                 +bt6+", "
+                                                +type+", "
                                                     +percent+")");
                                         }
                                     //end of a goal
