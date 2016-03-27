@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,6 +143,7 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
                         numberPicker.setMaxValue(999);
                         numberPicker.setMinValue(0);
                         before=goalStore.getAt(i).buttonsThrough[(Integer.parseInt(v.getTag().toString()))];
+                        Log.i("3333", " " + before);
                         numberPicker.setValue(before);
                         numberPicker.setWrapSelectorWheel(true);
                         //numberPicker.setOnValueChangedListener( new NumberPicker.
@@ -159,6 +161,7 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
                         confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 int num = numberPicker.getValue();//before-numberPicker.getValue();
+                                Log.i("3333", "num "+num);
                                 if(before>= numberPicker.getValue()){
 
                                     g.buttonClick(Integer.parseInt(v.getTag().toString()), before-num, true);

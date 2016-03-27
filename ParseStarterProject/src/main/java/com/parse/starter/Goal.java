@@ -94,24 +94,31 @@ public class Goal {
     }
 
     public void buttonClick(int s, int amount, boolean updown){
-
+        Log.i("3333", " buttonsthrough is"+buttonsThrough[s]);
+        Log.i("3333", " amount is "+amount);
+        Log.i("3333", "1"+ updown);
         if(!updown){
-            if(buttons[s]) {
-                buttons[s] = false;
+
+
+                Log.i("3333", "2");
                 changePercent(true, amount);
+
+                Log.i("3333", "3");
                 done+= amount;
-                buttonsThrough[s]=amount;}
+
+                Log.i("3333", "4");
+                buttonsThrough[s]+=amount;
         }else{
-            buttons[s]=true;
                 changePercent(false, amount);
                 done-= amount;
-                buttonsThrough[s]=amount;
+                buttonsThrough[s]-=amount;
         }
 
         Log.i("3333", " buttonsthrough is"+buttonsThrough[s]);
         //this doesnae work. it has to change the amount and the done and the percent etc to what done is - and if numberpicker =0 it shouldnt subtract 0, but set it to 0
         if(buttonsThrough[s] == 0){    //dae this with the setValue of the numberpicker - compare it to the selected amount and work from there, etc.
-            buttons[s]=false;}
+            Log.i("3333", " setting to not clicked");
+            buttons[s]=true;}else{buttons[s]=false;}
 
     }
 

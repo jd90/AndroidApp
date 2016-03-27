@@ -90,7 +90,7 @@ public class GoalStore1 {
         for(int i=0; i<this.getSize(); i++){
             int type;
             if(this.getAt(i).type){type=1;}else{type=0;}
-            myDatabase.execSQL("INSERT INTO goalsTbl (name, done, total, b0,b1,b2,b3,b4,b5,b6, percent, type) VALUES ('"
+            myDatabase.execSQL("INSERT INTO goalsTbl (name, done, total, b0,b1,b2,b3,b4,b5,b6,bt0,bt1,bt2,bt3,bt4,bt5,bt6, percent, type) VALUES ('"
                     +this.getAt(i).name+"', "
                     +this.getAt(i).done+", "
                     +this.getAt(i).total+", "
@@ -101,6 +101,13 @@ public class GoalStore1 {
                     +this.getAt(i).getButton(4) +", "
                     +this.getAt(i).getButton(5) +", "
                     +this.getAt(i).getButton(6) +", "
+                    +this.getAt(i).buttonsThrough[0] +", "
+                    +this.getAt(i).buttonsThrough[1] +", "
+                    +this.getAt(i).buttonsThrough[2] +", "
+                    +this.getAt(i).buttonsThrough[3] +", "
+                    +this.getAt(i).buttonsThrough[4] +", "
+                    +this.getAt(i).buttonsThrough[5] +", "
+                    +this.getAt(i).buttonsThrough[6] +", "
                     +this.getAt(i).percent+", "
                     +type+")");
         }
@@ -124,6 +131,13 @@ public class GoalStore1 {
             int b4Index = c.getColumnIndex("b4");
             int b5Index = c.getColumnIndex("b5");
             int b6Index = c.getColumnIndex("b6");
+            int bt0Index = c.getColumnIndex("bt0");
+            int bt1Index = c.getColumnIndex("bt1");
+            int bt2Index = c.getColumnIndex("bt2");
+            int bt3Index = c.getColumnIndex("bt3");
+            int bt4Index = c.getColumnIndex("bt4");
+            int bt5Index = c.getColumnIndex("bt5");
+            int bt6Index = c.getColumnIndex("bt6");
             int typeIndex = c.getColumnIndex("type");
 
             c.moveToFirst();
@@ -150,6 +164,13 @@ boolean cancel=false;
                 this.getAt(pos).setButton(4, c.getInt(b4Index));
                 this.getAt(pos).setButton(5, c.getInt(b5Index));
                 this.getAt(pos).setButton(6, c.getInt(b6Index));
+                this.getAt(pos).buttonsThrough[0] = c.getInt(bt0Index);
+                this.getAt(pos).buttonsThrough[1] = c.getInt(bt1Index);
+                this.getAt(pos).buttonsThrough[2] = c.getInt(bt2Index);
+                this.getAt(pos).buttonsThrough[3] = c.getInt(bt3Index);
+                this.getAt(pos).buttonsThrough[4] = c.getInt(bt4Index);
+                this.getAt(pos).buttonsThrough[5] = c.getInt(bt5Index);
+                this.getAt(pos).buttonsThrough[6] = c.getInt(bt6Index);
                 pos++;
                 c.moveToNext();
                 }catch(Exception e){cancel = true; Log.i("6705why", "canceled from index out of bounds exception");}
@@ -243,7 +264,10 @@ boolean cancel=false;
                         myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
                     }
 
-                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3), type INT(1))");
+                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3),"+
+                                    "b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1)," +
+                            "bt0 INT(1),bt1 INT(1),bt2 INT(1),bt3 INT(1),bt4 INT(1),bt5 INT(1),bt6 INT(1),"+
+                            "percent INT(3), type INT(1))");
 
                     firstweek = true;
                 }

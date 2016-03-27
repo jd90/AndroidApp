@@ -278,6 +278,14 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
         int b4Index = c.getColumnIndex("b4");
         int b5Index = c.getColumnIndex("b5");
         int b6Index = c.getColumnIndex("b6");
+            int bt0Index = c.getColumnIndex("bt0");
+            int bt1Index = c.getColumnIndex("bt1");
+            int bt2Index = c.getColumnIndex("bt2");
+            int bt3Index = c.getColumnIndex("bt3");
+            int bt4Index = c.getColumnIndex("bt4");
+            int bt5Index = c.getColumnIndex("bt5");
+            int bt6Index = c.getColumnIndex("bt6");
+            int typeIndex = c.getColumnIndex("type");
 
         c.moveToFirst();
         Boolean cancel = false;
@@ -289,21 +297,34 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
 
             try {
                 Log.i("6705saveToCloud", "inside Json loop1");
-                    if (pos == 0){strJson += "{";}else{strJson += ",{";}
+                if (pos == 0) {
+                    strJson += "{";
+                } else {
+                    strJson += ",{";
+                }
 //strings need to be held inside \" \" to allow for spaces?!!
-                    strJson += "" +
-                            "\"name\":" + " \" " + c.getString(nameIndex) + " \" " + "," +
-                            "\"total\":" + c.getInt(totalIndex) + "," +
-                            "\"done\":" + c.getInt(doneIndex) + "," +
-                            "\"percent\":" + c.getDouble(percentIndex) + "," +
-                            "\"b0\":" + c.getInt(b0Index) + "," +
-                            "\"b1\":" + c.getInt(b1Index) + "," +
-                            "\"b2\":" + c.getInt(b2Index) + "," +
-                            "\"b3\":" + c.getInt(b3Index) + "," +
-                            "\"b4\":" + c.getInt(b4Index) + "," +
-                            "\"b5\":" + c.getInt(b5Index) + "," +
-                            "\"b6\":" + c.getInt(b6Index) +
-                            "}";}
+                strJson += "" +
+                        "\"name\":" + " \" " + c.getString(nameIndex) + " \" " + "," +
+                        "\"total\":" + c.getInt(totalIndex) + "," +
+                        "\"done\":" + c.getInt(doneIndex) + "," +
+                        "\"percent\":" + c.getDouble(percentIndex) + "," +
+                        "\"b0\":" + c.getInt(b0Index) + "," +
+                        "\"b1\":" + c.getInt(b1Index) + "," +
+                        "\"b2\":" + c.getInt(b2Index) + "," +
+                        "\"b3\":" + c.getInt(b3Index) + "," +
+                        "\"b4\":" + c.getInt(b4Index) + "," +
+                        "\"b5\":" + c.getInt(b5Index) + "," +
+                        "\"b6\":" + c.getInt(b6Index) +
+                        "\"bt0\":" + c.getInt(bt0Index) + "," +
+                        "\"bt1\":" + c.getInt(bt1Index) + "," +
+                        "\"bt2\":" + c.getInt(bt2Index) + "," +
+                        "\"bt3\":" + c.getInt(bt3Index) + "," +
+                        "\"bt4\":" + c.getInt(bt4Index) + "," +
+                        "\"bt5\":" + c.getInt(bt5Index) + "," +
+                        "\"bt6\":" + c.getInt(bt6Index) +
+                        "}";
+                Log.i("454545", "" + strJson);
+            }
             catch (Exception e) {
                 cancel = true;Log.i("6705why1", "canceled from index out of bounds exception/or Json Error");e.printStackTrace();
                 strJson +="}";
@@ -556,6 +577,13 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                     int b4=800;
                     int b5=800;
                     int b6=800;
+                    int bt0=800;
+                    int bt1=800;
+                    int bt2=800;
+                    int bt3=800;
+                    int bt4=800;
+                    int bt5=800;
+                    int bt6=800;
                     int pastTotals=800;
                     JSONObject pastGoal;
 
@@ -606,7 +634,9 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
 
                                 database.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3))");
                                 database.execSQL("delete from pastTotalsTbl");
-                                database.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), percent INT(3))");
+                                database.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), "+
+                                        "b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), " +
+                                        "bt0 INT(1),bt1 INT(1),bt2 INT(1),bt3 INT(1),bt4 INT(1),bt5 INT(1),bt6 INT(1), percent INT(3))");
                                 database.execSQL("delete from goalsTbl");
 
                                 database.execSQL("CREATE TABLE IF NOT EXISTS FgoalsStarted (started INT(1))");
@@ -652,8 +682,14 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                                     b4 = Integer.parseInt(jsonObject.optString("b4"));
                                     b5 = Integer.parseInt(jsonObject.optString("b5"));
                                     b6 = Integer.parseInt(jsonObject.optString("b6"));
-
-                                        database.execSQL("INSERT INTO goalsTbl (name, done, total, b0,b1,b2,b3,b4,b5,b6, percent) VALUES ('"
+                                        bt0 = Integer.parseInt(jsonObject.optString("bt0"));
+                                        bt1 = Integer.parseInt(jsonObject.optString("bt1"));
+                                        bt2 = Integer.parseInt(jsonObject.optString("bt2"));
+                                        bt3 = Integer.parseInt(jsonObject.optString("bt3"));
+                                        bt4 = Integer.parseInt(jsonObject.optString("bt4"));
+                                        bt5 = Integer.parseInt(jsonObject.optString("bt5"));
+                                        bt6 = Integer.parseInt(jsonObject.optString("bt6"));
+                                        database.execSQL("INSERT INTO goalsTbl (name, done, total, b0,b1,b2,b3,b4,b5,b6,bt0,bt1,bt2,bt3,bt4,bt5,bt6, percent) VALUES ('"
                                                     +goalName+"', "
                                                     +done+", "
                                                     +total+", "
@@ -664,6 +700,13 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                                                     +b4+", "
                                                     +b5+", "
                                                     +b6+", "
+                                                +bt0+", "
+                                                +bt1+", "
+                                                +bt2+", "
+                                                +bt3+", "
+                                                +bt4+", "
+                                                +bt5+", "
+                                                +bt6+", "
                                                     +percent+")");
                                         }
                                     //end of a goal
