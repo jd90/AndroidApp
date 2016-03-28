@@ -165,9 +165,13 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
                                 if(before>= numberPicker.getValue()){
 
                                     g.buttonClick(Integer.parseInt(v.getTag().toString()), before-num, true);
+                                    ProfileMainActivity.goalStore.saveToDatabase();//this has to be repeated here, as if its after the else its called before the .show() is finished?
+                                    notifyDataSetChanged();
                                 }else{
 
                                     g.buttonClick(Integer.parseInt(v.getTag().toString()), num-before, false);
+                                    ProfileMainActivity.goalStore.saveToDatabase();//this has to be repeated here, as if its after the else its called before the .show() is finished?
+                                    notifyDataSetChanged();
                                 }
 
                                 notifyDataSetChanged();
@@ -175,6 +179,7 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
                         })
                                 .setIcon(android.R.drawable.ic_dialog_alert)
                                 .show();
+
 
                     } else {
 
