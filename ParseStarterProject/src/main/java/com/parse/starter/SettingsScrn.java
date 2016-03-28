@@ -253,7 +253,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
 
         try {
             refreshdayTemp = reDay.getInt(refreshIndex);
-        }catch(Exception e){refreshdayTemp=400; Log.i("400", " "+e.toString());}
+        }catch(Exception e){refreshdayTemp=400; Log.i("400", " " + e.toString());}
 
         return refreshdayTemp;
 
@@ -356,6 +356,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
         Cursor c = myDatabase.rawQuery("SELECT * FROM FgoalsTbl", null);
         int nameIndex = c.getColumnIndex("name");
         int totalIndex = c.getColumnIndex("total");
+            int typeIndex = c.getColumnIndex("type");
 
         c.moveToFirst();
         boolean cancel = false;
@@ -374,10 +375,12 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                     strJson += ",{";
                 }
 
+
                 strJson += "" +
 
-                        "\"name\":" + " \" " + c.getString(nameIndex) + " \" " + "," +
-                        "\"total\":" + c.getInt(totalIndex) +
+                        "\"name\":" + " \" " + c.getString(nameIndex) + " \"," +
+                        "\"total\":" + c.getInt(totalIndex) + "," +
+                        "\"type\":" + c.getInt(typeIndex) +
                         "}";
 
             } catch (Exception e) {
@@ -729,10 +732,12 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                                         JSONObject jsonObject = jsonArray2.getJSONObject(i);
                                         goalName = jsonObject.optString("name");
                                         total = Integer.parseInt(jsonObject.optString("total"));
+                                        type= Integer.parseInt((jsonObject.optString("type")));
 
-                                        database.execSQL("INSERT INTO FgoalsTbl (name, total) VALUES ('"
+                                        database.execSQL("INSERT INTO FgoalsTbl (name, total, type) VALUES ('"
                                                 +goalName+"', "
-                                                +total+")");
+                                                +total+", "
+                                                +type+")");
 
                                     }
                                 } catch (Exception e2) {

@@ -171,6 +171,10 @@ boolean cancel=false;
                 this.getAt(pos).buttonsThrough[4] = c.getInt(bt4Index);
                 this.getAt(pos).buttonsThrough[5] = c.getInt(bt5Index);
                 this.getAt(pos).buttonsThrough[6] = c.getInt(bt6Index);
+                    if(c.getInt(typeIndex) ==1){
+                        this.getAt(pos).type= true;
+                    }else{
+                    this.getAt(pos).type = false;}
                 pos++;
                 c.moveToNext();
                 }catch(Exception e){cancel = true; Log.i("6705why", "canceled from index out of bounds exception");}
