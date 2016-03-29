@@ -1,5 +1,6 @@
 package com.parse.starter;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.Image;
@@ -142,7 +143,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
                     checkSignedIn();
                 }
             });
-        }else if(v.getTag().equals("save") || v.getTag().equals("load")){
+        }else if(v.getTag().equals("save") || v.getTag().equals("load") || v.getTag().equals("add") || v.getTag().equals("privacy")){
             //Log.i("6705saveToCloudswitch", "called");
 
             switch(v.getTag().toString()){
@@ -151,6 +152,14 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
                     break;
                 case "load":
                     loadFromParse();
+                    break;
+                case "add":
+                    Intent intent = new Intent(this, friendsFragment.class);
+                    //intent.putExtra("firstweek", false);
+                    int a = 4; //request code? (receives back request code, resultcode, intent)?
+                    startActivityForResult(intent, a);
+                    break;
+                case "privacy":
                     break;
             }
 
@@ -162,8 +171,18 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
                 save.setVisibility(View.VISIBLE);
                 load.setVisibility(View.VISIBLE);
                 friends.setVisibility(View.GONE);
+                save.setText("SAVE TO CLOUD");
+                save.setTag("save");
+                load.setTag("load");
+                load.setText("LOAD FROM CLOUD");
             }if(v.getTag().equals("friends")){
                 cloud.setVisibility(View.GONE);
+                save.setVisibility(View.VISIBLE);
+                load.setVisibility(View.VISIBLE);
+                save.setText("ADD FRIENDS");
+                save.setTag("add");
+                load.setTag("privacy");
+                load.setText("SHARE SETTINGS");
 
             }
 
@@ -181,6 +200,8 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
             user.setText("signed in as " + ParseUser.getCurrentUser().getUsername());
             //save.setVisibility(View.VISIBLE);
             //load.setVisibility(View.VISIBLE);
+            save.setVisibility(View.GONE);
+            load.setVisibility(View.GONE);
             cloud.setVisibility(View.VISIBLE);
             friends.setVisibility(View.VISIBLE);
             logout.setVisibility(View.VISIBLE);
