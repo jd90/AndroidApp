@@ -59,7 +59,8 @@
         android:layout_gravity="right"
         android:background="@drawable/bottom_button" />
 </LinearLayout>
-    <EditText
+
+        <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/username"
@@ -99,18 +100,33 @@
         android:id="@+id/signup"
         android:layout_gravity="center_horizontal"
         android:visibility="gone" />
-
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/cloud"
             android:layout_gravity="top|center_horizontal"
             android:src="@drawable/cloud"
-            android:layout_weight="0.57"
+            android:layout_weight="0.2"
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
             android:paddingBottom="60dp" />
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/addFriends"
+            android:src="@drawable/add_friend"
+            android:focusable="false"
+            android:layout_weight="0.2"
+            android:paddingTop="50dp"
+            android:paddingRight="50dp"
+            android:paddingBottom="120dp"
+            android:paddingLeft="50dp" />
+    </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

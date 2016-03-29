@@ -42,6 +42,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
     Button save;
     Button load;
     ImageView cloud;
+    ImageView friends;
     SQLiteDatabase database;
 
     static ArrayList<JSONObject> JSONgoals = new ArrayList<>();
@@ -83,6 +84,11 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
         save.setOnClickListener(this);
         load.setOnClickListener(this);
         cloud = (ImageView) findViewById(R.id.cloud);
+        friends = (ImageView) findViewById(R.id.addFriends);
+        cloud.setOnClickListener(this);
+        friends.setOnClickListener(this);
+        cloud.setTag("cloud");
+        friends.setTag("friends");
         //cloud.setVisibility(View.GONE);
         //save.setVisibility(View.GONE);
         //load.setVisibility(View.GONE);
@@ -152,6 +158,15 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
             if (v instanceof Button) {
                 signInOrSignUp(v);
 
+            }else{if(v.getTag().equals("cloud")){
+                save.setVisibility(View.VISIBLE);
+                load.setVisibility(View.VISIBLE);
+                friends.setVisibility(View.GONE);
+            }if(v.getTag().equals("friends")){
+                cloud.setVisibility(View.GONE);
+
+            }
+
             }
         }
     }
@@ -164,9 +179,10 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
             username.setVisibility(View.GONE);
             password.setVisibility(View.GONE);
             user.setText("signed in as " + ParseUser.getCurrentUser().getUsername());
-            save.setVisibility(View.VISIBLE);
-            load.setVisibility(View.VISIBLE);
+            //save.setVisibility(View.VISIBLE);
+            //load.setVisibility(View.VISIBLE);
             cloud.setVisibility(View.VISIBLE);
+            friends.setVisibility(View.VISIBLE);
             logout.setVisibility(View.VISIBLE);
 
         }else{
@@ -179,6 +195,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
             save.setVisibility(View.GONE);
             load.setVisibility(View.GONE);
             cloud.setVisibility(View.GONE);
+            friends.setVisibility(View.GONE);
             logout.setVisibility(View.GONE);
 
         }
@@ -502,12 +519,6 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
 
     }
 
-
-           ///////////////
-
-
-
-
     public void saveToParse(){
 
 
@@ -828,5 +839,21 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
 
   //make an on back pressed to go to profile page? so it can work from ingoal settings dropdown?
     //that or remove that drop down access option
+  public void onBackPressed(){
+
+
+      Log.i("MethodCalledJ", "L");
+      if((cloud.getVisibility()==View.VISIBLE && friends.getVisibility()==View.VISIBLE) || (cloud.getVisibility()==View.GONE && friends.getVisibility()==View.GONE)){
+          finish();
+      }else{
+          if(cloud.getVisibility() == View.GONE){
+              checkSignedIn();
+          }
+          if(cloud.getVisibility() == View.VISIBLE){
+              checkSignedIn();
+          }
+      }
+
+  }
 
 }
