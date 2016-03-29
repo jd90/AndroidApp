@@ -110,7 +110,7 @@ public class MainActivity extends ListActivity implements View.OnClickListener {
 
         if(view.getTag().equals("Accounts")){
 
-            Intent intentAccount = new Intent(this, SettingsScrn.class)              ;
+            Intent intentAccount = new Intent(this, SettingsScrn.class);
             startActivity(intentAccount);
 
         }else {
