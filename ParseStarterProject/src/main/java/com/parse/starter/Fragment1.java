@@ -25,7 +25,7 @@ public class Fragment1 extends ListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //getListView().setDivider(null);
+        getListView().setDivider(null);
     }
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {

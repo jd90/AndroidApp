@@ -603,6 +603,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                         for(int i=0; i<MainActivity.profileDatastore.profiles.size(); i++){
                             //this removes all the profiles and deletes their databases - should stop the profiles reoppening now, between accounts etc.
                             MainActivity.profileDatastore.removeProfile(MainActivity.profileDatastore.getProfile(i));
+
                         }//fix this to reference an instance of profileDatastore? rather than contacting MainActivity so much.
                         MainActivity.profileDatastore.profiles.clear();
                         for (ParseObject goalRow : goalData) {

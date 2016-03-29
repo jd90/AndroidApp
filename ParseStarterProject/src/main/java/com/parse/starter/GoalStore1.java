@@ -23,6 +23,7 @@ public class GoalStore1 {
     static int dayofyear;
     static int day;
     int refreshDay;
+    int emptyweeks;
 
     static Boolean holidaymode;
 
@@ -282,11 +283,20 @@ boolean cancel=false;
                     c.moveToFirst();
                     refreshDay =c.getInt(refreshIndex);
 
+                    Log.i("emptyweeks1re", ""+refreshDay);
+
                     if (dayofyear >= refreshDay) {
 
                         Log.i("8888", "moved to future load");
+                        if((dayofyear-refreshDay)/7 > 0) {
+                            emptyweeks = (dayofyear - refreshDay) / 7;
+                        }else{emptyweeks =0;}
+
                         this.loadFromFutureDatabase();
 
+
+
+                        Log.i("emptyweeks1em", ""+emptyweeks);
                         refreshDay = dayofyear + daysToRefresh();
                         if (refreshDay > 365) {
                             refreshDay -= 365;
@@ -325,7 +335,6 @@ boolean cancel=false;
 
     public void savePastTotalstoDB() {
 
-
         Log.i("8888", "" + pastTotals.size());
         pastTotals.remove(0);
         double percent;
@@ -341,6 +350,23 @@ boolean cancel=false;
 
         }
         Log.i("8888", "" + pastTotals.size());
+
+        Log.i("emptyweeks", "" + emptyweeks);
+
+            int x = 0;
+            while(x != emptyweeks) {
+                pastTotals.remove(0);
+                percent = 0;
+                pastTotals.add(15, (int) percent);
+
+                myDatabase.execSQL("delete from pastTotalsTbl");
+
+                for (int i = 0; i < pastTotals.size(); i++) {
+                    myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
+
+                }
+            x++;
+            }
 
 
     }

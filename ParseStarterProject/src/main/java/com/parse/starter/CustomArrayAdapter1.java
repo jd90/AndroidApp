@@ -17,7 +17,7 @@ public class CustomArrayAdapter1 extends ArrayAdapter<Goal> implements View.OnCl
     private final GoalStore1 fGoalStore;
 
     public CustomArrayAdapter1(Context context, GoalStore1 g) {
-        super(context, R.layout.goal_list_item, (List<Goal>) g.list);
+        super(context, R.layout.friends_feed, (List<Goal>) g.list);
 
         this.context = context;
         this.fGoalStore = g;
