@@ -180,6 +180,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
             load.setVisibility(View.GONE);
             cloud.setVisibility(View.GONE);
             logout.setVisibility(View.GONE);
+
         }
     }
 
