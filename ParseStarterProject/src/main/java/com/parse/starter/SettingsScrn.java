@@ -451,6 +451,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
         try {
             Cursor c = myDatabase.rawQuery("SELECT * FROM pastTotalsTbl", null);
             int totalsIndex = c.getColumnIndex("totalPercent");
+            int dateIndex = c.getColumnIndex("date");
 
             c.moveToFirst();
             boolean cancel = false;
@@ -471,7 +472,8 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                     pos++;
 
                     strJson += "" +
-                            "\"pastTotal\":" + c.getInt(totalsIndex) + "}";
+                            "\"pastTotal\":" + c.getInt(totalsIndex) + "," +
+                    "\"pastDate\": '" + c.getString(dateIndex) + "' }";//added in
 
                 } catch (Exception e) {
                     cancel = true;
@@ -623,6 +625,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                     int bt6=800;
                     int type=3;
                     int pastTotals=800;
+                    String pastDates="";
                     JSONObject pastGoal;
 
                     Log.d("6705del", goalData.size() + " scores loading down");
@@ -671,7 +674,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                                 //database.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDayOfYear + ")");
                                 //Test and fix this if not working. - Must save refreshDay and refresh to no progress/future goals if it is past the saved refresh day
 
-                                database.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3))");
+                                database.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3), date VARCHAR)");
                                 database.execSQL("delete from pastTotalsTbl");
                                 database.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3), "+
                                         "b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1), " +
@@ -777,6 +780,7 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                                 } catch (Exception e2) {
                                     Log.i("6705del", " problem making JSONobject2" + e2.toString());}
                             ArrayList<Integer> pastTotalsArray = new ArrayList<>();
+                            ArrayList<String> pastDatesArray = new ArrayList<>();
                                     try {
                                         JSONObject pastTotalsObject = goalRow.getJSONObject("PastTotals");
                                         Log.i("6705del", "JSONobject WORKED3" + goalRow.getJSONObject("PastTotals"));
@@ -788,11 +792,16 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                                             pastTotals = Integer.parseInt(jsonObject.optString("pastTotal"));
                                             pastTotalsArray.add(i, pastTotals);
                                         }
+                                        for (int i = 0; i < jsonArray3.length()-1; i++) {
+                                            JSONObject jsonObject = jsonArray3.getJSONObject(i);
+                                            pastDates = (jsonObject.optString("pastDate"));
+                                            pastDatesArray.add(i, pastDates);
+                                        }
                                    } catch (Exception e3) {
                                         Log.i("6705del", " problem making JSONobject3" + e3.toString());}
 
                             for(int i=0; i<pastTotalsArray.size(); i++) {
-                                database.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotalsArray.get(i) + ")");
+                                database.execSQL("INSERT INTO pastTotalsTbl (totalPercent, date) VALUES (" + pastTotalsArray.get(i) + ", '" +pastDatesArray.get(i)+"')");
 
                             }
 

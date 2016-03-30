@@ -312,11 +312,16 @@ if(v.getTag() == "sharkSwim") {
     @Override
     public boolean onLongClick(View v) {
 
+
+
         LinearLayout l = (LinearLayout) v;
         int x = Integer.parseInt(l.getTag().toString());
         int y = ProfileMainActivity.goalStore.pastTotals.get(x);
+        String z =ProfileMainActivity.goalStore.pastDates.get(x);
         Toast t = Toast.makeText(getActivity(), y + "%", Toast.LENGTH_SHORT);
         t.show();
+
+        Log.i("pastDate", z);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Past Week: " + y + "%");
@@ -378,7 +383,8 @@ if(v.getTag() == "sharkSwim") {
         ListView lv = (ListView) dialog.findViewById(R.id.listview);
        // lv.setAdapter(new CustomArrayAdapterPast(this.getActivity(), pastGoalARRAY, x));
         dialog.setCancelable(true);
-        dialog.setTitle("Past Week: " + y + "%");
+        dialog.setTitle(z+": " + y + "%" );
+
         dialog.show();
 
 

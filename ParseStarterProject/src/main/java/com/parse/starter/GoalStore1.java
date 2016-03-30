@@ -4,8 +4,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,8 +20,10 @@ public class GoalStore1 {
     Cursor c;
 
     ArrayList<Integer> pastTotals = new ArrayList<>();
+    ArrayList<String> pastDates = new ArrayList<>();
     boolean firstweek = false;
     Calendar calendar = Calendar.getInstance();
+    Calendar calendar2 = Calendar.getInstance();
     static int dayofyear;
     static int day;
     int refreshDay;
@@ -258,17 +262,27 @@ boolean cancel=false;
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS refreshDay (day INT(1))");
                     myDatabase.execSQL("INSERT INTO refreshDay (day) VALUES (" + refreshDayOfYear + ")");
 
-                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3))");
+                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS pastTotalsTbl (totalPercent INT(3), date VARCHAR)");
 
                     pastTotals.add(1);pastTotals.add(2);pastTotals.add(3);pastTotals.add(4);pastTotals.add(5);
                     pastTotals.add(6);pastTotals.add(7);pastTotals.add(8);pastTotals.add(9);pastTotals.add(10);
                     pastTotals.add(11);pastTotals.add(12);pastTotals.add(13);pastTotals.add(14);pastTotals.add(15);
                     pastTotals.add(16);
-                    Log.i("HEREYEGOARRAY", " size " +pastTotals.size());
+                    Log.i("HEREYEGOARRAY", " size " + pastTotals.size());
+                    calendar2.set(Calendar.DAY_OF_YEAR, refreshDay);
+                    String s = ""+ new SimpleDateFormat("MMM").format(calendar2.getTime()) + " ";
+                    s+= ""+calendar2.get(Calendar.DAY_OF_MONTH);
+                    pastDates.add(s);pastDates.add(s);pastDates.add(s);pastDates.add(s);pastDates.add(s);pastDates.add(s);
+                    pastDates.add(s);pastDates.add(s);pastDates.add(s);pastDates.add(s);pastDates.add(s);pastDates.add(s);
+                    pastDates.add(s);pastDates.add(s);pastDates.add(s);pastDates.add(s);
                     for(int i=0; i<16; i++){
-                        myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
+                        myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent, date) VALUES (" + pastTotals.get(i) + ", '" + pastDates.get(i) +"')");
                     }
 
+
+                    for(int i=0; i<16; i++){
+
+                    }
                     myDatabase.execSQL("CREATE TABLE IF NOT EXISTS goalsTbl (name VARCHAR, total INT(3), done INT(3),"+
                                     "b0 INT(1),b1 INT(1),b2 INT(1),b3 INT(1),b4 INT(1),b5 INT(1),b6 INT(1)," +
                             "bt0 INT(1),bt1 INT(1),bt2 INT(1),bt3 INT(1),bt4 INT(1),bt5 INT(1),bt6 INT(1),"+
@@ -320,14 +334,17 @@ boolean cancel=false;
 
         Cursor c = myDatabase.rawQuery("SELECT * FROM pastTotalsTbl", null);
         int totalsIndex = c.getColumnIndex("totalPercent");
+        int dateIndex = c.getColumnIndex("date");
         c.moveToFirst();
 
         pastTotals.clear();
+        pastDates.clear();
         boolean cancel = false;
         while (c != null && cancel == false) {
             try{
 
                 pastTotals.add(c.getInt(totalsIndex));
+                pastDates.add(c.getString(dateIndex));
             c.moveToNext();
             }catch(Exception e){cancel = true; Log.i("6705whyPASTTOTALSgstore", "canceled index out of bounds exception");}
         }
@@ -337,18 +354,30 @@ boolean cancel=false;
 
         Log.i("8888", "" + pastTotals.size());
         pastTotals.remove(0);
+        pastDates.remove(0);
         double percent;
         if(this.getTotalPercentage() >100){
             percent = 100;}
         else{percent = this.getTotalPercentage();}
         pastTotals.add(15, (int) percent);
-
+        calendar2.set(Calendar.DAY_OF_YEAR, refreshDay);
+        String s = ""+ new SimpleDateFormat("MMM").format(calendar2.getTime()) + " ";
+        s+= ""+calendar2.get(Calendar.DAY_OF_MONTH);
+        pastDates.add(15, s);
         myDatabase.execSQL("delete from pastTotalsTbl");
 
+        //can possibly remove this and do it once at the end??
         for (int i = 0; i < pastTotals.size(); i++) {
-            myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
+            myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent, date) VALUES (" + pastTotals.get(i) + ", '"+ pastDates.get(i)+"')");
 
         }
+
+
+
+
+
+
+
         Log.i("8888", "" + pastTotals.size());
 
         Log.i("emptyweeks", "" + emptyweeks);
@@ -356,18 +385,24 @@ boolean cancel=false;
             int x = 0;
             while(x != emptyweeks) {
                 pastTotals.remove(0);
+                pastDates.remove(0);
                 percent = 0;
                 pastTotals.add(15, (int) percent);
+                refreshDay+=7;
+                calendar2.set(Calendar.DAY_OF_YEAR, refreshDay);
+                s = ""+ new SimpleDateFormat("MMM").format(calendar2.getTime()) + " ";
+                s+= ""+calendar2.get(Calendar.DAY_OF_MONTH);
+                pastDates.add(15, s);
 
-                myDatabase.execSQL("delete from pastTotalsTbl");
 
-                for (int i = 0; i < pastTotals.size(); i++) {
-                    myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent) VALUES (" + pastTotals.get(i) + ")");
-
-                }
             x++;
-            }
+            }//i removed this from the loop?? incase things dont work right
+        myDatabase.execSQL("delete from pastTotalsTbl");
 
+        for (int i = 0; i < pastTotals.size(); i++) {
+            myDatabase.execSQL("INSERT INTO pastTotalsTbl (totalPercent, date) VALUES (" + pastTotals.get(i) + ", '" + pastDates.get(i)+"')");
+
+        }
 
     }
 

@@ -48,6 +48,7 @@ public View getView(int position, View convertView, ViewGroup parent) {
         holder.relativeLayout = (RelativeLayout) convertView.findViewById(R.id.goal_Layout_Relative);
         holder.goalTitleView = (TextView) convertView.findViewById(R.id.goalTitle);
 
+                holder.goalTitleView.setText(pastGoals.get(position).toString());
         convertView.setTag(holder);
         }
         else {
