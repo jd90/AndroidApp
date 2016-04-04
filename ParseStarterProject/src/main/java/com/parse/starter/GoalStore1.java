@@ -302,8 +302,8 @@ boolean cancel=false;
                     if (dayofyear >= refreshDay) {
 
                         Log.i("8888", "moved to future load");
-                        if((dayofyear-refreshDay)/7 > 0) {
-                            emptyweeks = (dayofyear - refreshDay) / 7;
+                        if((dayofyear-refreshDay)/1 > 0) {//should eventually be seven 7
+                            emptyweeks = (dayofyear - refreshDay) / 1;//should eventually be seven 7
                         }else{emptyweeks =0;}
 
                         this.loadFromFutureDatabase();
@@ -388,7 +388,7 @@ boolean cancel=false;
                 pastDates.remove(0);
                 percent = 0;
                 pastTotals.add(15, (int) percent);
-                refreshDay+=7;
+                refreshDay+=1;//should eventually be seven 7
                 calendar2.set(Calendar.DAY_OF_YEAR, refreshDay);
                 s = ""+ new SimpleDateFormat("MMM").format(calendar2.getTime()) + " ";
                 s+= ""+calendar2.get(Calendar.DAY_OF_MONTH);

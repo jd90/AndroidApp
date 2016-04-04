@@ -20,7 +20,10 @@
         android:layout_height="70dp"
         android:gravity="center"
         android:id="@+id/profileText"
-        android:text="Hello Fragment 1!" />
+        android:text="Hello Fragment 1!"
+        android:textColor="#ff000000"
+        android:textSize="40dp"
+        android:textStyle="bold" />
 
     </LinearLayout>
 </LinearLayout>

@@ -133,8 +133,10 @@ return true;
         // with the name from the pagerAdapter getPageTitle()
         tabLayout.setTabsFromPagerAdapter(pagerAdapter);
         //tab selection events update the ViewPager and page changes update the selected tab.
-        viewPager.setCurrentItem(1);
+
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setCurrentItem(1);
+        tabLayout.getTabAt(1).select();
     }
 
 

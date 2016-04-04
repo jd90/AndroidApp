@@ -135,7 +135,8 @@ public class MainActivity extends ListActivity implements View.OnClickListener {
                     @Override
                     public void onClick(DialogInterface dialog, int num) {
 
-                        profileDatastore.addProfile(profileInput.getText().toString());
+                        String title = profileInput.getText().toString().toUpperCase();
+                        profileDatastore.addProfile(title);
                         adapter.notifyDataSetChanged();
                         saveCount();
                         saveProfiles();

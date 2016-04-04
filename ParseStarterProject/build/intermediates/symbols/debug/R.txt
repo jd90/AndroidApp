@@ -12,7 +12,8 @@ int anim fab_in 0x7f05000a
 int anim fab_out 0x7f05000b
 int anim snackbar_in 0x7f05000c
 int anim snackbar_out 0x7f05000d
-int array freq_arrays 0x7f0b0000
+int array drawer_array 0x7f0b0000
+int array freq_arrays 0x7f0b0001
 int attr actionBarDivider 0x7f010097
 int attr actionBarItemBackground 0x7f010098
 int attr actionBarPopupTheme 0x7f010091

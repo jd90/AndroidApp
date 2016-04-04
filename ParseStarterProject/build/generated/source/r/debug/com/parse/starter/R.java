@@ -25,7 +25,8 @@ public final class R {
         public static final int snackbar_out=0x7f05000d;
     }
     public static final class array {
-        public static final int freq_arrays=0x7f0b0000;
+        public static final int drawer_array=0x7f0b0000;
+        public static final int freq_arrays=0x7f0b0001;
     }
     public static final class attr {
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"

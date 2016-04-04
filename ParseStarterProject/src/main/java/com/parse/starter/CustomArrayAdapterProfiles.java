@@ -92,7 +92,8 @@ public class CustomArrayAdapterProfiles extends ArrayAdapter<Goal> implements Vi
                         public void onClick(DialogInterface dialog, int num) {
                             //change title of profile here
                             Profile profile = profiles.get(Integer.parseInt(vi.getTag().toString()));
-                            profile.renameProfile(profileInput.getText().toString());
+                            String title = profileInput.getText().toString().toUpperCase();
+                            profile.renameProfile(title);
                             notifyDataSetChanged();
                             MainActivity.saveProfiles();
                             }});
