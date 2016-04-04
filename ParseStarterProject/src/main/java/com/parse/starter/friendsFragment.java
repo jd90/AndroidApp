@@ -42,6 +42,7 @@ public class friendsFragment extends ListActivity {
     SQLiteDatabase database;
     ArrayList<String> usernames;
     ArrayAdapter adapter;
+    ListView lView;
     // Required empty public constructor
     public friendsFragment() {
     }
@@ -58,6 +59,8 @@ public class friendsFragment extends ListActivity {
         usernames = new ArrayList<>();
         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_checked, usernames);
 
+        lView = getListView();
+
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereNotEqualTo("username", ParseUser.getCurrentUser().getUsername());
         query.findInBackground(new FindCallback<ParseUser>() {
@@ -68,21 +71,43 @@ public class friendsFragment extends ListActivity {
                     for (ParseUser username : objects) {
                         usernames.add(username.getUsername());
 
+                        Log.i("78789", "a " + usernames.toString());
                     }
                     adapter.notifyDataSetChanged();
 
+
                 } else {
                     Log.i("787878", "problem with usernames search");
-                    Log.i("787878", ""+e.toString());
-
-
+                    Log.i("787878", "" + e.toString());
                 }
+                Log.i("78789", "here");
+                Log.i("7878789 ", "" + usernames.toString());
+                for (String user : usernames) {
+                    Log.i("78789", "" + user);
+
+                    List<Object> a = ParseUser.getCurrentUser().getList("followers");
+                    Log.i("78789", "" + a.toString());
+                    if (a.contains(user)) {
+                        Log.i("78789", "match" + user);
+                        lView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);//had to do this to make it work
+
+                        lView.setItemChecked(usernames.indexOf(user), true);
+                        //lView.setItemChecked(usernames.indexOf(user), true);
+                 //       CheckedTextView c = (CheckedTextView) lView.getItemAtPosition(usernames.indexOf(user));
+                 //       c.setChecked(true);
+
+                    }
+                }
+
+                adapter.notifyDataSetChanged();
+
             }
         });
 
+
         //CustomArrayFriends adapter = new CustomArrayFriends(this, hi, 1111);
-         // ListView listView = (ListView) findViewById(R.id.listviewfeed);
-       // setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+         //ListView listView = (ListView) findViewById(R.id.listviewfeed);
+       //setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         setListAdapter(adapter);
 
     }
