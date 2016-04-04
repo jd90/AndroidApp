@@ -37,6 +37,8 @@ public class NewGoalFragment extends DialogFragment implements View.OnClickListe
         inputTitle = (EditText) rootView.findViewById(R.id.titleInput);
         inputTitle.setHint("User Must Enter Title");
         warningMessage = (TextView) rootView.findViewById(R.id.warning);
+        warningMessage.setText("Warning! Title must be:\n" +
+                "Provided\nLess than 20 characters");
 
         Button okB = (Button) rootView.findViewById(R.id.ok);
         Button cancelB = (Button) rootView.findViewById(R.id.cancel);
@@ -63,6 +65,10 @@ public class NewGoalFragment extends DialogFragment implements View.OnClickListe
         rb1.setOnClickListener(this);
         rb2.setOnClickListener(this);
 
+        rb1.setChecked(true);
+        timesAWeek.setVisibility(View.VISIBLE);
+        throughTheWeek.setVisibility(View.GONE);
+
         this.setCancelable(false);
         return rootView;
     }
@@ -88,7 +94,7 @@ public class NewGoalFragment extends DialogFragment implements View.OnClickListe
 
                 if (b.getTag().equals("ok")) {
 
-                    if (inputTitle.getText().toString().equals("")) {
+                    if (inputTitle.getText().toString().equals("")||inputTitle.getText().toString().length() >20) {
 
                         warningMessage.setVisibility(View.VISIBLE);
                         inputTitle.addTextChangedListener(this);
@@ -127,7 +133,7 @@ public class NewGoalFragment extends DialogFragment implements View.OnClickListe
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (inputTitle.getText().toString().equals("")) {
+        if (inputTitle.getText().toString().equals("") || inputTitle.getText().toString().length()>20) {
             //undecided whether to make this revisible when deleting all text, or to just wait until user attempts to save it having ignored the advise and redeleted their text...
             warningMessage.setVisibility(View.VISIBLE);
         } else {

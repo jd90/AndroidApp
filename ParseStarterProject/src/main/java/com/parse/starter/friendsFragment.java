@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
 import android.widget.ListView;
 
 /**
@@ -23,103 +27,103 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class friendsFragment extends ListActivity {
 
     SQLiteDatabase database;
-
+    ArrayList<String> usernames;
+    ArrayAdapter adapter;
     // Required empty public constructor
     public friendsFragment() {
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        List hi = new ArrayList<String>();
-        hi.add("hi");
-                hi.add("bye");
-        CustomArrayFriends adapter = new CustomArrayFriends(this, hi, 1111);
+
+
+        if(ParseUser.getCurrentUser().getList("followers")==null){//must initialise array column in parse to empty list rather than nullpointer?
+                ArrayList<String> followers = new ArrayList<>();
+                ParseUser.getCurrentUser().put("followers", followers);
+        }
+
+        usernames = new ArrayList<>();
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_checked, usernames);
+
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereNotEqualTo("username", ParseUser.getCurrentUser().getUsername());
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+                    usernames.clear();
+                    for (ParseUser username : objects) {
+                        usernames.add(username.getUsername());
+
+                    }
+                    adapter.notifyDataSetChanged();
+
+                } else {
+                    Log.i("787878", "problem with usernames search");
+                    Log.i("787878", ""+e.toString());
+
+
+                }
+            }
+        });
+
+        //CustomArrayFriends adapter = new CustomArrayFriends(this, hi, 1111);
+         // ListView listView = (ListView) findViewById(R.id.listviewfeed);
+       // setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         setListAdapter(adapter);
 
-        /*
-        database = ProfileMainActivity.myDatabase;
-
-
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("GoalData");
-        query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> goalData, ParseException e) {
-                if (e == null) {
-
-
-                    int pastTotals=800;
-                    String pastDates="";
-
-                    Log.d("6705del", goalData.size() + " scores loading down");
-                    if (goalData.size() < 1) {
-                        //do something if no rows returned
-                        Log.d("6705del", goalData.size() + "no goals to load");
-                        Toast t = Toast.makeText(getApplicationContext(), "Yu'v nae goals tae load, ya pudding!", Toast.LENGTH_SHORT);
-                        t.show();
-                    } else {
-                int count =0;
-                   for (ParseObject goalRow : goalData) {
-                       count++;
-                       try {
-                           JSONObject goal = goalRow.getJSONObject("Goals");
-                           Log.i("6705del", "JSONobject WORKED1" + goalRow.getJSONObject("Goals"));
-                           JSONArray jsonArray1 = goal.optJSONArray("Goals");
-
-                           int profileCount = 0;
-
-                           database.execSQL("CREATE TABLE IF NOT EXISTS pastGoals (goalsJson VARCHAR)");
-                           database.execSQL("delete from pastGoals");
-
-
-                           ArrayList<Integer> pastTotalsArray = new ArrayList<>();
-                           ArrayList<String> pastDatesArray = new ArrayList<>();
-                           try {
-                               JSONObject pastTotalsObject = goalRow.getJSONObject("PastTotals");
-                               Log.i("6705del", "JSONobject WORKED3" + goalRow.getJSONObject("PastTotals"));
-                               JSONArray jsonArray3 = pastTotalsObject.optJSONArray("Past");
-                               //Iterate the jsonArray and print the info of JSONObjects
-
-                               for (int i = 0; i < jsonArray3.length() - 1; i++) {
-                                   JSONObject jsonObject = jsonArray3.getJSONObject(i);
-                                   pastTotals = Integer.parseInt(jsonObject.optString("pastTotal"));
-                                   pastTotalsArray.add(i, pastTotals);
-                               }
-                               for (int i = 0; i < jsonArray3.length() - 1; i++) {
-                                   JSONObject jsonObject = jsonArray3.getJSONObject(i);
-                                   pastDates = (jsonObject.optString("pastDate"));
-                                   pastDatesArray.add(i, pastDates);
-                               }
-                           } catch (Exception e3) {
-                               Log.i("6705del", " problem making JSONobject3" + e3.toString());
-                           }
-
-                           for (int i = 0; i < pastTotalsArray.size(); i++) {
-                               database.execSQL("INSERT INTO pastTotalsTbl (totalPercent, date) VALUES (" + pastTotalsArray.get(i) + ", '" + pastDatesArray.get(i) + "')");
-
-                           }
-
-                       } catch (Exception ee) {
-                       }
-
-                   }
-                    }}}});
-                    */
     }
 
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        v.setPressed(true);
+        CheckedTextView check = (CheckedTextView) v;
+        if(check.isChecked()) {
+            check.setChecked(false);
+            Log.i("7878user", usernames.get(position));
+            //ParseUser.getCurrentUser().getList("followers").remove(usernames.get(position));
+            List<Object> hi = ParseUser.getCurrentUser().getList("followers");
+            hi.remove(usernames.get(position));
+            ParseUser.getCurrentUser().put("followers", hi);
+            ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+
+                    if(e!=null){Log.i("787878", "remove "+e.toString());}
+                    else{Log.i("787878", "removed ");}
+                }
+            });
+        }else{
+            check.setChecked(true);
+            Log.i("7878user", usernames.get(position));
+            //ParseUser.getCurrentUser().getList("followers").add(usernames.get(position));
+            List<Object> hi = ParseUser.getCurrentUser().getList("followers");
+            hi.add(usernames.get(position));
+            ParseUser.getCurrentUser().put("followers", hi);
+            ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null) {
+                        Log.i("787878", "add " + e.toString());
+                    } else {
+                        Log.i("787878", "added ");
+                    }
+                }
+            });
+        }
     }
 
 }
