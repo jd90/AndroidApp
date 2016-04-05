@@ -7,13 +7,29 @@ package com.parse.starter;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Fragment1 extends ListFragment {
 
     SQLiteDatabase database;
+    ArrayList<String> usernames;
+    List<FeedItem> feedList = new ArrayList<>();
+    ArrayList<Integer> pastTotalsArray = new ArrayList<>();
 
     // Required empty public constructor
     public Fragment1() {
@@ -22,14 +38,80 @@ public class Fragment1 extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), ProfileMainActivity.goalStore);
-        setListAdapter(adapter);
+        List users = ParseUser.getCurrentUser().getList("followers");
+
+
+        usernames = new ArrayList<>();
+        try {
+            Log.i("78789777", "a " + "here");
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("GoalData");
+            query.whereContainedIn("username", ParseUser.getCurrentUser().getList("followers"));
+            query.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> followerRows, ParseException e) {
+                    if (e == null) {
+                        Log.i("7878oopsy", "herep" + followerRows.toString());
+                        for (ParseObject row : followerRows) {
+
+                            try {
+                                String username = row.getString("username") + " completed ";
+                                String profileName = " of " + row.getString("ProfileName") + " goals";
+
+
+                                try {
+                                    JSONObject pastTotalsObject = row.getJSONObject("PastTotals");
+                                    Log.i("6705del", "JSONobject WORKED3" + row.getJSONObject("PastTotals"));
+                                    JSONArray jsonArray3 = pastTotalsObject.optJSONArray("Past");
+                                    //Iterate the jsonArray and print the info of JSONObjects
+                                    int pastTotals;
+                                    for (int i = 15; i < 16; i++) {
+                                        JSONObject jsonObject = jsonArray3.getJSONObject(i);
+                                        pastTotals = Integer.parseInt(jsonObject.optString("pastTotal"));
+                                        feedList.add(new FeedItem(username, profileName, pastTotals));
+                                    }
+
+                                } catch (Exception e3) {
+                                    Log.i("6705del", " problem making JSONobject3" + e3.toString());
+                                    feedList.add(new FeedItem("Error retrieving feed", ""+e.toString(), 0));
+                                    CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
+                                    setListAdapter(adapter);
+                                }
+
+                                Log.i("7878oopsyOutput", "" + username + " " + profileName);
+                            } catch (Exception ee) {
+                                Log.i("7878oopsy", "e " + e.toString());
+                            }
+                        }
+                    } else {
+                        Log.i("787878", "problem with usernames search");
+                        Log.i("787878", "" + e.toString());
+                        feedList.add(new FeedItem("Error retrieving feed", "" + e.toString(), 0));
+                        CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
+                        setListAdapter(adapter);
+                    }
+                    Log.i("78789", "here");
+                    Log.i("7878789 ", "a " + usernames.toString());
+                    CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
+                    setListAdapter(adapter);
+                }
+            });
+
+        }catch(Exception e){
+            feedList.add(new FeedItem("Error retrieving feed", ""+e.toString(), 0));
+            CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
+            setListAdapter(adapter);
+        }
+
+
     }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getListView().setDivider(null);
 
+
+
+}
 
           /*
         database = ProfileMainActivity.myDatabase;
@@ -101,7 +183,7 @@ public class Fragment1 extends ListFragment {
                     */
 
 
-    }
+
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         v.setPressed(true);

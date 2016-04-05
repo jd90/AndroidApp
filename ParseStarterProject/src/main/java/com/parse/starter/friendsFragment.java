@@ -1,6 +1,7 @@
 package com.parse.starter;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -41,7 +42,7 @@ public class friendsFragment extends ListActivity {
 
     SQLiteDatabase database;
     ArrayList<String> usernames;
-    ArrayAdapter adapter;
+    FollowersArrayAdapter adapter;
     ListView lView;
     // Required empty public constructor
     public friendsFragment() {
@@ -49,15 +50,55 @@ public class friendsFragment extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.friends_feed);
+
+        usernames = new ArrayList<>();
+        adapter = new FollowersArrayAdapter(this.getApplicationContext(), usernames);
+
+        if(ParseUser.getCurrentUser().getList("followers")==null){//must initialise array column in parse to empty list rather than nullpointer?
+            ArrayList<String> followers = new ArrayList<>();
+            ParseUser.getCurrentUser().put("followers", followers);
+        }
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereNotEqualTo("username", ParseUser.getCurrentUser().getUsername());
+        query.orderByAscending("username");
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+                    usernames.clear();
+                    for (ParseUser username : objects) {
+                        usernames.add(username.getUsername());
+
+                        Log.i("78789", "a " + usernames.toString());
+                    }
+
+                } else {
+                    Log.i("787878", "problem with usernames search");
+                    Log.i("787878", "" + e.toString());
+                }
+                Log.i("78789", "here");
+                Log.i("7878789 ", "" + usernames.toString());
+
+                setListAdapter(adapter);
+            }
 
 
+        });
+
+
+
+
+        /*
         if(ParseUser.getCurrentUser().getList("followers")==null){//must initialise array column in parse to empty list rather than nullpointer?
                 ArrayList<String> followers = new ArrayList<>();
                 ParseUser.getCurrentUser().put("followers", followers);
         }
 
         usernames = new ArrayList<>();
-        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_checked, usernames);
+        //adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_checked, usernames);
+
+        adapter = new FollowersArrayAdapter(this, usernames);
 
         lView = getListView();
 
@@ -93,8 +134,8 @@ public class friendsFragment extends ListActivity {
 
                         lView.setItemChecked(usernames.indexOf(user), true);
                         //lView.setItemChecked(usernames.indexOf(user), true);
-                 //       CheckedTextView c = (CheckedTextView) lView.getItemAtPosition(usernames.indexOf(user));
-                 //       c.setChecked(true);
+                        //       CheckedTextView c = (CheckedTextView) lView.getItemAtPosition(usernames.indexOf(user));
+                        //       c.setChecked(true);
 
                     }
                 }
@@ -104,17 +145,18 @@ public class friendsFragment extends ListActivity {
             }
         });
 
-
-        //CustomArrayFriends adapter = new CustomArrayFriends(this, hi, 1111);
-         //ListView listView = (ListView) findViewById(R.id.listviewfeed);
-       //setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+        FollowersArrayAdapter adapter = new FollowersArrayAdapter(this, usernames);
         setListAdapter(adapter);
-
+        //CustomArrayFriends adapter = new CustomArrayFriends(this, hi, 1111);
+         ListView listView = (ListView) findViewById(R.id.listviewfeed);
+       //listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+       */
     }
 
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+ //   @Override
+  //  public void onListItemClick(ListView l, View v, int position, long id) {
+        /*
         CheckedTextView check = (CheckedTextView) v;
         if(check.isChecked()) {
             check.setChecked(false);
@@ -128,7 +170,10 @@ public class friendsFragment extends ListActivity {
                 public void done(ParseException e) {
 
                     if(e!=null){Log.i("787878", "remove "+e.toString());}
-                    else{Log.i("787878", "removed ");}
+                    else{Log.i("787878", "removed ");
+                        adapter.notifyDataSetChanged();
+                    }
+
                 }
             });
         }else{
@@ -145,10 +190,13 @@ public class friendsFragment extends ListActivity {
                         Log.i("787878", "add " + e.toString());
                     } else {
                         Log.i("787878", "added ");
+                        adapter.notifyDataSetChanged();
                     }
+
                 }
             });
         }
-    }
+        */
+  //  }
 
 }

@@ -6,14 +6,20 @@
     tools:context=".MainActivity">
 
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/listviewfeed"
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="false"
         android:focusable="false"
         android:focusableInTouchMode="false"
 
-        tools:listitem="@android:layout/simple_list_item_checked" />
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="refresh"
+        android:id="@+id/refreshButton"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

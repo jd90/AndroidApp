@@ -1,13 +1,29 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.tabstutorial.Fragment1">
+    android:orientation="horizontal"
+    tools:context="com.example.tabstutorial.Fragment1"
+    >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Hello Fragment 1!" />
+        android:text="Hello Fragment 1a!"
+        android:id="@+id/user"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/percent"
+        android:text="Hello Fragment 1c!" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/profile"
+        android:text="Hello Fragment 1b!" />
 
-</FrameLayout>
+
+</LinearLayout>
