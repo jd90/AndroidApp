@@ -1,9 +1,11 @@
 package com.parse.starter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.Image;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -123,6 +125,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
                         public void done(ParseException e) {
                             if (e == null) {
                                 Toast.makeText(getApplication(), "Signed Up Successfully!", Toast.LENGTH_LONG).show();
+
                             } else {
                                 e.printStackTrace();
                                 Toast.makeText(getApplication(), "ERROR:" + e.toString(), Toast.LENGTH_LONG).show();
@@ -134,6 +137,8 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
 
+        ConnectivityManager connect = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connect.getActiveNetworkInfo() != null) {
         if (v.getTag().equals("logout")) {
             ParseUser.logOutInBackground(new LogOutCallback() {
                 @Override
@@ -143,51 +148,57 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
                     checkSignedIn();
                 }
             });
-        }else if(v.getTag().equals("save") || v.getTag().equals("load") || v.getTag().equals("add") || v.getTag().equals("privacy")){
+        }else if(v.getTag().equals("save") || v.getTag().equals("load") || v.getTag().equals("add") || v.getTag().equals("privacy")) {
             //Log.i("6705saveToCloudswitch", "called");
 
-            switch(v.getTag().toString()){
-                case "save":
-                    saveToCloud();
-                    break;
-                case "load":
-                    loadFromParse();
-                    break;
-                case "add":
-                    Intent intent = new Intent(this, friendsFragment.class);
-                    //intent.putExtra("firstweek", false);
-                    int a = 4; //request code? (receives back request code, resultcode, intent)?
-                    startActivityForResult(intent, a);
-                    break;
-                case "privacy":
-                    break;
+
+
+                switch (v.getTag().toString()) {
+                    case "save":
+                        saveToCloud();
+                        break;
+                    case "load":
+                        loadFromParse();
+                        break;
+                    case "add":
+                        Intent intent = new Intent(this, friendsFragment.class);
+                        //intent.putExtra("firstweek", false);
+                        int a = 4; //request code? (receives back request code, resultcode, intent)?
+                        startActivityForResult(intent, a);
+                        break;
+                    case "privacy":
+                        break;
+                }
+
+            } else {
+                if (v instanceof Button) {
+                    signInOrSignUp(v);
+
+                } else {
+                    if (v.getTag().equals("cloud")) {
+                        save.setVisibility(View.VISIBLE);
+                        load.setVisibility(View.VISIBLE);
+                        friends.setVisibility(View.GONE);
+                        save.setText("SAVE TO CLOUD");
+                        save.setTag("save");
+                        load.setTag("load");
+                        load.setText("LOAD FROM CLOUD");
+                    }
+                    if (v.getTag().equals("friends")) {
+                        cloud.setVisibility(View.GONE);
+                        save.setVisibility(View.VISIBLE);
+                        load.setVisibility(View.VISIBLE);
+                        save.setText("ADD FRIENDS");
+                        save.setTag("add");
+                        load.setTag("privacy");
+                        load.setText("SHARE SETTINGS");
+
+                    }
+
+                }
             }
-
-        }else{
-            if (v instanceof Button) {
-                signInOrSignUp(v);
-
-            }else{if(v.getTag().equals("cloud")){
-                save.setVisibility(View.VISIBLE);
-                load.setVisibility(View.VISIBLE);
-                friends.setVisibility(View.GONE);
-                save.setText("SAVE TO CLOUD");
-                save.setTag("save");
-                load.setTag("load");
-                load.setText("LOAD FROM CLOUD");
-            }if(v.getTag().equals("friends")){
-                cloud.setVisibility(View.GONE);
-                save.setVisibility(View.VISIBLE);
-                load.setVisibility(View.VISIBLE);
-                save.setText("ADD FRIENDS");
-                save.setTag("add");
-                load.setTag("privacy");
-                load.setText("SHARE SETTINGS");
-
-            }
-
-            }
-        }
+        }else{Toast t = Toast.makeText(this, "Please check network connection!", Toast.LENGTH_SHORT);
+        t.show();}
     }
 
     public void checkSignedIn(){
@@ -257,11 +268,12 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
                                                 if (counter == size) {
                                                     saveToParse();
                                                 }
+
                                                 counter++;
                                             }
                                         }
                                     });
-                                } catch (Exception ee) {
+                                } catch (Exception ee) {Log.i("6705ERRORsave", ee.toString());
                                 }
                             }
                         }

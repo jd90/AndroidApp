@@ -93,7 +93,7 @@ public class FutureGoals extends ListActivity implements View.OnClickListener {
 
                         }
                     })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setIcon(R.drawable.goal_shark_logo1)
                     .show();
     }
     public void exit(){String message = "some message text";

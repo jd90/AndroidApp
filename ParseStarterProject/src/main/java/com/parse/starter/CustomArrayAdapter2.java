@@ -177,7 +177,7 @@ public class CustomArrayAdapter2 extends ArrayAdapter<Goal> implements View.OnCl
                                 notifyDataSetChanged();
                             }
                         })
-                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setIcon(R.drawable.goal_shark_logo1)
                                 .show();
 
 

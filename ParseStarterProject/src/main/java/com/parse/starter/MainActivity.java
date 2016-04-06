@@ -123,7 +123,7 @@ public class MainActivity extends ListActivity implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                     }
                 })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setIcon(R.drawable.goal_shark_logo1)
                         .show();
 
             } else {

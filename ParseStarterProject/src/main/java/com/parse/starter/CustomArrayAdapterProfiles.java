@@ -103,6 +103,7 @@ public class CustomArrayAdapterProfiles extends ArrayAdapter<Goal> implements Vi
                             dialog.cancel();
                         }});
                     builder.setCancelable(false);
+                    builder.setIcon(R.drawable.goal_shark_logo1);
                     builder.show();
                 } else {
                     AlertDialog.Builder confirm = new AlertDialog.Builder(getContext());
@@ -115,12 +116,12 @@ public class CustomArrayAdapterProfiles extends ArrayAdapter<Goal> implements Vi
                             notifyDataSetChanged();
                             MainActivity.saveProfiles();
                             MainActivity.saveCount();
-                        }})
-                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        }});
+                            confirm.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                }})
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
+                                }});
+                            confirm.setIcon(R.drawable.goal_shark_logo1);
+                            confirm.show();
                 }}});
 
         renameDelete.show();

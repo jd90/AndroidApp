@@ -8,12 +8,14 @@ public class FeedItem {
     String username;
     String profileName;
     int percent;
+    String date;
 
-    public FeedItem(String username, String profileName, int percent){
+    public FeedItem(String username, String profileName, int percent, String date){
 
         this.username=username;
         this.profileName=profileName;
         this.percent=percent;
+        this.date=date;
 
     }
 

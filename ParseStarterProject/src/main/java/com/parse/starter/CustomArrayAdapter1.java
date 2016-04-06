@@ -33,12 +33,23 @@ public class CustomArrayAdapter1 extends ArrayAdapter<Goal> implements View.OnCl
         TextView tUser = (TextView) row_view.findViewById(R.id.user);
         TextView tProfile = (TextView) row_view.findViewById(R.id.profile);
         TextView tPercent = (TextView) row_view.findViewById(R.id.percent);
-
+        TextView tDate = (TextView) row_view.findViewById(R.id.date);
         tUser.setText(feedList.get(position).username);
         tProfile.setText(feedList.get(position).profileName);
-        tPercent.setText(String.valueOf(feedList.get(position).percent)+"%");
+        if(feedList.get(position).percent == 200){
+            tPercent.setText("");
+        }else {
+            tPercent.setText(String.valueOf(feedList.get(position).percent) + "%");
+        }
+        if(position == 0){
+            tDate.setText("Week of: " + feedList.get(position).date);
+        }
+        else {
+            if (!feedList.get(position).date.equals(feedList.get(position - 1).date) || !feedList.get(position).username.equals(feedList.get(position - 1).username)) {
 
-
+                tDate.setText("Week of: " + feedList.get(position).date);
+            }else{tDate.setVisibility(View.GONE);}
+        }
         return row_view;
     }
 
