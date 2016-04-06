@@ -32,7 +32,7 @@ public class StarterApplication extends Application {
     //ParseUser.enableAutomaticUser();
     ParseACL defaultACL = new ParseACL();
     // Optionally enable public read access.
-    // defaultACL.setPublicReadAccess(true);
+    defaultACL.setPublicReadAccess(true); //set public read access here, i did this
     ParseACL.setDefaultACL(defaultACL, true);
 
 

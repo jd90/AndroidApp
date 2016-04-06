@@ -111,6 +111,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
             public void done(ParseUser user, ParseException e) {
                 if (user != null) {
                     Toast.makeText(getApplication(), "Signed In Successfully!", Toast.LENGTH_LONG).show();
+                    loadFromParse();
                     checkSignedIn();
                 } else {
                     Toast.makeText(getApplication(), "ERROR:" + e.toString(), Toast.LENGTH_LONG).show();
