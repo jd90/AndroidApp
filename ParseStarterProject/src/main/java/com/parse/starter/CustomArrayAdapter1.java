@@ -5,6 +5,7 @@ package com.parse.starter;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.ArrayAdapter;
+        import android.widget.LinearLayout;
         import android.widget.TextView;
 
         import java.util.List;
@@ -30,6 +31,8 @@ public class CustomArrayAdapter1 extends ArrayAdapter<Goal> implements View.OnCl
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View row_view = inflater.inflate(R.layout.feed_fragment, parent, false);
 
+
+        LinearLayout dateCont = (LinearLayout) row_view.findViewById(R.id.dateContainer);
         TextView tUser = (TextView) row_view.findViewById(R.id.user);
         TextView tProfile = (TextView) row_view.findViewById(R.id.profile);
         TextView tPercent = (TextView) row_view.findViewById(R.id.percent);
@@ -43,10 +46,12 @@ public class CustomArrayAdapter1 extends ArrayAdapter<Goal> implements View.OnCl
         }
         if(position == 0){
             tDate.setText("Week of: " + feedList.get(position).date);
-        }
-        else {
-            if (!feedList.get(position).date.equals(feedList.get(position - 1).date) || !feedList.get(position).username.equals(feedList.get(position - 1).username)) {
 
+            dateCont.setVisibility(View.VISIBLE);
+        }
+        else {//|| !feedList.get(position).username.equals(feedList.get(position - 1).username)
+            if (!feedList.get(position).date.equals(feedList.get(position - 1).date) ) {
+                dateCont.setVisibility(View.VISIBLE);
                 tDate.setText("Week of: " + feedList.get(position).date);
             }else{tDate.setVisibility(View.GONE);}
         }
