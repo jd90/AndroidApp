@@ -36,6 +36,7 @@ public class Fragment1 extends ListFragment {
     List<FeedItem> feedList = new ArrayList<>();
     ArrayList<Integer> pastTotalsArray = new ArrayList<>();
     ArrayList<String> pastDatesArray = new ArrayList<>();
+    int i;
     // Required empty public constructor
     public Fragment1() {
     }
@@ -52,8 +53,10 @@ public class Fragment1 extends ListFragment {
                  usernames = new ArrayList<>();
                  try {
                      Log.i("78789777", "a " + "here");
+                     List l = ParseUser.getCurrentUser().getList("followers");
+                     l.add(ParseUser.getCurrentUser().getUsername());
                      ParseQuery<ParseObject> query = ParseQuery.getQuery("Feed");
-                     query.whereContainedIn("username", ParseUser.getCurrentUser().getList("followers"));
+                     query.whereContainedIn("username", l);
                      query.findInBackground(new FindCallback<ParseObject>() {
                          public void done(List<ParseObject> feedRows, ParseException e) {
                              if (e == null) {
@@ -64,14 +67,14 @@ public class Fragment1 extends ListFragment {
                                      setListAdapter(adapter);
                                  } else {
 
-                                     for (ParseObject row : feedRows) {
+                                     for (i =feedRows.size()-1; i>=0; i--){
                                          Log.i("78789777", "a " + "here3");
                                          try {
-                                             String username = row.getString("username") + " completed ";
-                                             String profileName = " of " + row.getString("profilename") + " goals";
-                                             int percent = row.getInt("percent");
-                                             String date = row.getString("date");
-                                             List comments = row.getList("comments");
+                                             String username = feedRows.get(i).getString("username") + " completed ";
+                                             String profileName = " of " + feedRows.get(i).getString("profilename") + " goals";
+                                             int percent = feedRows.get(i).getInt("percent");
+                                             String date = feedRows.get(i).getString("date");
+                                             List comments = feedRows.get(i).getList("comments");
 
                                              Log.i("78789777", "a " + "here4");
 
