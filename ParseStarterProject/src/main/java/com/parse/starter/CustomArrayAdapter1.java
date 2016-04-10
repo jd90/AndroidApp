@@ -39,24 +39,22 @@ public class CustomArrayAdapter1 extends ArrayAdapter<Goal> implements View.OnCl
         TextView tProfile = (TextView) row_view.findViewById(R.id.profile);
         TextView tPercent = (TextView) row_view.findViewById(R.id.percent);
         TextView tDate = (TextView) row_view.findViewById(R.id.date);
+        TextView dateText = (TextView) row_view.findViewById(R.id.dateText);
         tUser.setText(feedList.get(position).username);
         tProfile.setText(feedList.get(position).profileName);
         if(feedList.get(position).percent == 200){
             tPercent.setText("");
             tDate.setText("");
+            dateText.setText("");
         }else {
-            tPercent.setText(String.valueOf(feedList.get(position).percent) + "%");
-        }
-        if(position == 0){
-            tDate.setText("Week of: " + feedList.get(position).date);
 
-            dateCont.setVisibility(View.VISIBLE);
-        }
-        else {//|| !feedList.get(position).username.equals(feedList.get(position - 1).username)
-            if (!feedList.get(position).date.equals(feedList.get(position - 1).date) ) {
                 dateCont.setVisibility(View.VISIBLE);
-                tDate.setText("Week of: " + feedList.get(position).date);
-            }else{tDate.setVisibility(View.GONE);}
+
+            tDate.setText(feedList.get(position).username.toUpperCase());
+            tUser.setText(feedList.get(position).username+" completed ");
+            tPercent.setText(String.valueOf(feedList.get(position).percent) + "%");
+            tProfile.setText(" of "+feedList.get(position).profileName + " goals");
+            dateText.setText("for week ending: "+feedList.get(position).date);
         }
         return row_view;
     }

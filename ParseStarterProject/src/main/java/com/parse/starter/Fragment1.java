@@ -70,8 +70,8 @@ public class Fragment1 extends ListFragment {
                                      for (i =feedRows.size()-1; i>=0; i--){
                                          Log.i("78789777", "a " + "here3");
                                          try {
-                                             String username = feedRows.get(i).getString("username") + " completed ";
-                                             String profileName = " of " + feedRows.get(i).getString("profilename") + " goals";
+                                             String username = feedRows.get(i).getString("username");
+                                             String profileName = feedRows.get(i).getString("profilename");
                                              int percent = feedRows.get(i).getInt("percent");
                                              String date = feedRows.get(i).getString("date");
                                              List comments = feedRows.get(i).getList("comments");
