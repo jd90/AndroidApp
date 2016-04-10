@@ -8,6 +8,7 @@ package com.parse.starter;
         import android.widget.LinearLayout;
         import android.widget.TextView;
 
+        import java.util.Date;
         import java.util.List;
 
 /**
@@ -23,6 +24,7 @@ public class CustomArrayAdapter1 extends ArrayAdapter<Goal> implements View.OnCl
 
         this.context = context;
         this.feedList = g;
+
     }
 
     @Override
@@ -41,6 +43,7 @@ public class CustomArrayAdapter1 extends ArrayAdapter<Goal> implements View.OnCl
         tProfile.setText(feedList.get(position).profileName);
         if(feedList.get(position).percent == 200){
             tPercent.setText("");
+            tDate.setText("");
         }else {
             tPercent.setText(String.valueOf(feedList.get(position).percent) + "%");
         }

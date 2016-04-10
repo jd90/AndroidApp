@@ -97,6 +97,11 @@ public class Fragment1 extends ListFragment {
 
                                      }
                                  }
+                                 Log.i("78789", "here");
+                                 Log.i("7878789 ", "a " + usernames.toString());
+                                 CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
+                                 setListAdapter(adapter);
+
                              } else {
                                  Log.i("787878", "problem with usernames search");
                                  Log.i("787878", "" + e.toString());
@@ -104,10 +109,7 @@ public class Fragment1 extends ListFragment {
                                  CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
                                  setListAdapter(adapter);
                              }
-                             Log.i("78789", "here");
-                             Log.i("7878789 ", "a " + usernames.toString());
-                             CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
-                             setListAdapter(adapter);
+
                          }
                      });
 

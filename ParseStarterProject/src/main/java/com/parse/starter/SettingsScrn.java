@@ -189,7 +189,7 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
                         cloud.setVisibility(View.GONE);
                         save.setVisibility(View.VISIBLE);
                         load.setVisibility(View.VISIBLE);
-                        save.setText("ADD FRIENDS");
+                        save.setText("MANAGE FRIENDS");
                         save.setTag("add");
                         load.setTag("privacy");
                         load.setText("SHARE SETTINGS");
