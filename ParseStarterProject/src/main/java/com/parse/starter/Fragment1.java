@@ -57,6 +57,7 @@ public class Fragment1 extends ListFragment {
                      l.add(ParseUser.getCurrentUser().getUsername());
                      ParseQuery<ParseObject> query = ParseQuery.getQuery("Feed");
                      query.whereContainedIn("username", l);
+                     query.orderByAscending("createdAt");
                      query.findInBackground(new FindCallback<ParseObject>() {
                          public void done(List<ParseObject> feedRows, ParseException e) {
                              if (e == null) {

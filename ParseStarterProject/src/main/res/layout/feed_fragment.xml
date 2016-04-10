@@ -60,7 +60,7 @@
     android:orientation="horizontal"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-    android:background="#ff47aff3"
+    android:background="#ffffffff"
     android:gravity="center"
     >
 
@@ -89,7 +89,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:background="#ff47aff3"
+        android:background="#ffffffff"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:id="@+id/dateText"
