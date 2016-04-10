@@ -63,6 +63,7 @@ public class CustomArrayAdapterProfiles extends ArrayAdapter<Goal> implements Vi
         int databaseNum = profiles.get(Integer.parseInt(v.getTag().toString())).databaseNum;
 
         Intent hi = new Intent(getContext(), ProfileMainActivity.class);
+        hi.putExtra("profileNumber", Integer.parseInt(v.getTag().toString()));
         hi.putExtra("profile", databaseNum);
         Log.i("67056705", "databaseNum "+databaseNum);
         getContext().startActivity(hi);

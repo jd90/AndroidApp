@@ -9,11 +9,14 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -22,6 +25,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -29,6 +33,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -46,6 +55,8 @@ public class Fragment3 extends Fragment implements View.OnClickListener, View.On
     TextView percentView;
     ImageView b0,b1,b2,b3,b4,b5,b6;
     ProgressBar percentageBar;
+    int y;
+    String z;
 
     public Fragment3() {
         // Required empty public constructor
@@ -316,13 +327,14 @@ if(v.getTag() == "sharkSwim") {
 
         LinearLayout l = (LinearLayout) v;
         int x = Integer.parseInt(l.getTag().toString());
-        int y = ProfileMainActivity.goalStore.pastTotals.get(x);
-        String z =ProfileMainActivity.goalStore.pastDates.get(x);
+        y = ProfileMainActivity.goalStore.pastTotals.get(x);
+        z =ProfileMainActivity.goalStore.pastDates.get(x);
         Toast t = Toast.makeText(getActivity(), y + "%", Toast.LENGTH_SHORT);
         t.show();
 
         Log.i("pastDate", z);
 
+        /*
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Past Week: " + y + "%");
         builder.setMessage("");
@@ -331,7 +343,7 @@ if(v.getTag() == "sharkSwim") {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.goal_list_item, null);
         builder.setView(dialogView);
-
+*/
 /*
         //i should put this into a wee scrollpane so that it only displays two or three goals and you scroll through them?
         //keeping the pop up quite small?
@@ -377,15 +389,65 @@ if(v.getTag() == "sharkSwim") {
 
         }catch(Exception e){Log.i("888888","jsonlength error" +e.toString());}
 */
-        Dialog dialog = new Dialog(getActivity());
-        dialog.setContentView(R.layout.goals_layout);
+      //  Dialog dialog = new Dialog(getActivity());
+      //  dialog.setContentView(R.layout.goals_layout);
 
-        ListView lv = (ListView) dialog.findViewById(R.id.listview);
+       // ListView lv = (ListView) dialog.findViewById(R.id.listview);
        // lv.setAdapter(new CustomArrayAdapterPast(this.getActivity(), pastGoalARRAY, x));
-        dialog.setCancelable(true);
-        dialog.setTitle(z+": " + y + "%" );
+       // dialog.setCancelable(true);
+       // dialog.setTitle(z + ": " + y + "%");
 
-        dialog.show();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Week of " + z);
+        builder.setMessage(y + "%");
+        builder.setPositiveButton("SHARE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int num) {
+                ConnectivityManager connect = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                if (connect.getActiveNetworkInfo() != null) {
+                    ParseObject feed = new ParseObject("Feed");
+                    feed.put("percent", y);
+                    feed.put("date", z);
+                    feed.put("username", ParseUser.getCurrentUser().getUsername());
+
+                    feed.put("profilename", MainActivity.profileDatastore.getProfile(ProfileMainActivity.profileNum).name);
+                    feed.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Toast t = Toast.makeText(getActivity(), "Shared!", Toast.LENGTH_SHORT);
+                                t.show();
+                            } else {
+                                Toast t = Toast.makeText(getActivity(), "Trouble sharing, sorry!", Toast.LENGTH_SHORT);
+                                e.printStackTrace();
+                                t.show();
+                            }
+                        }
+                    });
+
+
+                }else{Toast t = Toast.makeText(getActivity(), "Please check network connection!", Toast.LENGTH_SHORT);
+                t.show();
+                }
+
+
+            }
+
+
+        });
+
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int num) {
+                dialog.cancel();
+            }
+        });
+        //builder.setCancelable(false);
+        builder.show();
+
+
+        //dialog.show();
 
 
         return false;

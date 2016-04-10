@@ -23,6 +23,7 @@ import com.parse.ParseUser;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TooManyListenersException;
@@ -46,81 +47,60 @@ public class Fragment1 extends ListFragment {
             ConnectivityManager connect = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
              if(connect.getActiveNetworkInfo() != null) {
 
-
-                 List users = ParseUser.getCurrentUser().getList("followers");
-
+                 //List users = ParseUser.getCurrentUser().getList("followers");
 
                  usernames = new ArrayList<>();
                  try {
                      Log.i("78789777", "a " + "here");
-                     ParseQuery<ParseObject> query = ParseQuery.getQuery("GoalData");
+                     ParseQuery<ParseObject> query = ParseQuery.getQuery("Feed");
                      query.whereContainedIn("username", ParseUser.getCurrentUser().getList("followers"));
                      query.findInBackground(new FindCallback<ParseObject>() {
-                         public void done(List<ParseObject> followerRows, ParseException e) {
+                         public void done(List<ParseObject> feedRows, ParseException e) {
                              if (e == null) {
-                                 Log.i("7878oopsy", "herep" + followerRows.toString());
-                                 for (int i = 15; i >=0; i--) {
-                                     for (ParseObject row : followerRows) {
+                                 Log.i("78789777", "a " + "here2");
+                                 if (feedRows.size() == 0) {
+                                     feedList.add(new FeedItem("No feed items", "", 200, "", new ArrayList()));
+                                     CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
+                                     setListAdapter(adapter);
+                                 } else {
 
+                                     for (ParseObject row : feedRows) {
+                                         Log.i("78789777", "a " + "here3");
                                          try {
                                              String username = row.getString("username") + " completed ";
-                                             String profileName = " of " + row.getString("ProfileName") + " goals";
+                                             String profileName = " of " + row.getString("profilename") + " goals";
+                                             int percent = row.getInt("percent");
+                                             String date = row.getString("date");
+                                             List comments = row.getList("comments");
 
+                                             Log.i("78789777", "a " + "here4");
 
-                                             try {
-                                                 JSONObject pastTotalsObject = row.getJSONObject("PastTotals");
-                                                 Log.i("6705del", "JSONobject WORKED3" + row.getJSONObject("PastTotals"));
-                                                 JSONArray jsonArray3 = pastTotalsObject.optJSONArray("Past");
-                                                 //Iterate the jsonArray and print the info of JSONObjects
-                                                 int pastTotals;
-
-                                                 JSONObject jsonObject = jsonArray3.getJSONObject(i);
-                                                 pastTotals = Integer.parseInt(jsonObject.optString("pastTotal"));
-                                                 //feedList.add(new FeedItem(username, profileName, pastTotals));
-                                                 //JSONObject jsonObject2 = jsonArray3.getJSONObject(i);
-                                                 String pastDates = (jsonObject.optString("pastDate"));
-                                                 feedList.add(new FeedItem(username, profileName, pastTotals, pastDates));
-                                                 Log.i("pastDate 7878", pastDates);
-
-                                             } catch (Exception e3) {
-                                                 Log.i("6705del", " problem making JSONobject3" + e3.toString());
-                                                 feedList.add(new FeedItem("Error retrieving feed", "" + e3.toString(), 0, ""));
-                                                 CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
-                                                 setListAdapter(adapter);
-                                             }
-
-                                             Log.i("7878oopsyOutput", "" + username + " " + profileName);
-                                         } catch (Exception ee) {
-                                             Log.i("7878oopsy", "e " + ee.toString());
+                                             feedList.add(new FeedItem(username, profileName, percent, date, comments));
+                                         } catch (Exception e3) {
+                                             Log.i("6705del", " problem making JSONobject3" + e3.toString());
+                                             feedList.add(new FeedItem("Error retrieving feed", "" + e3.toString(), 0, "", new ArrayList()));
+                                             CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
+                                             setListAdapter(adapter);
                                          }
 
-
                                      }
+                                     CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
+                                     setListAdapter(adapter);
                                  }
-                                 Log.i("78789", "here");
-                                 Log.i("7878789 ", "a " + usernames.toString());
-                                 CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
-                                 setListAdapter(adapter);
 
-                             } else {
-                                 Log.i("787878", "problem with usernames search");
-                                 Log.i("787878", "" + e.toString());
-                                 feedList.add(new FeedItem("Error retrieving feed", "" + e.toString(), 0, ""));
-                                 CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
-                                 setListAdapter(adapter);
                              }
+                                     }
 
-                         }
                      });
 
                  } catch (Exception e) {
-                     feedList.add(new FeedItem("Error retrieving feed", "" + e.toString(), 0, ""));
+                     feedList.add(new FeedItem("Error retrieving feed", "" + e.toString(), 0, "", new ArrayList()));
                      CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
                      setListAdapter(adapter);
                  }
 
              }else{
-                 feedList.add(new FeedItem("Error retrieving feed", ". Please check network connection!", 200, ""));
+                 feedList.add(new FeedItem("Error retrieving feed", ". Please check network connection!", 200, "", new ArrayList()));
                  CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
                  setListAdapter(adapter);
              }
