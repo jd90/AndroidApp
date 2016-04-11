@@ -27,6 +27,7 @@
         android:background="#ffff8324"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:textColor="#ff000000"
         android:id="@+id/date"
         android:layout_weight="3"
         android:layout_gravity="center_vertical"/>
@@ -44,11 +45,13 @@
             android:layout_height="match_parent"
             android:src="@drawable/heart"
             android:layout_gravity="end"
+            android:id="@+id/heart"
             android:layout_weight="4"/>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/plus23"
+            android:id="@+id/comment"
             android:layout_gravity="end"
             android:layout_weight="4"/>
     </LinearLayout>
@@ -76,7 +79,8 @@
         android:layout_gravity="center"
         android:id="@+id/percent"
         android:text="Hello Fragment 1c!"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:textColor="#ff47aff3"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -94,4 +98,14 @@
         android:layout_marginRight="10dp"
         android:id="@+id/dateText"
         android:text="Hello Fragment 1b!" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/likers"
+        android:textSize="10dp"
+        android:background="#ffffffff"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:visibility="gone"
+        android:gravity="start"/>
 </LinearLayout>

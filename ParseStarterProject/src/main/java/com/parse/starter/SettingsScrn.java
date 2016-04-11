@@ -141,7 +141,6 @@ public class SettingsScrn extends AppCompatActivity implements View.OnClickListe
         ConnectivityManager connect = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connect.getActiveNetworkInfo() != null) {
         if (v.getTag().equals("logout")) {
-            saveToParse();
             ParseUser.logOutInBackground(new LogOutCallback() {
                 @Override
                 public void done(ParseException e) {

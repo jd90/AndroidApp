@@ -45,69 +45,78 @@ public class Fragment1 extends ListFragment {
         super.onCreate(savedInstanceState);
 
 
-            ConnectivityManager connect = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-             if(connect.getActiveNetworkInfo() != null) {
+        ConnectivityManager connect = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connect.getActiveNetworkInfo() != null) {
 
-                 //List users = ParseUser.getCurrentUser().getList("followers");
+            //List users = ParseUser.getCurrentUser().getList("followers");
 
-                 usernames = new ArrayList<>();
-                 try {
-                     Log.i("78789777", "a " + "here");
-                     List l = ParseUser.getCurrentUser().getList("followers");
-                     l.add(ParseUser.getCurrentUser().getUsername());
-                     ParseQuery<ParseObject> query = ParseQuery.getQuery("Feed");
-                     query.whereContainedIn("username", l);
-                     query.orderByAscending("createdAt");
-                     query.findInBackground(new FindCallback<ParseObject>() {
-                         public void done(List<ParseObject> feedRows, ParseException e) {
-                             if (e == null) {
-                                 Log.i("78789777", "a " + "here2");
-                                 if (feedRows.size() == 0) {
-                                     feedList.add(new FeedItem("No feed items", "", 200, "", new ArrayList()));
-                                     CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
-                                     setListAdapter(adapter);
-                                 } else {
+            usernames = new ArrayList<>();
+            try {
+                Log.i("78789777", "a " + "here");
+                List l = ParseUser.getCurrentUser().getList("followers");
+                l.add(ParseUser.getCurrentUser().getUsername());
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Feed");
+                query.whereContainedIn("username", l);
+                query.orderByAscending("createdAt");
+                query.findInBackground(new FindCallback<ParseObject>() {
+                    public void done(List<ParseObject> feedRows, ParseException e) {
+                        if (e == null) {
+                            Log.i("78789777", "a " + "here2");
+                            if (feedRows.size() == 0) {
+                                feedList.add(new FeedItem("No feed items", "", 200, "", new ArrayList(), new ArrayList(), ""));
+                                CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
+                                setListAdapter(adapter);
+                            } else {
 
-                                     for (i =feedRows.size()-1; i>=0; i--){
-                                         Log.i("78789777", "a " + "here3");
-                                         try {
-                                             String username = feedRows.get(i).getString("username");
-                                             String profileName = feedRows.get(i).getString("profilename");
-                                             int percent = feedRows.get(i).getInt("percent");
-                                             String date = feedRows.get(i).getString("date");
-                                             List comments = feedRows.get(i).getList("comments");
+                                for (i = feedRows.size() - 1; i >= 0; i--) {
+                                    Log.i("78789777", "a " + "here3");
+                                    try {
+                                        String username = feedRows.get(i).getString("username");
+                                        String profileName = feedRows.get(i).getString("profilename");
+                                        int percent = feedRows.get(i).getInt("percent");
+                                        String date = feedRows.get(i).getString("date");
+                                        List comments = feedRows.get(i).getList("comments");
+                                        List likes = feedRows.get(i).getList("likes");
+                                        String id = feedRows.get(i).getObjectId();
+                                        Log.i("78789777", "a " + "here4");
 
-                                             Log.i("78789777", "a " + "here4");
+                                        feedList.add(new FeedItem(username, profileName, percent, date, comments, likes, id));
+                                    } catch (Exception e3) {
+                                        Log.i("6705del", " problem making JSONobject3" + e3.toString());
+                                        feedList.add(new FeedItem("Error retrieving feed", "" + e3.toString(), 0, "", new ArrayList(), new ArrayList(), ""));
+                                        CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
+                                        setListAdapter(adapter);
+                                    }
 
-                                             feedList.add(new FeedItem(username, profileName, percent, date, comments));
-                                         } catch (Exception e3) {
-                                             Log.i("6705del", " problem making JSONobject3" + e3.toString());
-                                             feedList.add(new FeedItem("Error retrieving feed", "" + e3.toString(), 0, "", new ArrayList()));
-                                             CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
-                                             setListAdapter(adapter);
-                                         }
+                                }
+                                CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
+                                setListAdapter(adapter);
+                            }
 
-                                     }
-                                     CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
-                                     setListAdapter(adapter);
-                                 }
+                        }
+                    }
 
-                             }
-                                     }
+                });
 
-                     });
+            } catch (Exception e) {
+                feedList.add(new FeedItem("Error retrieving feed", "" + e.toString(), 0, "", new ArrayList(), new ArrayList(), ""));
+                CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
+                setListAdapter(adapter);
+            }
 
-                 } catch (Exception e) {
-                     feedList.add(new FeedItem("Error retrieving feed", "" + e.toString(), 0, "", new ArrayList()));
-                     CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
-                     setListAdapter(adapter);
-                 }
+        } else {
+            if (connect.getActiveNetworkInfo() == null) {
+                feedList.add(new FeedItem("Error retrieving feed!", " Please check network connection", 200, "", new ArrayList(), new ArrayList(), ""));
+            } else {
+                if (ParseUser.getCurrentUser() == null) {
+                    feedList.clear();
+                    feedList.add(new FeedItem("Error retrieving feed!", " No user signed in", 200, "", new ArrayList(), new ArrayList(), ""));
+                }
+            }
+            CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
+            setListAdapter(adapter);
+        }
 
-             }else{
-                 feedList.add(new FeedItem("Error retrieving feed", ". Please check network connection!", 200, "", new ArrayList()));
-                 CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
-                 setListAdapter(adapter);
-             }
 
 
     }

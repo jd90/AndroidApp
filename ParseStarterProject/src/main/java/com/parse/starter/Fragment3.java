@@ -43,6 +43,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Fragment3 extends Fragment implements View.OnClickListener, View.OnLongClickListener{
 
@@ -407,6 +408,10 @@ if(v.getTag() == "sharkSwim") {
                 ConnectivityManager connect = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
                 if (connect.getActiveNetworkInfo() != null) {
                     ParseObject feed = new ParseObject("Feed");
+                    List likes = new ArrayList<>();
+                    List comments = new ArrayList();
+                    feed.put("likes", likes);
+                    feed.put("comments", comments);
                     feed.put("percent", y);
                     feed.put("date", z);
                     feed.put("username", ParseUser.getCurrentUser().getUsername());

@@ -13,14 +13,18 @@ public class FeedItem {
     int percent;
     String date;
     List comments;
+    List likes;
+    String id;
 
-    public FeedItem(String username, String profileName, int percent, String date, List comments){
+    public FeedItem(String username, String profileName, int percent, String date, List comments, List likes, String id){
 
         this.username=username;
         this.profileName=profileName;
         this.percent=percent;
         this.date=date;
         this.comments=comments;
+        this.likes=likes;
+        this.id=id;
     }
 
 
