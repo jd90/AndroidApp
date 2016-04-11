@@ -76,9 +76,16 @@ public class CustomArrayAdapter1 extends ArrayAdapter<Goal> implements View.OnLo
             if(feedList.get(position).likes.size()>0){
                 likers.setVisibility(View.VISIBLE);
                 String likersText= "Liked by:";
+                if(feedList.get(position).likes.contains(ParseUser.getCurrentUser().getUsername())){
+                    likersText+=" you";
+                }
+                if(feedList.get(position).likes.size()>1){likersText+=",";}
                 for(int i=0; i<feedList.get(position).likes.size();i++){
-                    if(i==0){likersText+= " "+feedList.get(position).likes.get(i);}
-                    else{likersText+=", "+feedList.get(position).likes.get(i);}
+                    String name =feedList.get(position).likes.get(i).toString();
+                    if(!name.equals(ParseUser.getCurrentUser().getUsername())){
+                    if(i==0){likersText+= " "+name;}
+                    else{likersText+=", "+name;}
+                    }
                 }
                 likers.setText(likersText);
             }
