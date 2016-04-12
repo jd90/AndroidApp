@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class NewGoalFragment extends DialogFragment implements View.OnClickListe
     NumberPicker throughPick;
     LinearLayout timesAWeek;
     LinearLayout throughTheWeek;
+    boolean saveClickedBool = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class NewGoalFragment extends DialogFragment implements View.OnClickListe
         getDialog().setTitle("New Goal");
         inputTitle = (EditText) rootView.findViewById(R.id.titleInput);
         inputTitle.setHint("User Must Enter Title");
+        inputTitle.addTextChangedListener(this);
         warningMessage = (TextView) rootView.findViewById(R.id.warning);
         warningMessage.setText("Warning! Title must be:\n" +
                 "Provided\nLess than 20 characters");
@@ -97,7 +100,7 @@ public class NewGoalFragment extends DialogFragment implements View.OnClickListe
                     if (inputTitle.getText().toString().equals("")||inputTitle.getText().toString().length() >20) {
 
                         warningMessage.setVisibility(View.VISIBLE);
-                        inputTitle.addTextChangedListener(this);
+                        saveClickedBool = true;
 
                     } else {
                         //ProfileMainActivity.fgoalStore.add(new Goal(inputTitle.getText().toString(), 8));
@@ -133,16 +136,30 @@ public class NewGoalFragment extends DialogFragment implements View.OnClickListe
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (inputTitle.getText().toString().equals("") || inputTitle.getText().toString().length()>20) {
-            //undecided whether to make this revisible when deleting all text, or to just wait until user attempts to save it having ignored the advise and redeleted their text...
+
+        Log.i("contains", inputTitle.getText().toString());
+
+        if(inputTitle.getText().toString().contains("'")||inputTitle.getText().toString().contains("\"")||inputTitle.getText().toString().contains("\\")){
+            inputTitle.setText(inputTitle.getText().toString().substring(0, inputTitle.length()-1));
+        }
+        if(inputTitle.getText().toString().length() > 20){
             warningMessage.setVisibility(View.VISIBLE);
         } else {
             warningMessage.setVisibility(View.GONE);
-
         }
+
+
+       if(saveClickedBool) {
+           if (inputTitle.getText().toString().equals(""))  {
+               //undecided whether to make this revisible when deleting all text, or to just wait until user attempts to save it having ignored the advise and redeleted their text...
+               warningMessage.setVisibility(View.VISIBLE);
+           } else {
+               warningMessage.setVisibility(View.GONE);
+
+           }
+       }
     }
     @Override
     public void afterTextChanged(Editable s) {
-
     }
 }
