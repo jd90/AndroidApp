@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +24,14 @@ import java.util.List;
 /**
  * Created by Borris on 05/02/2016.
  */
-public class CustomArrayAdapterProfiles extends ArrayAdapter<Goal> implements View.OnClickListener, View.OnLongClickListener {
+public class CustomArrayAdapterProfiles extends ArrayAdapter<Goal> implements View.OnClickListener, View.OnLongClickListener, TextWatcher {
 
     private final Context context;
     ProfileDatastore profileDatastore;
     ArrayList<Profile> profiles;
+    TextView warningMessage;
+    boolean saveClickedBool = false;
+    EditText profileInput = new EditText(getContext());
 
     static LinearLayout profileContainer;
 
@@ -37,8 +42,8 @@ public class CustomArrayAdapterProfiles extends ArrayAdapter<Goal> implements Vi
 
         this.profiles = profiles;
         this.profileDatastore=MainActivity.profileDatastore;
-
         this.context = context;
+        profileInput.addTextChangedListener(this);
     }
 
     @Override
@@ -86,17 +91,19 @@ public class CustomArrayAdapterProfiles extends ArrayAdapter<Goal> implements Vi
                 if (which == 0) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setTitle("Rename your Profile");
-                    final EditText profileInput = new EditText(getContext());
+
                     builder.setView(profileInput);
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int num) {
                             //change title of profile here
+                            saveClickedBool=true;
                             Profile profile = profiles.get(Integer.parseInt(vi.getTag().toString()));
                             String title = profileInput.getText().toString().toUpperCase();
                             profile.renameProfile(title);
                             notifyDataSetChanged();
                             MainActivity.saveProfiles();
+
                             }});
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
@@ -128,6 +135,28 @@ public class CustomArrayAdapterProfiles extends ArrayAdapter<Goal> implements Vi
         renameDelete.show();
         return true;
 
+
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        Log.i("contains", profileInput.getText().toString());
+
+        if(profileInput.getText().toString().contains("'")||profileInput.getText().toString().contains("\"")||profileInput.getText().toString().contains("\\")){
+            profileInput.setText(profileInput.getText().toString().substring(0, profileInput.length()-1));
+            profileInput.setSelection(profileInput.getText().toString().length());//changes cursor to still be at the end
+        }
+
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
 
     }
 }

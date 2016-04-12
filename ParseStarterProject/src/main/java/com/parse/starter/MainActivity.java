@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.Image;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 
@@ -21,12 +23,13 @@ import com.parse.ParseUser;
 
 import org.w3c.dom.Text;
 
-public class MainActivity extends ListActivity implements View.OnClickListener {
+public class MainActivity extends ListActivity implements View.OnClickListener, TextWatcher {
 
 
     static ProfileDatastore profileDatastore;
     static CustomArrayAdapterProfiles adapter;
     static SQLiteDatabase profilesDatabase;
+    EditText profileInput;
 
     TextView userStatus;
 
@@ -59,7 +62,8 @@ public class MainActivity extends ListActivity implements View.OnClickListener {
         Button newProfileButton =(Button) findViewById(R.id.newProfileButton);
         newProfileButton.setOnClickListener(this);
         newProfileButton.setTag("newgoal");
-
+        profileInput= new EditText(this);
+        profileInput.addTextChangedListener(this);
     }
     public void loadCount(){
         profileDatastore.count=0;
@@ -129,7 +133,6 @@ public class MainActivity extends ListActivity implements View.OnClickListener {
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Name your Profile");
-                final EditText profileInput = new EditText(this);
                 builder.setView(profileInput);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -168,4 +171,24 @@ public class MainActivity extends ListActivity implements View.OnClickListener {
 
     }
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        Log.i("contains", profileInput.getText().toString());
+
+        if(profileInput.getText().toString().contains("'")||profileInput.getText().toString().contains("\"")||profileInput.getText().toString().contains("\\")){
+            profileInput.setText(profileInput.getText().toString().substring(0, profileInput.length()-1));
+            profileInput.setSelection(profileInput.getText().toString().length());//changes cursor to still be at the end
+        }
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
 }

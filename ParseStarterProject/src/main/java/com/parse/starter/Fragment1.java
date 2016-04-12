@@ -89,8 +89,14 @@ public class Fragment1 extends ListFragment {
                                     }
 
                                 }
-                                CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
-                                setListAdapter(adapter);
+
+                                try {
+                                    CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
+                                    setListAdapter(adapter);
+                                }catch(Exception exc){feedList.add(new FeedItem("Error retrieving feed#", "" + exc.toString(), 0, "", new ArrayList(), new ArrayList(), ""));
+                                    CustomArrayAdapter1 adapter = new CustomArrayAdapter1(getActivity(), feedList);
+                                    setListAdapter(adapter);}
+
                             }
 
                         }

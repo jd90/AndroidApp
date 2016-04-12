@@ -141,6 +141,7 @@ public class NewGoalFragment extends DialogFragment implements View.OnClickListe
 
         if(inputTitle.getText().toString().contains("'")||inputTitle.getText().toString().contains("\"")||inputTitle.getText().toString().contains("\\")){
             inputTitle.setText(inputTitle.getText().toString().substring(0, inputTitle.length()-1));
+            inputTitle.setSelection(inputTitle.getText().toString().length());//changes cursor to still be at the end
         }
         if(inputTitle.getText().toString().length() > 20){
             warningMessage.setVisibility(View.VISIBLE);
