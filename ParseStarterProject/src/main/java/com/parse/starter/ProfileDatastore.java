@@ -30,6 +30,10 @@ public class ProfileDatastore {
     };
 
 
+    public int getSize(){
+        return profiles.size();
+    }
+
     public void removeProfile(Profile profileToRemove){
 
         try {
