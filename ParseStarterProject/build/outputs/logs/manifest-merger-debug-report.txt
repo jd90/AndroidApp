@@ -51,12 +51,12 @@ ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\And
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:27:13-53
 	android:name
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:26:13-48
-activity#com.parse.starter.MainActivity
+activity#com.parse.starter.ActProfiles
 ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:29:9-37:20
 	android:label
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:31:13-45
 	android:name
-		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:30:13-58
+		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:30:13-40
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
 ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:32:13-36:29
 action#android.intent.action.MAIN
@@ -67,12 +67,12 @@ category#android.intent.category.LAUNCHER
 ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:35:17-77
 	android:name
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:35:27-74
-activity#com.parse.starter.ProfileMainActivity
+activity#com.parse.starter.ActGoals
 ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:38:9-45:20
 	android:label
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:40:13-45
 	android:name
-		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:39:13-48
+		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:39:13-37
 intent-filter#android.intent.category.DEFAULT+com.example.borris.toolbartest.future_item_layout
 ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:41:13-44:25
 action#com.example.borris.toolbartest.future_item_layout
@@ -83,30 +83,30 @@ category#android.intent.category.DEFAULT
 ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:43:13-72
 	android:name
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:43:23-69
-activity#com.parse.starter.SettingsScrn
+activity#com.parse.starter.ActSettings
 ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:46:9-53:20
 	android:label
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:48:13-45
 	android:name
-		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:47:13-41
-activity#com.parse.starter.FutureGoals
+		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:47:13-40
+activity#com.parse.starter.ActFutureGoals
 ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:54:9-61:20
 	android:label
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:56:13-45
 	android:name
-		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:55:13-57
-activity#com.parse.starter.ReorderPage
+		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:55:13-43
+activity#com.parse.starter.ActReorderPage
 ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:62:9-69:16
 	android:label
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:64:9-41
 	android:name
-		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:63:9-53
-activity#com.parse.starter.friendsFragment
+		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:63:9-39
+activity#com.parse.starter.Frag5Friends
 ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:70:9-77:16
 	android:label
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:72:9-41
 	android:name
-		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:71:9-57
+		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:71:9-37
 receiver#com.parse.starter.WidgetClass
 ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:78:9-86:20
 	android:name

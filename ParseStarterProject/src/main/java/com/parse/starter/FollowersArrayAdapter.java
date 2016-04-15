@@ -9,20 +9,12 @@ import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+
 import android.widget.CheckBox;
-import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -30,7 +22,7 @@ import com.parse.SaveCallback;
  * Created by Borris on 05/04/2016.
  */
 
-public class FollowersArrayAdapter extends ArrayAdapter<Goal> implements View.OnClickListener {
+public class FollowersArrayAdapter extends ArrayAdapter<ClassGoal> implements View.OnClickListener {
 
     private final Context context;
     private ArrayList<String> usernames;

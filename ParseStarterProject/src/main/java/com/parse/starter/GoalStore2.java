@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class GoalStore2 {
 
-    List<Goal> list;
+    List<ClassGoal> list;
     SQLiteDatabase myDatabase;
     Cursor c;
 
@@ -20,18 +20,18 @@ public class GoalStore2 {
 
     public GoalStore2(SQLiteDatabase x) {
         myDatabase = x;
-        list=new ArrayList<Goal>();
+        list=new ArrayList<ClassGoal>();
 
         setUpGoalStore();
 
     }
 
-    public boolean add(Goal g) {
+    public boolean add(ClassGoal g) {
         this.list.add(g);
         return true;
     }
 
-    public Goal getAt(int i){
+    public ClassGoal getAt(int i){
         return list.get(i);
     }
 
@@ -46,7 +46,7 @@ public class GoalStore2 {
 
     public double getTotalPercentage() {
         double sum=0.0;
-        for (Goal g:this.list)
+        for (ClassGoal g:this.list)
             sum+=g.percentNum;
         return sum;
     }
@@ -78,7 +78,7 @@ public class GoalStore2 {
             Log.i("goalstore2future", c.getString(nameIndex));
             boolean type;
             if(c.getInt(typeIndex)==1){type=true;}else{type=false;}
-            this.add(new Goal(c.getString(nameIndex), c.getInt(totalIndex), type));
+            this.add(new ClassGoal(c.getString(nameIndex), c.getInt(totalIndex), type));
             pos++;
             c.moveToNext();
         }

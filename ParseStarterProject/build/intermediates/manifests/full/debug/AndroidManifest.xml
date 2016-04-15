@@ -33,7 +33,7 @@
             android:value="@string/parse_client_key" />
 
         <activity
-            android:name="com.parse.starter.MainActivity"
+            android:name="com.parse.starter.ActProfiles"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,7 +42,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.parse.starter.ProfileMainActivity"
+            android:name="com.parse.starter.ActGoals"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="com.example.borris.toolbartest.future_item_layout" />
@@ -51,7 +51,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.parse.starter.SettingsScrn"
+            android:name="com.parse.starter.ActSettings"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="com.example.borris.toolbartest.future_item_layout" />
@@ -60,7 +60,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.parse.starter.FutureGoals"
+            android:name="com.parse.starter.ActFutureGoals"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="com.example.borris.toolbartest.future_item_layout" />
@@ -69,7 +69,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.parse.starter.ReorderPage"
+            android:name="com.parse.starter.ActReorderPage"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="com.example.borris.toolbartest.future_item_layout" />
@@ -78,7 +78,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.parse.starter.friendsFragment"
+            android:name="com.parse.starter.Frag5Friends"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="com.example.borris.toolbartest.future_item_layout" />

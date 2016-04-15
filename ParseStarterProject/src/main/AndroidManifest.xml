@@ -27,7 +27,7 @@
             android:value="@string/parse_client_key" />
 
         <activity
-            android:name="com.parse.starter.MainActivity"
+            android:name=".ActProfiles"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ProfileMainActivity"
+            android:name=".ActGoals"
             android:label="@string/app_name" >
             <intent-filter>
             <action android:name="com.example.borris.toolbartest.future_item_layout" />
@@ -44,7 +44,7 @@
         </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsScrn"
+            android:name=".ActSettings"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="com.example.borris.toolbartest.future_item_layout" />
@@ -52,7 +52,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.parse.starter.FutureGoals"
+            android:name=".ActFutureGoals"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="com.example.borris.toolbartest.future_item_layout" />
@@ -60,7 +60,7 @@
             </intent-filter>
         </activity>
         <activity
-        android:name="com.parse.starter.ReorderPage"
+        android:name=".ActReorderPage"
         android:label="@string/app_name" >
         <intent-filter>
             <action android:name="com.example.borris.toolbartest.future_item_layout" />
@@ -68,7 +68,7 @@
         </intent-filter>
     </activity>
         <activity
-        android:name="com.parse.starter.friendsFragment"
+        android:name=".Frag5Friends"
         android:label="@string/app_name" >
         <intent-filter>
             <action android:name="com.example.borris.toolbartest.future_item_layout" />

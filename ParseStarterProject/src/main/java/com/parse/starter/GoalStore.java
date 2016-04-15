@@ -16,7 +16,7 @@ import java.util.List;
 
 public class GoalStore {
 
-    List<Goal> list;
+    List<ClassGoal> list;
 
     SQLiteDatabase myDatabase;
     Cursor c;
@@ -25,7 +25,7 @@ public class GoalStore {
 
     public GoalStore(SQLiteDatabase x, boolean y) {
         myDatabase = x;
-        list=new ArrayList<Goal>();
+        list=new ArrayList<ClassGoal>();
         //test if database exists
         //if empty fill arraylist and fill database
         //if full fill arraylist from database
@@ -35,14 +35,14 @@ public class GoalStore {
 
     }
 
-    public boolean add(Goal g) {
+    public boolean add(ClassGoal g) {
 
 
         this.list.add(g);
         return true;
     }
 
-    public Goal getAt(int i){
+    public ClassGoal getAt(int i){
         return list.get(i);
     }
 
@@ -59,7 +59,7 @@ public class GoalStore {
 
     public double getTotalPercentage() {
         double sum=0.0;
-        for (Goal g:this.list)
+        for (ClassGoal g:this.list)
             sum+=g.percentNum;
         return sum;
     }
@@ -117,7 +117,7 @@ public class GoalStore {
                 Log.i("JOASHNAME2", "" + c.getDouble(percentIndex));
                 Log.i("JOASHNAME3", "" + this.getAt(0).name);
 
-                this.add(new Goal(c.getString(nameIndex), c.getInt(totalIndex)));
+                this.add(new ClassGoal(c.getString(nameIndex), c.getInt(totalIndex)));
                 //this.getAt(pos).name = c.getString(nameIndex);
                 //this.getAt(pos).total = c.getInt(totalIndex);
                 this.getAt(pos).done = c.getInt(doneIndex);
@@ -183,13 +183,13 @@ public class GoalStore {
     public void setUpGoalStore(){
 
 
-        this.add(new Goal("Goal one", 5));
-        this.add(new Goal("Goal 2", 5));
-        this.add(new Goal("Goal 3", 5));
-        this.add(new Goal("Goal 4", 5));
-        this.add(new Goal("Goal 5", 5));
-        this.add(new Goal("Goal 6", 5));
-        this.add(new Goal("Goal 7", 5));
+        this.add(new ClassGoal("ClassGoal one", 5));
+        this.add(new ClassGoal("ClassGoal 2", 5));
+        this.add(new ClassGoal("ClassGoal 3", 5));
+        this.add(new ClassGoal("ClassGoal 4", 5));
+        this.add(new ClassGoal("ClassGoal 5", 5));
+        this.add(new ClassGoal("ClassGoal 6", 5));
+        this.add(new ClassGoal("ClassGoal 7", 5));
 
         Log.i("6705", "called setupgoalstore");
 

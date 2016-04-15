@@ -1,6 +1,5 @@
 package com.parse.starter;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -10,7 +9,7 @@ import java.util.ArrayList;
  */
 public class ProfileDatastore {
 
-    ArrayList<Profile> profiles;
+    ArrayList<ClassProfile> profiles;
     int count;
 
     public ProfileDatastore() {
@@ -21,11 +20,11 @@ public class ProfileDatastore {
 
 
     public void addProfile(String name){
-        profiles.add(new Profile(name, count));
+        profiles.add(new ClassProfile(name, count));
         count++;
     }
 
-    public Profile getProfile(int i){
+    public ClassProfile getProfile(int i){
         return profiles.get(i);
     };
 
@@ -34,10 +33,10 @@ public class ProfileDatastore {
         return profiles.size();
     }
 
-    public void removeProfile(Profile profileToRemove){
+    public void removeProfile(ClassProfile profileToRemove){
 
         try {
-            ProfileMainActivity.deleteDatabase(profileToRemove.databaseNum);
+            ActGoals.deleteDatabase(profileToRemove.databaseNum);
             Log.i("67056705", "Successfully deleted " + profileToRemove.databaseNum);
         }catch(Exception e){Log.i("67056705", "error deleting databse... not created yet?");
             Log.i("67056705", "error deleting databse... "+e.toString());}

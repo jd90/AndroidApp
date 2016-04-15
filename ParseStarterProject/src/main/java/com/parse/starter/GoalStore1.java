@@ -7,7 +7,6 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,7 +14,7 @@ import java.util.List;
  */
 public class GoalStore1 {
 
-    static List<Goal> list;
+    static List<ClassGoal> list;
     SQLiteDatabase myDatabase;
     Cursor c;
 
@@ -34,7 +33,7 @@ public class GoalStore1 {
 
     public GoalStore1(SQLiteDatabase x) {
         myDatabase = x;
-        list=new ArrayList<Goal>();
+        list=new ArrayList<ClassGoal>();
 
         setDayVariables();
 
@@ -52,11 +51,11 @@ public class GoalStore1 {
     }
 
 
-    public boolean add(Goal g) {
+    public boolean add(ClassGoal g) {
         this.list.add(g);
         return true;
     }
-    public Goal getAt(int i){
+    public ClassGoal getAt(int i){
         return list.get(i);
     }
     public void clear() {
@@ -64,7 +63,7 @@ public class GoalStore1 {
     }
     public int getSize(){return this.list.size();}
     public void reorderUp(int i){
-        Goal g2 = list.get(i);
+        ClassGoal g2 = list.get(i);
         list.remove(i);
         list.add(i - 1, g2);
 
@@ -73,7 +72,7 @@ public class GoalStore1 {
     public void reorderDown(int i){
 
         Log.i("6705reorderD", "bef:" + list.toString());
-        Goal g2 = list.get(i);
+        ClassGoal g2 = list.get(i);
         list.remove(i);
 
         list.add(i + 1, g2);
@@ -82,7 +81,7 @@ public class GoalStore1 {
     }
     public double getTotalPercentage() {
         double sum =0;
-        for(Goal g:this.list){
+        for(ClassGoal g:this.list){
             sum+=(int) g.getPercentage2();
         Log.i("6705percent", ""+sum);
         }
@@ -157,7 +156,7 @@ boolean cancel=false;
                         type = true;
                     } else {
                         type = false;}
-                this.add(new Goal(c.getString(nameIndex), c.getInt(totalIndex), type));
+                this.add(new ClassGoal(c.getString(nameIndex), c.getInt(totalIndex), type));
                 //this.getAt(pos).name = c.getString(nameIndex);
                 //this.getAt(pos).total = c.getInt(totalIndex);
                 this.getAt(pos).done = c.getInt(doneIndex);
@@ -216,7 +215,7 @@ boolean cancel=false;
                 Log.i("8888", "adding: " + c.getString(nameIndex));
                 boolean type;
                 if(c.getInt(typeIndex)==1){type=true;}else{type=false;}
-                this.add(new Goal(c.getString(nameIndex), c.getInt(totalIndex), type));
+                this.add(new ClassGoal(c.getString(nameIndex), c.getInt(totalIndex), type));
 
                 c.moveToNext();
             }catch(Exception e){cancel = true; Log.i("8888", "canceled from index out of bounds exception"+e.toString());}
