@@ -59,8 +59,7 @@ public class ActProfiles extends ListActivity implements View.OnClickListener, T
         Button newProfileButton =(Button) findViewById(R.id.newProfileButton);
         newProfileButton.setOnClickListener(this);
         newProfileButton.setTag("newgoal");
-        profileInput= new EditText(this);
-        profileInput.addTextChangedListener(this);
+
     }
     public void loadCount(){
         profileDatastore.count=0;
@@ -128,6 +127,8 @@ public class ActProfiles extends ListActivity implements View.OnClickListener, T
                         .show();
 
             } else {
+                profileInput= new EditText(this);
+                profileInput.addTextChangedListener(this);
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Name your Profile");
                 builder.setView(profileInput);
@@ -152,8 +153,13 @@ public class ActProfiles extends ListActivity implements View.OnClickListener, T
                     }
                 });
                 builder.setCancelable(false);
-                builder.show();
-            }
+
+                try {
+                    builder.show();
+                }catch (Exception e){
+                    Log.i("bugproblem", e.toString());
+                }
+                }
 
         }
 

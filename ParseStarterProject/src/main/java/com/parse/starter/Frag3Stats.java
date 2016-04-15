@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -314,8 +315,8 @@ if(v.getTag() == "sharkSwim") {
         int x = Integer.parseInt(l.getTag().toString());
         y = ActGoals.goalStore.pastTotals.get(x);
         z = ActGoals.goalStore.pastDates.get(x);
-        Toast t = Toast.makeText(getActivity(), y + "%", Toast.LENGTH_SHORT);
-        t.show();
+       // Toast t = Toast.makeText(getActivity(), y + "%", Toast.LENGTH_SHORT);
+       // t.show();
 
         Log.i("pastDate", z);
 
@@ -392,6 +393,10 @@ if(v.getTag() == "sharkSwim") {
                 ConnectivityManager connect = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
                 if (connect.getActiveNetworkInfo() != null) {
                     ParseObject feed = new ParseObject("Feed");
+                    ParseACL acl =new ParseACL();
+                    acl.setPublicWriteAccess(true);
+                    acl.setPublicReadAccess(true);
+                    feed.setACL(acl);
                     List likes = new ArrayList<>();
                     List comments = new ArrayList();
                     feed.put("likes", likes);
