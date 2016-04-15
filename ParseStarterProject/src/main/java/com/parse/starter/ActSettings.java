@@ -352,7 +352,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                 } else {
                     strJson += ",{";
                 }
-//strings need to be held inside \" \" to allow for spaces?!!
+//strings need to be held inside \" \" to allow for spaces
                 strJson += "" +
                         "\"name\":" + " \" " + c.getString(nameIndex) + " \" " + "," +
                         "\"total\":" + c.getInt(totalIndex) + "," +
