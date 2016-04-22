@@ -42,6 +42,16 @@ public class ActProfiles extends ListActivity implements View.OnClickListener, T
         profilesDatabase.execSQL("CREATE TABLE IF NOT EXISTS profilesTbl (name VARCHAR, databaseNum INT(3))");
         profilesDatabase.execSQL("CREATE TABLE IF NOT EXISTS countTbl (count INT(3))");
 
+        //create all tables here on opening?
+
+        //load profiles
+
+        //save profiles when making a new one
+
+        //in datastore = open goals that have profileID (or name and make input check not exists) matching
+
+        //in datastore save goals when something changes - clear and save from datastore list? as already kind of does
+
         loadProfiles();
         loadCount();
 

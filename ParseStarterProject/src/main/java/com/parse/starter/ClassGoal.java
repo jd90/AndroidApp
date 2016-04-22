@@ -14,6 +14,7 @@ public class ClassGoal {
     public boolean[] buttons = new boolean[]{true, true, true, true, true, true, true};
     public double percentNum;
     public double percent;
+    public String profileName;
 
     public int[] buttonsThrough = new int[]{0,0,0,0,0,0,0};
 
@@ -33,6 +34,8 @@ public class ClassGoal {
         this.total=t;
         percentNum = (double) 100/total;
         percent=0;
+
+
     }
     public ClassGoal(String n, int t, boolean type){
         this.name = n;
@@ -91,6 +94,7 @@ public class ClassGoal {
         else{buttons[s]=true;
             changePercent(false);
             done--;}
+
     }
 
     public void buttonClick(int s, int amount, boolean updown){

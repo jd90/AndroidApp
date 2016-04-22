@@ -14,6 +14,7 @@ public class ClassProfile {
 
     String name;
     int databaseNum;
+    int refreshDay;
 
     public ClassProfile(String name, int database) {
 
