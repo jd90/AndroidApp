@@ -26,6 +26,8 @@ public class DialogFragAddGoal extends DialogFragment implements View.OnClickLis
     LinearLayout timesAWeek;
     LinearLayout throughTheWeek;
     boolean saveClickedBool = false;
+    String profileName;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -108,14 +110,14 @@ public class DialogFragAddGoal extends DialogFragment implements View.OnClickLis
 
                         if(timesAWeek.getVisibility()==View.VISIBLE) {
 
-                            ActFutureGoals.fgoalStore.add(new ClassGoal(inputTitle.getText().toString(), Integer.parseInt(freqSpin.getSelectedItem().toString()), false));
+                            ActFutureGoals.fgoalStore.add(new ClassGoal(inputTitle.getText().toString(), Integer.parseInt(freqSpin.getSelectedItem().toString()), false, profileName));
 
                         }else{
 
-                            ActFutureGoals.fgoalStore.add(new ClassGoal(inputTitle.getText().toString(), throughPick.getValue(), true));
+                            ActFutureGoals.fgoalStore.add(new ClassGoal(inputTitle.getText().toString(), throughPick.getValue(), true, profileName));
 
                         }
-                        ActFutureGoals.fgoalStore.saveToDatabase();
+                        //ActFutureGoals.fgoalStore.saveToDatabase();
                         dismiss();
                     }
                 } else {

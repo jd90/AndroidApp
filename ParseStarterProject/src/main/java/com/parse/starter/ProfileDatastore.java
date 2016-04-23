@@ -19,15 +19,33 @@ public class ProfileDatastore {
     }
 
 
-    public void addProfile(String name){
-        profiles.add(new ClassProfile(name, count));
-        count++;
+    public void addProfile(ClassProfile profile){
+        profiles.add(profile);
+    }
+
+    public boolean nameTaken(String name){
+
+        for(int i=0; i< profiles.size(); i++){
+            if(name.equals(profiles.get(i).name)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public ClassProfile getProfile(int i){
         return profiles.get(i);
     };
 
+    public ClassProfile getProfile(String name){
+
+        for(int i=0; i<profiles.size();i++){
+            if(profiles.get(i).name.equals(name)){
+                return profiles.get(i);
+            }
+        }
+        return null;
+    }
 
     public int getSize(){
         return profiles.size();

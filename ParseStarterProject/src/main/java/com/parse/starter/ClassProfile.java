@@ -16,10 +16,10 @@ public class ClassProfile {
     int databaseNum;
     int refreshDay;
 
-    public ClassProfile(String name, int database) {
+    public ClassProfile(String name, int refreshDay) {
 
         this.name=name;
-        this.databaseNum=database;
+        this.refreshDay = refreshDay;
 
 
         //could create database and goalStore right here? probably should...

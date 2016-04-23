@@ -15,19 +15,31 @@ public class GoalStore2 {
     List<ClassGoal> list;
     SQLiteDatabase myDatabase;
     Cursor c;
-
+    DatabaseHelper databaseHelper;
+    String profile;
     //inherit from base class. do same setup in oncreate here as in goalstore1.
 
-    public GoalStore2(SQLiteDatabase x) {
-        myDatabase = x;
-        list=new ArrayList<ClassGoal>();
+    public GoalStore2(List<ClassGoal> goals, String profileName){
 
-        setUpGoalStore();
+        databaseHelper = new DatabaseHelper(ActGoals.context);//fix this?
 
+        list=goals;
+        profile = profileName;
+        Log.i("44331 sizefu", ""+list.size());
     }
 
+   // public GoalStore2(SQLiteDatabase x) {
+  //      myDatabase = x;
+  //      list=new ArrayList<ClassGoal>();
+
+ //       setUpGoalStore();
+
+ //   }
+
     public boolean add(ClassGoal g) {
+        g.profileName=profile;
         this.list.add(g);
+        saveToDatabase();
         return true;
     }
 
@@ -37,6 +49,8 @@ public class GoalStore2 {
 
     public void clear() {
         this.list.clear();
+        databaseHelper.clearFutureGoalsTbl();
+
     }
 
     public int getSize()
@@ -53,39 +67,29 @@ public class GoalStore2 {
 
     public void saveToDatabase(){
 
-        myDatabase.execSQL("delete from FgoalsTbl");
+        databaseHelper.clearFutureGoalsTbl(profile);
+
         for(int i=0; i<this.getSize(); i++){
-            Log.i("goalstore2future", "" + this.getSize());
+            Log.i("44331 goalstore2future", "" + this.getSize());
             int type;
             if(this.getAt(i).type){type=1;}else{type=0;}
-            myDatabase.execSQL("INSERT INTO FgoalsTbl (name, total, type) VALUES ('"
-                    +this.getAt(i).name+"', "
-                    +this.getAt(i).total+", "
-                    +type+")");
+            ClassGoal g = this.getAt(i);
+            databaseHelper.insertFutureGoal(g.profileName, g.name, g.total, type);
+            Log.i("44331 goalstore2e22", "" + databaseHelper.getFutureGoals(g.profileName).size());
         }
+
 
         Log.i("goalstore2future", "being updated");
     }
     public void loadFromFutureDatabase(){
-        this.clear();
-        c = myDatabase.rawQuery("SELECT * FROM FgoalsTbl", null);
-        int nameIndex = c.getColumnIndex("name");
-        int totalIndex = c.getColumnIndex("total");
-        int typeIndex =c.getColumnIndex("type");
-        c.moveToFirst();
-        int pos = 0;
-        while (c != null) {
-            Log.i("goalstore2future", c.getString(nameIndex));
-            boolean type;
-            if(c.getInt(typeIndex)==1){type=true;}else{type=false;}
-            this.add(new ClassGoal(c.getString(nameIndex), c.getInt(totalIndex), type));
-            pos++;
-            c.moveToNext();
-        }
 
+        this.clear();
+
+        this.list = databaseHelper.getFutureGoals("TEST");
         Log.i("goalstore2future", "goalstore length "+this.getSize());
     }
 
+    /*
 
     public void setUpGoalStore(){
         Log.i("goalstore2future", "called setupgoalstore2");
@@ -108,5 +112,6 @@ public class GoalStore2 {
                 }}}
          catch(Exception e){e.printStackTrace();}
     }
+    */
 
 }

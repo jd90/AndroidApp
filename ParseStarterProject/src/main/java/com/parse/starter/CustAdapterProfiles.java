@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,6 +29,7 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
     TextView warningMessage;
     boolean saveClickedBool = false;
     EditText profileInput = new EditText(getContext());
+    DatabaseHelper databaseHelper;
 
     static LinearLayout profileContainer;
 
@@ -35,6 +37,8 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
 
     public CustAdapterProfiles(Context context, ArrayList profiles) {
         super(context, R.layout.goal_list_item, profiles);
+
+        databaseHelper = new DatabaseHelper(getContext());
 
         this.profiles = profiles;
         this.profileDatastore= ActProfiles.profileDatastore;
@@ -64,9 +68,9 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
         int databaseNum = profiles.get(Integer.parseInt(v.getTag().toString())).databaseNum;
 
         Intent hi = new Intent(getContext(), ActGoals.class);
-        hi.putExtra("profileNumber", Integer.parseInt(v.getTag().toString()));
-        hi.putExtra("profile", databaseNum);
-        Log.i("67056705", "databaseNum "+databaseNum);
+        hi.putExtra("profileName", profileDatastore.getProfile(Integer.parseInt(v.getTag().toString())).name);
+        //hi.putExtra("profile", databaseNum);
+        Log.i("44331", "opening profile "+profileDatastore.getProfile(Integer.parseInt(v.getTag().toString())).name);
         getContext().startActivity(hi);
 
     }
@@ -93,13 +97,20 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
                         @Override
                         public void onClick(DialogInterface dialog, int num) {
                             //change title of profile here
-                            saveClickedBool=true;
-                            ClassProfile profile = profiles.get(Integer.parseInt(vi.getTag().toString()));
-                            String title = profileInput.getText().toString().toUpperCase();
-                            profile.renameProfile(title);
-                            notifyDataSetChanged();
-                            ActProfiles.saveProfiles();
-
+                            if (profileDatastore.nameTaken(profileInput.getText().toString().toUpperCase())||profileInput.getText().toString().equals("")) {
+                                Log.i("44331", "name taken");
+                                dialog.cancel();
+                            }//fix this to show a warning message of some sort
+                            else {
+                                saveClickedBool = true;
+                                ClassProfile profile = profiles.get(Integer.parseInt(vi.getTag().toString()));
+                                String oldTitle = profiles.get(Integer.parseInt(vi.getTag().toString())).name;
+                                int refresh = profiles.get(Integer.parseInt(vi.getTag().toString())).refreshDay;
+                                String newTitle = profileInput.getText().toString().toUpperCase();
+                                profile.renameProfile(newTitle);
+                                notifyDataSetChanged();
+                                databaseHelper.updateProfileRow(oldTitle, newTitle, refresh);//change to proper refreshday
+                            }
                             }});
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
@@ -116,10 +127,12 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
                     confirm.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             ClassProfile profile = profiles.get(Integer.parseInt(vi.getTag().toString()));
+                            String title = profiles.get(Integer.parseInt(vi.getTag().toString())).name;
                             ActProfiles.profileDatastore.removeProfile(profile);
                             notifyDataSetChanged();
-                            ActProfiles.saveProfiles();
-                            ActProfiles.saveCount();
+
+                            databaseHelper.deleteProfileRow(title);
+
                         }});
                             confirm.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -147,6 +160,10 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
             profileInput.setText(profileInput.getText().toString().substring(0, profileInput.length()-1));
             profileInput.setSelection(profileInput.getText().toString().length());//changes cursor to still be at the end
         }
+
+        if(profileDatastore.nameTaken(profileInput.getText().toString())){
+            profileInput.setText("NAME TAKEN");
+        }//fix this to show a warning message of some sort
 
 
     }

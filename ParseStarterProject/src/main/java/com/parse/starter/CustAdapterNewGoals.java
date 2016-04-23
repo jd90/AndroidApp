@@ -7,6 +7,7 @@ package com.parse.starter;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,15 +26,17 @@ public class CustAdapterNewGoals extends ArrayAdapter<ClassGoal> implements View
     private GoalStore2 fGoalStore;
     FragmentManager fm;
     int count = 1;
+    String profileName;
 
-    public CustAdapterNewGoals(Context context, GoalStore2 g) {
+    public CustAdapterNewGoals(Context context, GoalStore2 g, String profileName) {
         super(context, R.layout.future_item_layout, (List<ClassGoal>) g.list);
 
         this.context = context;
         this.fGoalStore = g;
-
+        this.profileName=profileName;
         fm = ((Activity) context).getFragmentManager();
 
+        Log.i("44331 test", "" + ActGoals.profile);
     }
 
     @Override

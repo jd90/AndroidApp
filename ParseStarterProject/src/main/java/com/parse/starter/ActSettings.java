@@ -667,8 +667,8 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
 
                                 profileID = goalRow.getInt("ProfileID");
                                 profileName = goalRow.getString("ProfileName");
-                                ClassProfile prof =new ClassProfile(profileName, profileID);
-                                ActProfiles.profileDatastore.profiles.add(prof);
+                                //recent ClassProfile prof =new ClassProfile(profileName, profileID);
+                                //recent ActProfiles.profileDatastore.profiles.add(prof);
                                 ActProfiles.profileDatastore.count= goalRow.getInt("Count");
 
 
@@ -844,8 +844,8 @@ Log.i("6705del", "NULL OBJECT RETURNED BECAUSE OF EXCEPTION");
                         //end of looping through rows
 
                         }
-                        ActProfiles.saveCount();
-                        ActProfiles.saveProfiles();
+                        //recent ActProfiles.saveCount();
+                        //recent ActProfiles.saveProfiles();
                         ActProfiles.adapter.notifyDataSetChanged();
                         Toast t = Toast.makeText(getApplicationContext(), "Load Successful!", Toast.LENGTH_SHORT);t.show();
 

@@ -60,17 +60,20 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         //values.put("refreshDay", 366);
         //db.insert("profilesTbl", null, values);
 
-        db.execSQL("INSERT INTO profilesTbl (profileName,refreshDay) VALUES (" + profile.name + ", 366)");
+        db.execSQL("INSERT INTO profilesTbl (profileName, refreshDay) VALUES ('" + profile.name + "', "+profile.refreshDay+")");
     }
 
     public void insertGoal(ClassGoal goal) {
 
+        Log.i("44331 dbh ", ""+goal.profileName);
         SQLiteDatabase db = this.getWritableDatabase();
-
-        db.execSQL("INSERT INTO goalsTbl (profileName,goalName,total,done,b0,b1,b2,b3,b4,b5,b6,b7,bt0,bt1,bt2,bt3,bt4,bt5,bt6,percent,type) " +
-                "VALUES ("+goal.profileName+","+goal.name+","+goal.total+","+goal.done+"" +
+        int type;
+        if(goal.type){type=1;}else{type=0;}
+        db.execSQL("INSERT INTO goalsTbl (profileName,goalName,total,done,b0,b1,b2,b3,b4,b5,b6,bt0,bt1,bt2,bt3,bt4,bt5,bt6,percent,type) " +
+                "VALUES ('"+goal.profileName+"','"+goal.name+"',"+goal.total+","+goal.done+"" +
             ","+goal.getButton(0)+","+goal.getButton(1)+","+goal.getButton(2)+","+goal.getButton(3)+","+goal.getButton(4)+","+goal.getButton(5)+","+goal.getButton(6)+
             ","+goal.buttonsThrough[0]+","+goal.buttonsThrough[1]+","+goal.buttonsThrough[2]+","+goal.buttonsThrough[3]+","+goal.buttonsThrough[4]+","+goal.buttonsThrough[5]+","+goal.buttonsThrough[6]+
+            ","+goal.percent+","+type+
                 ")");
     }
 
@@ -80,10 +83,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         db.execSQL("INSERT INTO futureGoalsTbl (profileName, goalName, total, type) " +
                 "VALUES (" +
-                "" +profileName+
-                "" +goalName+
-                "" +total+
-                "" +type+
+                "'" +profileName+"'"+
+                ",'" +goalName+"'"+
+                "," +total+
+                "," +type+
                 ")");
 
     }
@@ -103,6 +106,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
 
+
     /*
     * ---- get list methods -----
     */
@@ -119,7 +123,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         // looping through all rows and adding to list
         if (c.moveToFirst()) {
             do {
-                ClassProfile profile = new ClassProfile("",999);
+                ClassProfile profile = new ClassProfile("", 777);
                 profile.name = (c.getString(c.getColumnIndex("profileName")));
                 profile.refreshDay = (c.getInt(c.getColumnIndex("refreshDay")));
 
@@ -133,8 +137,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
 
     public List<ClassGoal> getGoals(String profileName) {
-        List<ClassGoal> goalsList = new ArrayList<ClassGoal>();
-        String selectQuery = "SELECT  * FROM goalsTbl WHERE profileName LIKE "+profileName;
+        List<ClassGoal> goalsList = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM goalsTbl WHERE profileName LIKE '"+profileName+"'";
 
         Log.e("3311", selectQuery);
 
@@ -151,6 +155,21 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 goal.done = (c.getInt(c.getColumnIndex("done")));
                 int type =(c.getInt(c.getColumnIndex("type")));
                 if(type == 1){goal.type = true;}else{goal.type=false;}
+                goal.setButton(0, (c.getInt(c.getColumnIndex("b0"))));
+                goal.setButton(1, (c.getInt(c.getColumnIndex("b1"))));
+                goal.setButton(2, (c.getInt(c.getColumnIndex("b2"))));
+                goal.setButton(3, (c.getInt(c.getColumnIndex("b3"))));
+                goal.setButton(4, (c.getInt(c.getColumnIndex("b4"))));
+                goal.setButton(5, (c.getInt(c.getColumnIndex("b5"))));
+                goal.setButton(6, (c.getInt(c.getColumnIndex("b6"))));
+                goal.buttonsThrough[0] = (c.getInt(c.getColumnIndex("bt0")));
+                goal.buttonsThrough[1] = (c.getInt(c.getColumnIndex("bt1")));
+                goal.buttonsThrough[2] = (c.getInt(c.getColumnIndex("bt2")));
+                goal.buttonsThrough[3] = (c.getInt(c.getColumnIndex("bt3")));
+                goal.buttonsThrough[4] = (c.getInt(c.getColumnIndex("bt4")));
+                goal.buttonsThrough[5] = (c.getInt(c.getColumnIndex("bt5")));
+                goal.buttonsThrough[6] = (c.getInt(c.getColumnIndex("bt6")));
+
 
 
                 // adding to list
@@ -162,8 +181,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     public List<ClassGoal> getFutureGoals(String profileName) {
+        Log.i("44331 nm1", profileName);
         List<ClassGoal> futureGoalsList = new ArrayList<ClassGoal>();
-        String selectQuery = "SELECT  * FROM futureGoalsTbl WHERE profileName LIKE "+profileName;
+        String selectQuery = "SELECT  * FROM futureGoalsTbl WHERE profileName LIKE '"+profileName+"'";
 
         Log.e("3311", selectQuery);
 
@@ -174,6 +194,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         if (c.moveToFirst()) {
             do {
                 ClassGoal futureGoal = new ClassGoal("",999);
+                Log.i("44331 nm13", profileName);
                 futureGoal.profileName = profileName;
                 futureGoal.name = (c.getString(c.getColumnIndex("goalName")));
                 futureGoal.total = (c.getInt(c.getColumnIndex("total")));
@@ -190,7 +211,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public List<Integer> getPastTotals(String profileName) {
         List<Integer> pastTotals = new ArrayList<Integer>();
-        String selectQuery = "SELECT  * FROM pastTotalsTbl WHERE profileName LIKE "+profileName;
+        String selectQuery = "SELECT  * FROM pastTotalsTbl WHERE profileName LIKE '"+profileName+"'";
 
         Log.e("3311", selectQuery);
 
@@ -215,10 +236,118 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     * ---- update/replace row methods -----
     */
 
-/*
+    public void updateProfileRow(String oldProfileName, String newProfileName, int refreshDay) {//should possibly take a profileObject instead - consider when in context
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("UPDATE profilesTbl " +
+                " SET profileName = '"+newProfileName+"',refreshDay = "+refreshDay+
+                " WHERE profileName LIKE '"+oldProfileName+"'"
+                );
+        //could split into a profileName change and a refreshDay change method
+    }
+
+
+    public void updateGoalRow(ClassGoal goal) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Log.i("44331", "g "+ goal.getButton(0));
+                 db.execSQL("UPDATE goalsTbl " +
+                         "SET done = " + goal.done + ", percent = " + goal.percent +
+                         ", b0 = " + goal.getButton(0) +
+                         ", b1 = " + goal.getButton(1) +
+                         ", b2 = " + goal.getButton(2) +
+                         ", b3 = " + goal.getButton(3) +
+                         ", b4 = " + goal.getButton(4) +
+                         ", b5 = " + goal.getButton(5) +
+                         ", b6 = " + goal.getButton(6) +
+                         ", bt0 = " + goal.buttonsThrough[0] +
+                         ", bt1 = " + goal.buttonsThrough[1] +
+                         ", bt2 = " + goal.buttonsThrough[2] +
+                         ", bt3 = " + goal.buttonsThrough[3] +
+                         ", bt4 = " + goal.buttonsThrough[4] +
+                         ", bt5 = " + goal.buttonsThrough[5] +
+                         ", bt6 = " + goal.buttonsThrough[6] +
+                         " WHERE profileName LIKE '" + goal.profileName + "'" +
+                         " AND goalName LIKE '" + goal.name +
+                         "'");
+
+        Log.i("44331 prof", goal.profileName);
+        Log.i("44331 prof", goal.name);
+        //could split into a profileName change and a refreshDay change method
+
+    }
+
+
+
+    /*
     * ---- method to delete a particular object - method to clear all too/parse style ones -----
     */
 
+    public void deleteProfileRow(String profileName){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Log.i("44331", "DELETE FROM profilesTbl " +
+                "WHERE profileName LIKE '"+profileName+"'");
+        db.execSQL("DELETE FROM profilesTbl " +
+                "WHERE profileName LIKE '" + profileName + "'");
+        db.execSQL("DELETE FROM goalsTbl " +
+                "WHERE profileName LIKE '" + profileName + "'");
+        db.execSQL("DELETE FROM futureGoalsTbl " +
+                "WHERE profileName LIKE '"+profileName+"'");
+        db.execSQL("DELETE FROM pastTotalsTbl " +
+                "WHERE profileName LIKE '"+profileName+"'");
+
+    }
+
+
+    public void clearProfileTbl(){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM profilesTbl");
+    }
+    public void clearGoalsTbl(){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM goalsTbl");
+    }
+    public void clearGoalsTbl(String profileName){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM goalsTbl WHERE profileName Like '"+profileName+"'");
+    }
+    public void clearFutureGoalsTbl(){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM futureGoalsTbl");
+    }
+
+    public void clearFutureGoalsTbl(String profileName){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM futureGoalsTbl WHERE profileName LIKE '"+profileName+"'");
+    }
+
+
+    public void clearPastTotalsTbl(){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM pastTotalsTbl");
+    }
+
+    public void clearAllTbls(){
+
+        clearProfileTbl();
+        clearGoalsTbl();
+        clearFutureGoalsTbl();
+        clearPastTotalsTbl();
+
+    }
+
+    // closing database
+    public void closeDB() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        if (db != null && db.isOpen())
+            db.close();
+    }
 
 
     /*
@@ -251,6 +380,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     //make a 'remove all database rows from all tables method' and 'save all these values to all tables method' for parse loading down
 
-    //
+    //make a 'close database' method to use after all methods are called from in context
 
 }

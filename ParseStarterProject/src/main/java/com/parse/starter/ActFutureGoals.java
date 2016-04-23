@@ -20,22 +20,30 @@ public class ActFutureGoals extends ListActivity implements View.OnClickListener
     //this is a separate goalStore = however, it could possibly be held within ProfileMainActivity as static? and updated/accessed as needed?
 
     static GoalStore2 fgoalStore;
+    DatabaseHelper databaseHelper;
+    GoalStore1 goalStore;
+    String profileName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
+        databaseHelper = new DatabaseHelper(this);
+        goalStore = ActGoals.goalStore;
         setContentView(R.layout.future_item_layout);
 
         Bundle b;
         b = getIntent().getExtras();
         boolean firstweek = b.getBoolean("firstweek");
 
+        profileName = b.getString("profileName");
+
         fgoalStore = ActGoals.fgoalStore;
 
                 //ActGoals.fgoalStore;
         TextView title = (TextView) findViewById(R.id.windowTitle);
-        title.setText("Next Week: " + ActGoals.goalStore.daysToRefresh() + " days to refresh");
+        title.setText("Next Week: " + ActGoals.daysToRefresh() + " days to refresh");
 
         ImageView backButton = (ImageView) findViewById(R.id.back_button);
         backButton.setOnClickListener(this);
@@ -45,7 +53,7 @@ public class ActFutureGoals extends ListActivity implements View.OnClickListener
         newGoal.setText("Add Goal");
         newGoal.setTag("new");
 
-        CustAdapterNewGoals adapter = new CustAdapterNewGoals(this, fgoalStore);
+        CustAdapterNewGoals adapter = new CustAdapterNewGoals(this, fgoalStore, profileName);
         setListAdapter(adapter);
 
         newGoal.setOnClickListener(adapter);
@@ -81,7 +89,7 @@ public class ActFutureGoals extends ListActivity implements View.OnClickListener
             AlertDialog.Builder confirm = new AlertDialog.Builder(this);
             confirm.setTitle("Save and Start");
             confirm.setMessage("Are you sure you want to commit to these Goals? \n" +
-                    "Next refresh is in " + ActGoals.goalStore.daysToRefresh() + " days");
+                    "Next refresh is in " + ActGoals.daysToRefresh() + " days");
             confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     exit();
@@ -95,9 +103,15 @@ public class ActFutureGoals extends ListActivity implements View.OnClickListener
                     .setIcon(R.drawable.goal_shark_logo1)
                     .show();
     }
-    public void exit(){String message = "some message text";
+    public void exit(){
+
+        int refreshday= ActGoals.goalStore.dayofyear + ActGoals.daysToRefresh();
+        databaseHelper.updateProfileRow(profileName, profileName, refreshday);
+
+        String message = "some message text";
         Intent intentBack = new Intent();
-        intentBack.putExtra("Message", message);
+        intentBack.putExtra("profileName", profileName);
+
         setResult(RESULT_OK, intentBack);
 
         Log.i("MethodCalledJ", "L");

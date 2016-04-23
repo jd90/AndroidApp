@@ -30,6 +30,7 @@ public class CustAdapterGoals extends ArrayAdapter<ClassGoal> implements View.On
         this.context = context;
         this.goalStore = g;
 
+
     }
 
     @Override
@@ -164,13 +165,15 @@ public class CustAdapterGoals extends ArrayAdapter<ClassGoal> implements View.On
                                 Log.i("3333", "num "+num);
                                 if(before>= numberPicker.getValue()){
 
-                                    g.buttonClick(Integer.parseInt(v.getTag().toString()), before-num, true);
-                                    ActGoals.goalStore.saveToDatabase();//this has to be repeated here, as if its after the else its called before the .show() is finished?
+                                    g.buttonClick(Integer.parseInt(v.getTag().toString()), before - num, true);
+                                    ActGoals.goalStore.updateGoal(Integer.parseInt(l.getTag().toString()),Integer.parseInt(v.getTag().toString()));
+                                    //ActGoals.goalStore.saveToDatabase();//this has to be repeated here, as if its after the else its called before the .show() is finished?
                                     notifyDataSetChanged();
                                 }else{
 
                                     g.buttonClick(Integer.parseInt(v.getTag().toString()), num-before, false);
-                                    ActGoals.goalStore.saveToDatabase();//this has to be repeated here, as if its after the else its called before the .show() is finished?
+                                    ActGoals.goalStore.updateGoal(Integer.parseInt(l.getTag().toString()),Integer.parseInt(v.getTag().toString()));
+                                    //ActGoals.goalStore.saveToDatabase();//this has to be repeated here, as if its after the else its called before the .show() is finished?
                                     notifyDataSetChanged();
                                 }
 
@@ -184,9 +187,9 @@ public class CustAdapterGoals extends ArrayAdapter<ClassGoal> implements View.On
                     } else {
 
                         g.buttonClick(Integer.parseInt(v.getTag().toString()));
-
+                        ActGoals.goalStore.updateGoal(Integer.parseInt(l.getTag().toString()),Integer.parseInt(v.getTag().toString()));
                     }
-                    ActGoals.goalStore.saveToDatabase();
+                    //ActGoals.goalStore.saveToDatabase();
 
                     notifyDataSetChanged();
                 }

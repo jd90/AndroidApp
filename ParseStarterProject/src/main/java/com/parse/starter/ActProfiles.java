@@ -20,14 +20,16 @@ import android.widget.TextView;
 
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ActProfiles extends ListActivity implements View.OnClickListener, TextWatcher {
 
 
     static ProfileDatastore profileDatastore;
     static CustAdapterProfiles adapter;
-    static SQLiteDatabase profilesDatabase;
     EditText profileInput;
-
+    DatabaseHelper databaseHelper;
     TextView userStatus;
 
     @Override
@@ -35,14 +37,17 @@ public class ActProfiles extends ListActivity implements View.OnClickListener, T
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profiles_page_attempt2);
 
+        //load profiles into datastore
         profileDatastore=new ProfileDatastore();
+        databaseHelper = new DatabaseHelper(this);// this should create/open all the tables here?
+        List<ClassProfile> profileList = databaseHelper.getProfiles();
+        for(int i = 0; i < profileList.size(); i++) {
+            profileDatastore.addProfile(profileList.get(i));
+        }
 
 
-        profilesDatabase =  this.openOrCreateDatabase("Profiles", MODE_PRIVATE, null);
-        profilesDatabase.execSQL("CREATE TABLE IF NOT EXISTS profilesTbl (name VARCHAR, databaseNum INT(3))");
-        profilesDatabase.execSQL("CREATE TABLE IF NOT EXISTS countTbl (count INT(3))");
 
-        //create all tables here on opening?
+
 
         //load profiles
 
@@ -52,9 +57,8 @@ public class ActProfiles extends ListActivity implements View.OnClickListener, T
 
         //in datastore save goals when something changes - clear and save from datastore list? as already kind of does
 
-        loadProfiles();
-        loadCount();
 
+        //setup page
         ImageView sharkLogo =(ImageView) findViewById(R.id.windowTitle);
         sharkLogo.setOnClickListener(this);
         sharkLogo.setTag("Accounts");
@@ -71,48 +75,7 @@ public class ActProfiles extends ListActivity implements View.OnClickListener, T
         newProfileButton.setTag("newgoal");
 
     }
-    public void loadCount(){
-        profileDatastore.count=0;
-        Cursor c = profilesDatabase.rawQuery("SELECT * FROM countTbl", null);
-        int countIndex = c.getColumnIndex("count");
 
-        c.moveToFirst();
-        boolean cancel=false;
-        while (c != null&& cancel==false) {
-            try {
-                profileDatastore.count = (c.getInt(countIndex));
-                c.moveToNext();
-            }catch(Exception e){cancel = true; Log.i("6705why", "canceled from index out of bounds exception");}
-        }
-    }
-    public void loadProfiles(){
-        profileDatastore.profiles.clear();
-        Cursor c = profilesDatabase.rawQuery("SELECT * FROM profilesTbl", null);
-        int nameIndex = c.getColumnIndex("name");
-        int databaseNumIndex = c.getColumnIndex("databaseNum");
-
-        c.moveToFirst();
-        boolean cancel=false;
-        while (c != null&& cancel==false) {
-            try {
-                profileDatastore.profiles.add(new ClassProfile(c.getString(nameIndex), c.getInt(databaseNumIndex)));
-                c.moveToNext();
-            }catch(Exception e){cancel = true; Log.i("6705why", "canceled from index out of bounds exception");}
-        }
-    }
-    public static void saveCount(){
-        profilesDatabase.execSQL("delete from countTbl");
-        profilesDatabase.execSQL("INSERT INTO countTbl (count) VALUES (" + profileDatastore.count + ")");
-    }
-    public static void saveProfiles(){
-
-        profilesDatabase.execSQL("delete from profilesTbl");
-
-            for(int i=0; i<profileDatastore.profiles.size(); i++){
-                ClassProfile prof = profileDatastore.profiles.get(i);
-                profilesDatabase.execSQL("INSERT INTO profilesTbl (name, databaseNum) VALUES ('" + prof.name + "', " + prof.databaseNum + ")");
-        }
-    }
 
 
     public void onClick(final View view){
@@ -146,11 +109,18 @@ public class ActProfiles extends ListActivity implements View.OnClickListener, T
                     @Override
                     public void onClick(DialogInterface dialog, int num) {
 
-                        String title = profileInput.getText().toString().toUpperCase();
-                        profileDatastore.addProfile(title);
-                        adapter.notifyDataSetChanged();
-                        saveCount();
-                        saveProfiles();
+                        if (profileDatastore.nameTaken(profileInput.getText().toString().toUpperCase())||profileInput.getText().toString().equals("")) {
+                            Log.i("44331", "name taken");
+                            dialog.cancel();
+                        }//fix this to show a warning message of some sort
+                        else {
+                            String title = profileInput.getText().toString().toUpperCase();
+                            ClassProfile p = new ClassProfile(title, 888); //should take a refreshDay here?
+                            profileDatastore.addProfile(p);
+                            adapter.notifyDataSetChanged();
+
+                            databaseHelper.insertProfile(p);
+                        }
                     }
 
 
@@ -197,6 +167,10 @@ public class ActProfiles extends ListActivity implements View.OnClickListener, T
             profileInput.setText(profileInput.getText().toString().substring(0, profileInput.length()-1));
             profileInput.setSelection(profileInput.getText().toString().length());//changes cursor to still be at the end
         }
+
+        if(profileDatastore.nameTaken(profileInput.getText().toString())){
+            profileInput.setText("NAME TAKEN");
+        }//fix this to show a warning message of some sort
 
     }
 

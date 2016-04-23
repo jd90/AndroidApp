@@ -12,9 +12,9 @@ public class ClassGoal {
     public int done = 0;
     public int total = 7;
     public boolean[] buttons = new boolean[]{true, true, true, true, true, true, true};
-    public double percentNum;
-    public double percent;
-    public String profileName;
+    public double percentNum=0;
+    public double percent=0;
+    public String profileName="";
 
     public int[] buttonsThrough = new int[]{0,0,0,0,0,0,0};
 
@@ -37,13 +37,14 @@ public class ClassGoal {
 
 
     }
-    public ClassGoal(String n, int t, boolean type){
+    public ClassGoal(String n, int t, boolean type, String profileName){
         this.name = n;
         this.done = 0;
         this.total=t;
         percentNum = (double) 100/total;
         percent=0;
         this.type=type;
+        this.profileName = profileName;
     }
 
     //could/should encapsulate variables and get Get and Set methods.
