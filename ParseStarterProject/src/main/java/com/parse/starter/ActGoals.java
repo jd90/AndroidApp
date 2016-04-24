@@ -19,6 +19,7 @@ public class ActGoals extends AppCompatActivity {
 
     static GoalStore1 goalStore;
     static GoalStore2 fgoalStore;
+    static ArchiveItemDatastore archiveItemDatastore;
     static SQLiteDatabase myDatabase;
     static Context context;
     static String profile;
@@ -29,7 +30,7 @@ public class ActGoals extends AppCompatActivity {
     int dayofyear;
     static int day;
     Calendar calendar = Calendar.getInstance();
-    ClassProfile p;
+    static ClassProfile p;// made static to reference refreshday for holiday mode - could be used in all my profilename refs too tho?... or put into dbhelper or something??
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +50,8 @@ public class ActGoals extends AppCompatActivity {
         Log.i("44331 name2", profile);
 
         fgoalStore = new GoalStore2(databaseHelper.getFutureGoals(profile), profile);
-        goalStore.pastTotalsList = databaseHelper.getPastTotals(profile);
+        archiveItemDatastore = new ArchiveItemDatastore();
+        archiveItemDatastore.list = databaseHelper.getPastTotals(profile);
 
         Log.i("44331 buttonprob", "size "+databaseHelper.getGoals(profile).size());
         Log.i("44331 buttonprob", "prof " + profile);
@@ -64,6 +66,18 @@ public class ActGoals extends AppCompatActivity {
         //fix - combine these two?
         if(goalStore.firstweek){
 
+        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));
+        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));
+        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));
+        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));
+        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));
+        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));
+        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));
+        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));
+            archiveItemDatastore = new ArchiveItemDatastore();
+            archiveItemDatastore.list = databaseHelper.getPastTotals(profile);//repeated here because the table is yet to be populated above when loading from db
+            Log.i("44331", "size of pasttots"+archiveItemDatastore.list.size());
+
             Log.i("6705firstweek", "first week called");
             Intent intent = new Intent(this, ActFutureGoals.class);
             int a = 4; //request code? (receives back request code, resultcode, intent)?
@@ -74,11 +88,30 @@ public class ActGoals extends AppCompatActivity {
          //goalStore.loadFromFutureDatabase();//one time on first load
       }
 
-        if(p.refreshDay< dayofyear){
+        Log.i("44331 refresh", ""+p.refreshDay);
+        Log.i("44331 refresh", ""+dayofyear);
+
+
+
+        if(p.refreshDay<= dayofyear){
 
             //should also do the past totals thing here
             //and save a new refreshday
+
+            archiveItemDatastore.updateList(p.refreshDay, dayofyear);
+            databaseHelper.updatePastTotals(profile, archiveItemDatastore.list);
+
+
+
             goalStore.list = databaseHelper.getFutureGoals(profile);
+            databaseHelper.clearGoalsTbl(profile);
+            for(int i = 0; i <goalStore.list.size(); i++ ){
+            databaseHelper.insertGoal(goalStore.list.get(i));   //i should make a database helper method to do this
+            }
+            int refresh = dayofyear + daysToRefresh();
+            databaseHelper.updateProfileRow(profile, profile, refresh);
+            //here is where the past totals operation should go - have the logic inside the database helper?
+
 
         }
 
@@ -98,7 +131,7 @@ public class ActGoals extends AppCompatActivity {
         this.menu = menu;//overcame an issue here, was trying to find menu item from menu being called before menu was inflated..
         MenuItem holiday = menu.findItem(R.id.holiday).setTitle("hiya");
 
-        if(ActGoals.goalStore.holidaymode){
+        if(p.refreshDay==366){
 
             holiday.setTitle("Holiday Mode: ACTIVE");
         }else{holiday.setTitle("Holiday Mode: DISABLED");}
@@ -140,12 +173,13 @@ return true;
                 goalStore.list = databaseHelper.getFutureGoals(profile);
                 goalStore.saveToDatabase();
                 Log.i("44331", "size of goalStorelist" + goalStore.list.size());
-                int refresh = dayofyear + this.daysToRefresh();
+                int refresh = dayofyear + daysToRefresh();//possibly move to db method2
+                if(refresh > 365){refresh-=365;}
                 Log.i("44331 refresh1", ""+p.refreshDay);
                 Log.i("44331 refresh2", ""+refresh);
 
                 p.refreshDay=refresh;
-                goalStore.refreshDay=refresh;
+                //goalStore.refreshDay=refresh;
                 databaseHelper.updateProfileRow(p.name, p.name, refresh);
             }
         }
@@ -206,19 +240,26 @@ return true;
 
                 break;
             case "Holiday Mode: DISABLED":
-                goalStore.setHolidayMode(true);
+
+
+
+                p.refreshDay=366;
+                databaseHelper.updateProfileRow(profile,profile,p.refreshDay);
 
                 item.setTitle("Holiday Mode: ACTIVE");
 
                 break;
             case "Holiday Mode: ACTIVE":
-                goalStore.setHolidayMode(false);
+
+                int refresh=dayofyear+daysToRefresh();
+                if (refresh > 365){refresh -= 365;}
+                p.refreshDay=refresh;
+                databaseHelper.updateProfileRow(profile,profile,p.refreshDay);
 
                 item.setTitle("Holiday Mode: DISABLED");
 
                 break;
         }
-
 
     }
 

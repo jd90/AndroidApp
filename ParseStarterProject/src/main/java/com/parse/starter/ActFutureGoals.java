@@ -105,8 +105,9 @@ public class ActFutureGoals extends ListActivity implements View.OnClickListener
     }
     public void exit(){
 
-        int refreshday= ActGoals.goalStore.dayofyear + ActGoals.daysToRefresh();
-        databaseHelper.updateProfileRow(profileName, profileName, refreshday);
+        int refresh= ActGoals.goalStore.dayofyear + ActGoals.daysToRefresh();//possibly move to dbhelper method
+        if(refresh > 365){refresh-=365;}
+        databaseHelper.updateProfileRow(profileName, profileName, refresh);
 
         String message = "some message text";
         Intent intentBack = new Intent();

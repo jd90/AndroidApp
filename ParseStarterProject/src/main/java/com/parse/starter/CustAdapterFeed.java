@@ -64,7 +64,7 @@ public class CustAdapterFeed extends ArrayAdapter<ClassGoal> implements View.OnL
             comment.setVisibility(View.GONE);
         }else {
 
-                dateCont.setVisibility(View.VISIBLE);
+                dateCont.setVisibility(View.VISIBLE);//problem here - parse user is a nullpointer? should have been stopped before this point tho...
             if(feedList.get(position).likes.contains(ParseUser.getCurrentUser().getUsername())){
                 heart.setImageResource(R.drawable.heart_red);
             }else{

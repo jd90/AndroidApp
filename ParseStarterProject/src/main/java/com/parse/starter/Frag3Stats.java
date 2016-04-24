@@ -35,6 +35,8 @@ public class Frag3Stats extends Fragment implements View.OnClickListener, View.O
     View view;
     LinearLayout sharkFin;
 
+    ArchiveItemDatastore archiveItemDatastore;
+
     RelativeLayout relativeLayout;
     TextView goalTitleView;
     TextView numberOutOfView;
@@ -63,11 +65,13 @@ public class Frag3Stats extends Fragment implements View.OnClickListener, View.O
 
         try {
 
-            ArrayList<Integer> g = ActGoals.goalStore.pastTotals;
+            archiveItemDatastore = new ArchiveItemDatastore();
+
+            ArrayList<ClassArchiveItem> g = archiveItemDatastore.list;
             for (int i = 0; i < 4; i++) {
 
-                int height = (int) (g.get(i) * 3);
-                Log.i("heightbargraph", "" + g.get(i) * 2);
+                int height = (int) (g.get(i).percent * 3);
+                Log.i("heightbargraph", "" + g.get(i).percent * 2);
                 LinearLayout l;
                 switch (i) {
                     case 0:
@@ -100,8 +104,8 @@ public class Frag3Stats extends Fragment implements View.OnClickListener, View.O
 
             for (int i = 4; i < 8; i++) {
 
-                int height = (int) (g.get(i) * 3);
-                Log.i("heightbargraph", "" + g.get(i) * 2);
+                int height = (int) (g.get(i).percent * 3);
+                Log.i("heightbargraph", "" + g.get(i).percent * 2);
                 LinearLayout l;
                 switch (i) {
                     case 4:
@@ -132,9 +136,9 @@ public class Frag3Stats extends Fragment implements View.OnClickListener, View.O
             }
             for (int i = 8; i < 16; i++) {
 
-                int height = (int) (g.get(i) * 3);
+                int height = (int) (g.get(i).percent * 3);
                 LinearLayout l;
-                Log.i("heightbargraph", "" + g.get(i) * 2);
+                Log.i("heightbargraph", "" + g.get(i).percent * 2);
                 switch (i) {
                     case 8:
                         l = (LinearLayout) view.findViewById(R.id.bar8);
@@ -255,13 +259,13 @@ if(v.getTag() == "sharkSwim") {
             TextView totalPercentAve = (TextView) view.findViewById(R.id.totalPercentAve);
             int aveTotal=0;
 
-            Log.i("HEREYEGOARRAY", " "+ ActGoals.goalStore.pastTotals.toString());
-            Log.i("HEREYEGOARRAY", " "+ ActGoals.goalStore.pastTotals.size());
+            //Log.i("HEREYEGOARRAY", " "+ ActGoals.goalStore.pastTotals.toString());
+            //Log.i("HEREYEGOARRAY", " "+ ActGoals.goalStore.pastTotals.size());
 
 
             for(int i=12; i<16; i++ ){
 
-                aveTotal += ActGoals.goalStore.pastTotals.get(i);
+                aveTotal += archiveItemDatastore.list.get(i).percent;
             }
 
             totalPercentAve.setText(aveTotal / 4 + "%");
@@ -313,8 +317,8 @@ if(v.getTag() == "sharkSwim") {
 
         LinearLayout l = (LinearLayout) v;
         int x = Integer.parseInt(l.getTag().toString());
-        y = ActGoals.goalStore.pastTotals.get(x);
-        z = ActGoals.goalStore.pastDates.get(x);
+        y = archiveItemDatastore.list.get(x).percent;
+        z = archiveItemDatastore.list.get(x).date;
        // Toast t = Toast.makeText(getActivity(), y + "%", Toast.LENGTH_SHORT);
        // t.show();
 

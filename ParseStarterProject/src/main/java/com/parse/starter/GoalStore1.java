@@ -197,7 +197,8 @@ public class GoalStore1 {
             calendar2.set(Calendar.DAY_OF_YEAR, refreshDay);
             String s = "" + new SimpleDateFormat("MMM").format(calendar2.getTime()) + " ";
             s += "" + calendar2.get(Calendar.DAY_OF_MONTH);
-            databaseHelper.insertPastTotal(profile, 45, s);
+            //ArchiveItemDatastore archiveItemDatastore;
+            //archiveItemDatastore.updateList();
         }
 
                     firstweek = true;

@@ -83,28 +83,42 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         db.execSQL("INSERT INTO futureGoalsTbl (profileName, goalName, total, type) " +
                 "VALUES (" +
-                "'" +profileName+"'"+
-                ",'" +goalName+"'"+
-                "," +total+
-                "," +type+
+                "'" + profileName + "'" +
+                ",'" + goalName + "'" +
+                "," + total +
+                "," + type +
                 ")");
 
     }
 
 
-    public void insertPastTotal(String profileName, int percent, String date){
+    public void insertPastTotal(String profileName, ClassArchiveItem archiveItem){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.execSQL("INSERT INTO pastTotalsTbl (profileName,percent,date) " +
                     "VALUES (" +
-                "" +profileName+
-                "" +percent+
-                "" +date+
-                ")");
+                "'" +profileName+
+                "'," +archiveItem.percent+
+                ",'" +archiveItem.date+
+                "')");
 
     }
 
+    public void updatePastTotals(String profileName, ArrayList<ClassArchiveItem> list){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        clearPastTotalsTbl(profileName);
+        for(int i=0; i<list.size(); i++) {
+            ClassArchiveItem archiveItem = list.get(i);
+            db.execSQL("INSERT INTO pastTotalsTbl (profileName,percent,date) " +
+                    "VALUES (" +
+                    "'" + profileName +
+                    "'," + archiveItem.percent +
+                    ",'" + archiveItem.date +
+                    ")'");
+        }
+    }
 
 
     /*
@@ -209,8 +223,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return futureGoalsList;
     }
 
-    public List<Integer> getPastTotals(String profileName) {
-        List<Integer> pastTotals = new ArrayList<Integer>();
+    public ArrayList<ClassArchiveItem> getPastTotals(String profileName) {
+        ArrayList<ClassArchiveItem> pastTotals = new ArrayList<ClassArchiveItem>();
         String selectQuery = "SELECT  * FROM pastTotalsTbl WHERE profileName LIKE '"+profileName+"'";
 
         Log.e("3311", selectQuery);
@@ -221,7 +235,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         // looping through all rows and adding to list
         if (c.moveToFirst()) {
             do {
-                pastTotals.add(c.getInt(c.getColumnIndex("percent")));
+                pastTotals.add(new ClassArchiveItem(c.getInt(c.getColumnIndex("percent")), c.getString(c.getColumnIndex("date"))));
                 //needs to take date too - model past totals as an object?
 
 
@@ -332,7 +346,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM pastTotalsTbl");
     }
+    public void clearPastTotalsTbl(String profileName){
 
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM pastTotalsTbl WHERE profileName Like '"+profileName+"'");
+    }
     public void clearAllTbls(){
 
         clearProfileTbl();

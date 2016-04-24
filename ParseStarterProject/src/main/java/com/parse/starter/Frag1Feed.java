@@ -42,8 +42,13 @@ public class Frag1Feed extends ListFragment {
         ConnectivityManager connect = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connect.getActiveNetworkInfo() != null) {
 
-            //List users = ParseUser.getCurrentUser().getList("followers");
-
+            if (ParseUser.getCurrentUser() == null) {
+                feedList.clear();
+                feedList.add(new ClassFeedItem("Error retrieving feed!", " No user signed in", 200, "", new ArrayList(), new ArrayList(), ""));
+                CustAdapterFeed adapter = new CustAdapterFeed(getActivity(), feedList);
+                setListAdapter(adapter);
+                //List users = ParseUser.getCurrentUser().getList("followers");
+            }else{
             usernames = new ArrayList<>();
             try {
                 Log.i("78789777", "a " + "here");
@@ -104,6 +109,7 @@ public class Frag1Feed extends ListFragment {
                 setListAdapter(adapter);
             }
 
+        }
         } else {
             if (connect.getActiveNetworkInfo() == null) {
                 feedList.add(new ClassFeedItem("Error retrieving feed!", " Please check network connection", 200, "", new ArrayList(), new ArrayList(), ""));
