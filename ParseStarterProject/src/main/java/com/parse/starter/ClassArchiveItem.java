@@ -7,12 +7,20 @@ public class ClassArchiveItem {
 
     int percent;
     String date;
+    String profileName;
 
     public ClassArchiveItem(int percent, String date){
 
         this.percent=percent;
         this.date=date;
 
+    }
+
+    public ClassArchiveItem(String profileName, int percent, String date){
+
+        this.percent=percent;
+        this.date=date;
+        this.profileName=profileName;
     }
 
     public String getPercentage(){

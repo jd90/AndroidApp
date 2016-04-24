@@ -20,7 +20,6 @@ public class ActGoals extends AppCompatActivity {
     static GoalStore1 goalStore;
     static GoalStore2 fgoalStore;
     static ArchiveItemDatastore archiveItemDatastore;
-    static SQLiteDatabase myDatabase;
     static Context context;
     static String profile;
     static int profileNum;
@@ -45,6 +44,7 @@ public class ActGoals extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
         Log.i("44331 buttonprobbef", "size "+databaseHelper.getGoals(profile).size());
         goalStore = new GoalStore1(databaseHelper.getGoals(profile), profile);
+
 
         Log.i("44331 emptysear", ""+databaseHelper.getFutureGoals(profile).size());
         Log.i("44331 name2", profile);

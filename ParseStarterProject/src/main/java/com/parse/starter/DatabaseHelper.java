@@ -53,6 +53,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public void insertProfile(ClassProfile profile) {
 
+        Log.i("44331", "insert prof"+profile.name);
+
         SQLiteDatabase db = this.getWritableDatabase();//not just have a db that i access and hold at a class level??
 
         //ContentValues values = new ContentValues();
@@ -60,12 +62,19 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         //values.put("refreshDay", 366);
         //db.insert("profilesTbl", null, values);
 
-        db.execSQL("INSERT INTO profilesTbl (profileName, refreshDay) VALUES ('" + profile.name + "', "+profile.refreshDay+")");
+        db.execSQL("INSERT INTO profilesTbl (profileName, refreshDay) VALUES ('" + profile.name + "', " + profile.refreshDay + ")");
     }
 
     public void insertGoal(ClassGoal goal) {
 
-        Log.i("44331 dbh ", ""+goal.profileName);
+
+        Log.i("44331", "insert goal"+goal.name);
+
+        Log.i("44331 dbh ", ""+goal.profileName+"','"+goal.name+"',"+goal.total+","+goal.done+"" +
+                ","+goal.getButton(0)+","+goal.getButton(1)+","+goal.getButton(2)+","+goal.getButton(3)+","+goal.getButton(4)+","+goal.getButton(5)+","+goal.getButton(6)+
+                ","+goal.buttonsThrough[0]+","+goal.buttonsThrough[1]+","+goal.buttonsThrough[2]+","+goal.buttonsThrough[3]+","+goal.buttonsThrough[4]+","+goal.buttonsThrough[5]+","+goal.buttonsThrough[6]+
+                ","+goal.percent+
+                ")");
         SQLiteDatabase db = this.getWritableDatabase();
         int type;
         if(goal.type){type=1;}else{type=0;}
@@ -90,7 +99,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 ")");
 
     }
-
 
     public void insertPastTotal(String profileName, ClassArchiveItem archiveItem){
 
@@ -125,8 +133,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     * ---- get list methods -----
     */
 
-    public List<ClassProfile> getProfiles() {
-        List<ClassProfile> profilesList = new ArrayList<ClassProfile>();
+    public ArrayList<ClassProfile> getProfiles() {
+        ArrayList<ClassProfile> profilesList = new ArrayList<ClassProfile>();
         String selectQuery = "SELECT  * FROM profilesTbl";
 
         Log.e("3311", selectQuery);
@@ -149,9 +157,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return profilesList;
     }
 
-
-    public List<ClassGoal> getGoals(String profileName) {
-        List<ClassGoal> goalsList = new ArrayList<>();
+    public ArrayList<ClassGoal> getGoals(String profileName) {
+        ArrayList<ClassGoal> goalsList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM goalsTbl WHERE profileName LIKE '"+profileName+"'";
 
         Log.e("3311", selectQuery);
@@ -194,9 +201,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return goalsList;
     }
 
-    public List<ClassGoal> getFutureGoals(String profileName) {
+    public ArrayList<ClassGoal> getFutureGoals(String profileName) {
         Log.i("44331 nm1", profileName);
-        List<ClassGoal> futureGoalsList = new ArrayList<ClassGoal>();
+        ArrayList<ClassGoal> futureGoalsList = new ArrayList<ClassGoal>();
         String selectQuery = "SELECT  * FROM futureGoalsTbl WHERE profileName LIKE '"+profileName+"'";
 
         Log.e("3311", selectQuery);
@@ -245,7 +252,124 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return pastTotals;
     }
 
+    public ArrayList<ClassProfile> getAllProfiles() {
+        ArrayList<ClassProfile> profilesList = new ArrayList<ClassProfile>();
+        String selectQuery = "SELECT  * FROM profilesTbl";
 
+        Log.e("3311", selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                ClassProfile profile = new ClassProfile("", 777);
+                profile.name = (c.getString(c.getColumnIndex("profileName")));
+                profile.refreshDay = (c.getInt(c.getColumnIndex("refreshDay")));
+
+                // adding to list
+                profilesList.add(profile);
+            } while (c.moveToNext());
+        }
+
+        return profilesList;
+    }
+
+    public ArrayList<ClassGoal> getAllGoals() {
+        ArrayList<ClassGoal> goalsList = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM goalsTbl";
+
+        Log.e("3311", selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                ClassGoal goal = new ClassGoal("",999);
+                goal.profileName = (c.getString(c.getColumnIndex("profileName")));
+                goal.name = (c.getString(c.getColumnIndex("goalName")));
+                goal.total = (c.getInt(c.getColumnIndex("total")));
+                goal.done = (c.getInt(c.getColumnIndex("done")));
+                int type =(c.getInt(c.getColumnIndex("type")));
+                if(type == 1){goal.type = true;}else{goal.type=false;}
+                goal.setButton(0, (c.getInt(c.getColumnIndex("b0"))));
+                goal.setButton(1, (c.getInt(c.getColumnIndex("b1"))));
+                goal.setButton(2, (c.getInt(c.getColumnIndex("b2"))));
+                goal.setButton(3, (c.getInt(c.getColumnIndex("b3"))));
+                goal.setButton(4, (c.getInt(c.getColumnIndex("b4"))));
+                goal.setButton(5, (c.getInt(c.getColumnIndex("b5"))));
+                goal.setButton(6, (c.getInt(c.getColumnIndex("b6"))));
+                goal.buttonsThrough[0] = (c.getInt(c.getColumnIndex("bt0")));
+                goal.buttonsThrough[1] = (c.getInt(c.getColumnIndex("bt1")));
+                goal.buttonsThrough[2] = (c.getInt(c.getColumnIndex("bt2")));
+                goal.buttonsThrough[3] = (c.getInt(c.getColumnIndex("bt3")));
+                goal.buttonsThrough[4] = (c.getInt(c.getColumnIndex("bt4")));
+                goal.buttonsThrough[5] = (c.getInt(c.getColumnIndex("bt5")));
+                goal.buttonsThrough[6] = (c.getInt(c.getColumnIndex("bt6")));
+
+
+
+                // adding to list
+                goalsList.add(goal);
+            } while (c.moveToNext());
+        }
+
+        return goalsList;
+    }
+
+    public ArrayList<ClassGoal> getAllFutureGoals() {
+
+        ArrayList<ClassGoal> futureGoalsList = new ArrayList<ClassGoal>();
+        String selectQuery = "SELECT  * FROM futureGoalsTbl";
+
+        Log.e("3311", selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                ClassGoal futureGoal = new ClassGoal("",999);
+
+                futureGoal.profileName = (c.getString(c.getColumnIndex("profileName")));
+                futureGoal.name = (c.getString(c.getColumnIndex("goalName")));
+                futureGoal.total = (c.getInt(c.getColumnIndex("total")));
+                int type =(c.getInt(c.getColumnIndex("type")));
+                if(type == 1){futureGoal.type = true;}else{futureGoal.type=false;}
+
+                // adding to list
+                futureGoalsList.add(futureGoal);
+            } while (c.moveToNext());
+        }
+
+        return futureGoalsList;
+    }
+
+    public ArrayList<ClassArchiveItem> getAllPastTotals() {
+        ArrayList<ClassArchiveItem> pastTotals = new ArrayList<ClassArchiveItem>();
+        String selectQuery = "SELECT  * FROM pastTotalsTbl";
+
+        Log.e("3311", selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                pastTotals.add(new ClassArchiveItem(c.getString(c.getColumnIndex("profileName")), c.getInt(c.getColumnIndex("percent")), c.getString(c.getColumnIndex("date"))));
+                //needs to take date too - model past totals as an object?
+
+
+            } while (c.moveToNext());
+        }
+
+        return pastTotals;
+    }
     /*
     * ---- update/replace row methods -----
     */
@@ -259,7 +383,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 );
         //could split into a profileName change and a refreshDay change method
     }
-
 
     public void updateGoalRow(ClassGoal goal) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -291,7 +414,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
 
-
     /*
     * ---- method to delete a particular object - method to clear all too/parse style ones -----
     */
@@ -311,7 +433,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 "WHERE profileName LIKE '"+profileName+"'");
 
     }
-
 
     public void clearProfileTbl(){
 
@@ -333,14 +454,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM futureGoalsTbl");
     }
-
     public void clearFutureGoalsTbl(String profileName){
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM futureGoalsTbl WHERE profileName LIKE '"+profileName+"'");
     }
-
-
     public void clearPastTotalsTbl(){
 
         Log.i("44331", "pastots called");

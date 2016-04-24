@@ -84,7 +84,7 @@ public class ClassGoal {
 
 
     public String toString(){
-        return name;
+        return name+" "+done+" "+profileName;
     }
 
     public void buttonClick(int s){
