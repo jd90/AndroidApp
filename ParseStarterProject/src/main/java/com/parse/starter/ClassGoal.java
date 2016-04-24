@@ -13,7 +13,7 @@ public class ClassGoal {
     public int total = 7;
     public boolean[] buttons = new boolean[]{true, true, true, true, true, true, true};
     public double percentNum=0;
-    public double percent=0;
+    public double percent=done*((double) 100/total);
     public String profileName="";
 
     public int[] buttonsThrough = new int[]{0,0,0,0,0,0,0};
@@ -51,15 +51,16 @@ public class ClassGoal {
     //also make abstract and change to different types of goals/input styles
 
     public String getPercentage(){
-
-        double returnPercent = percent;
+        double per = done*((double) 100/total);
+        double returnPercent = per;
         if(returnPercent > 100){returnPercent =100;}
 
         return (int) returnPercent + "%";
     }
 
     public double getPercentage2(){
-        double returnPercent = percent;
+        double per = done*((double) 100/total);
+        double returnPercent = per;
         if(returnPercent > 100){returnPercent =100;}
         return returnPercent;
     }

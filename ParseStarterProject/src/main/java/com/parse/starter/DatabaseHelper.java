@@ -343,11 +343,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public void clearPastTotalsTbl(){
 
+        Log.i("44331", "pastots called");
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM pastTotalsTbl");
     }
     public void clearPastTotalsTbl(String profileName){
 
+        Log.i("44331", "pastots called");
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM pastTotalsTbl WHERE profileName Like '"+profileName+"'");
     }

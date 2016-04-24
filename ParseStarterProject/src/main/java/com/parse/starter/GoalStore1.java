@@ -101,7 +101,7 @@ public class GoalStore1 {
     }
     public double getTotalPercentage() {
         double sum =0;
-        for(ClassGoal g:this.list){
+        for(ClassGoal g: list){
             sum+=(int) g.getPercentage2();
         Log.i("6705percent", ""+sum);
         }

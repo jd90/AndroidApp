@@ -65,7 +65,7 @@ public class Frag3Stats extends Fragment implements View.OnClickListener, View.O
 
         try {
 
-            archiveItemDatastore = new ArchiveItemDatastore();
+            archiveItemDatastore = ActGoals.archiveItemDatastore;
 
             ArrayList<ClassArchiveItem> g = archiveItemDatastore.list;
             for (int i = 0; i < 4; i++) {
