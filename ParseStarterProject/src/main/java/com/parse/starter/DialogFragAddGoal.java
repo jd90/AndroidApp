@@ -43,7 +43,7 @@ public class DialogFragAddGoal extends DialogFragment implements View.OnClickLis
         inputTitle.addTextChangedListener(this);
         warningMessage = (TextView) rootView.findViewById(R.id.warning);
         warningMessage.setText("Warning! Title must be:\n" +
-                "Provided\nLess than 20 characters");
+                "Provided\nLess than 20 characters\nUnique");
 
         Button okB = (Button) rootView.findViewById(R.id.ok);
         Button cancelB = (Button) rootView.findViewById(R.id.cancel);
@@ -105,20 +105,25 @@ public class DialogFragAddGoal extends DialogFragment implements View.OnClickLis
                         saveClickedBool = true;
 
                     } else {
-                        //ActGoals.fgoalStore.add(new ClassGoal(inputTitle.getText().toString(), 8));
-                        //ActGoals.fgoalStore.saveToDatabase();
+                        if (ActGoals.fgoalStore.nameTaken(inputTitle.getText().toString()))  {
+                            Log.i("44331", "name taken");
+                            warningMessage.setVisibility(View.VISIBLE);
+                        } else {
+                            //ActGoals.fgoalStore.add(new ClassGoal(inputTitle.getText().toString(), 8));
+                            //ActGoals.fgoalStore.saveToDatabase();
 
-                        if(timesAWeek.getVisibility()==View.VISIBLE) {
+                            if (timesAWeek.getVisibility() == View.VISIBLE) {
 
-                            ActFutureGoals.fgoalStore.add(new ClassGoal(inputTitle.getText().toString(), Integer.parseInt(freqSpin.getSelectedItem().toString()), false, profileName));
+                                ActFutureGoals.fgoalStore.add(new ClassGoal(inputTitle.getText().toString(), Integer.parseInt(freqSpin.getSelectedItem().toString()), false, profileName));
 
-                        }else{
+                            } else {
 
-                            ActFutureGoals.fgoalStore.add(new ClassGoal(inputTitle.getText().toString(), throughPick.getValue(), true, profileName));
+                                ActFutureGoals.fgoalStore.add(new ClassGoal(inputTitle.getText().toString(), throughPick.getValue(), true, profileName));
 
+                            }
+                            //ActFutureGoals.fgoalStore.saveToDatabase();
+                            dismiss();
                         }
-                        //ActFutureGoals.fgoalStore.saveToDatabase();
-                        dismiss();
                     }
                 } else {
 

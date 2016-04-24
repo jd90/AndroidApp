@@ -39,24 +39,34 @@ public class ArchiveItemDatastore {
                 emptyweeks = 0;
             }
 
-        int x = 0;
-        while(x != emptyweeks) {
+        int x = emptyweeks;
+
+            for(int i =0; i< emptyweeks; i++) {
+                list.remove(0);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.DAY_OF_YEAR, ActGoals.p.refreshDay - x);//should eventually be seven 7
+                String s = "" + new SimpleDateFormat("MMM").format(calendar.getTime()) + " ";
+
+                s += "" + calendar.get(Calendar.DAY_OF_MONTH);
+                ClassArchiveItem archiveItem = new ClassArchiveItem(0, s);
+                list.add(15, archiveItem);
+                x--;
+            }
+
 
             double percent = ActGoals.goalStore.getTotalPercentage();
             list.remove(0);
+            if (percent > 100) {percent = 100;}
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_YEAR, ActGoals.p.refreshDay);//should eventually be seven 7
+        String s = "" + new SimpleDateFormat("MMM").format(calendar.getTime()) + " ";
 
-            if (percent > 100) {
-                percent = 100;
-            }
+        s += "" + calendar.get(Calendar.DAY_OF_MONTH);
+        ClassArchiveItem archiveItem = new ClassArchiveItem((int) percent, s);
+        list.add(15, archiveItem);
 
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.DAY_OF_YEAR, ActGoals.p.refreshDay);
-            String s = "" + new SimpleDateFormat("MMM").format(calendar.getTime()) + " ";
-            s += "" + calendar.get(Calendar.DAY_OF_MONTH);
-            ClassArchiveItem archiveItem = new ClassArchiveItem(100, s);
 
-            list.add(15, archiveItem);
-        }
     }
 
 }

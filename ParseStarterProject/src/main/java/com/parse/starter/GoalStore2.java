@@ -114,4 +114,16 @@ public class GoalStore2 {
     }
     */
 
+
+    public boolean nameTaken(String name){
+
+        for(int i=0; i< list.size(); i++){
+            if(name.equals(list.get(i).name)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

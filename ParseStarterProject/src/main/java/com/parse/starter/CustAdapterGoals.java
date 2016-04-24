@@ -69,7 +69,7 @@ public class CustAdapterGoals extends ArrayAdapter<ClassGoal> implements View.On
         holder.goalTitleView.setText(g.name);
         holder.numberOutOfView.setText(g.getTargets());
         holder.percentView.setText(g.getPercentage());
-        holder.percentageBar.setProgress((int) g.percent);
+        holder.percentageBar.setProgress((int) g.getPercentage2());
         holder.b0.setOnClickListener(this);
         holder.b0.setTag(0);
         if(g.buttons[0]) {

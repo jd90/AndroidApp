@@ -66,14 +66,14 @@ public class ActGoals extends AppCompatActivity {
         //fix - combine these two?
         if(goalStore.firstweek){
 
-        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));
-        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));
-        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));
-        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));
-        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));
-        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));
-        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));
-        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(60, "apr 4"));
+        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(1, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(2, "apr 4"));
+        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(3, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(4, "apr 4"));
+        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(5, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(6, "apr 4"));
+        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(7, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(8, "apr 4"));
+        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(9, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(10, "apr 4"));
+        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(11, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(12, "apr 4"));
+        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(13, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(14, "apr 4"));
+        databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(15, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(16, "apr 4"));
             archiveItemDatastore = new ArchiveItemDatastore();
             archiveItemDatastore.list = databaseHelper.getPastTotals(profile);//repeated here because the table is yet to be populated above when loading from db
             Log.i("44331", "size of pasttots"+archiveItemDatastore.list.size());
@@ -92,6 +92,7 @@ public class ActGoals extends AppCompatActivity {
         Log.i("44331 refresh", ""+dayofyear);
 
 
+        //p.refreshDay = dayofyear-2;
 
         if(p.refreshDay<= dayofyear){
 

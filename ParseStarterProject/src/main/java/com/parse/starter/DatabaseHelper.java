@@ -116,7 +116,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                     "'" + profileName +
                     "'," + archiveItem.percent +
                     ",'" + archiveItem.date +
-                    ")'");
+                    "')");
         }
     }
 
