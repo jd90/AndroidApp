@@ -48,16 +48,15 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
     SQLiteDatabase database;
     DatabaseHelper databaseHelper;
 
-    static ArrayList<JSONObject> JSONgoals = new ArrayList<>();
-    static ArrayList<JSONObject> JSONFuturegoals = new ArrayList<>();
-    static ArrayList<JSONObject> JSONPastTotals = new ArrayList<>();
-    static ArrayList<JSONObject> JSONPastGoals = new ArrayList<>();
-    static ArrayList<JSONObject> JSONProfiles = new ArrayList<>();
+    ArrayList<JSONObject> JSONgoals = new ArrayList<>();
+    ArrayList<JSONObject> JSONFuturegoals = new ArrayList<>();
+    ArrayList<JSONObject> JSONPastTotals = new ArrayList<>();
+    ArrayList<JSONObject> JSONPastGoals = new ArrayList<>();
+    ArrayList<JSONObject> JSONProfiles = new ArrayList<>();
     static int count;
     static int size;
     static int counter;
-    ArrayList<Integer> refreshdayArray = new ArrayList<>();
-    int refreshdayTemp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
