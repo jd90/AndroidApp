@@ -305,7 +305,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                 }
 
                 strJson += "" +
-                        "\"name\":" + profileList.get(i).name + "," +
+                        "\"name\":\"" + profileList.get(i).name + "\"," +
                         "\"refreshDay\": '" + profileList.get(i).refreshDay + "' ";
                 strJson += "}";
             }
@@ -314,7 +314,8 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
             strJson = "{\"Profile\":[]}";//this makes sure that if table isnt created beyond profile being made, then it passes an empty JSON object rahter than erroring at TableNotCreated
         }
         try {return new JSONObject(strJson);}
-        catch(Exception e) {e.printStackTrace();}
+        catch(Exception e) {e.printStackTrace();
+            Log.i(";;;;", e.toString());}
 
         return null;
     }
@@ -650,7 +651,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                             JSONArray jsonArray3 = pastTotalsObject.optJSONArray("Past");
                             //Iterate the jsonArray and print the info of JSONObjects
 
-                            for (int i = 0; i < jsonArray3.length() - 1; i++) {
+                            for (int i = 0; i < jsonArray3.length(); i++) {
                                 JSONObject jsonObject = jsonArray3.getJSONObject(i);
                                 pastTotals = Integer.parseInt(jsonObject.optString("pastTotal"));
                                 pastDates = jsonObject.optString("pastDate");
@@ -668,7 +669,9 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                     }
 
                     //ActProfiles.profileDatastore.RELOAD METHOD??
-                    ActProfiles.adapter.notifyDataSetChanged();
+                    //CustAdapterProfiles.profiles=databaseHelper.getAllProfiles();//AGAIN MENTAL
+                    //CustAdapterProfiles.profiles=databaseHelper.getAllProfiles();
+                    //ActProfiles.adapter.notifyDataSetChanged();
                     //here i must reload tables
                     Toast t = Toast.makeText(getApplicationContext(), "Load Successful!", Toast.LENGTH_SHORT);
                     t.show();
@@ -690,7 +693,12 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
 
       Log.i("MethodCalledJ", "L");
       if((cloud.getVisibility()==View.VISIBLE && friends.getVisibility()==View.VISIBLE) || (cloud.getVisibility()==View.GONE && friends.getVisibility()==View.GONE)){
+
+         ActProfiles.profileDatastore.profiles= databaseHelper.getAllProfiles();
           finish();
+          //Intent intentHome = new Intent(this, ActProfiles.class);
+          //startActivity(intentHome);
+
       }else{
           if(cloud.getVisibility() == View.GONE){
               checkSignedIn();

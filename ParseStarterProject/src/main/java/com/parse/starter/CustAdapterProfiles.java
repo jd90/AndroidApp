@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Borris on 05/02/2016.
@@ -25,7 +26,7 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
 
     private final Context context;
     ProfileDatastore profileDatastore;
-    ArrayList<ClassProfile> profiles;
+    static ArrayList<ClassProfile> profiles;
     TextView warningMessage;
     boolean saveClickedBool = false;
     EditText profileInput = new EditText(getContext());
@@ -41,13 +42,19 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
         databaseHelper = new DatabaseHelper(getContext());
 
         this.profiles = profiles;
-        this.profileDatastore= ActProfiles.profileDatastore;
+        this.profileDatastore= new ProfileDatastore();
+        profileDatastore.profiles=profiles;
         this.context = context;
         profileInput.addTextChangedListener(this);
+
+
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+
+        Log.i("qqqq2", "size: "+profileDatastore.profiles.size());
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View row_view = inflater.inflate(R.layout.profiles_item, parent, false);
@@ -119,7 +126,7 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
                                 notifyDataSetChanged();
                                 databaseHelper.renameProfileThroughout(oldTitle, newTitle);
                             }
-                            }});
+                        }});
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int num) {
@@ -137,23 +144,25 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
                             ClassProfile profile = profiles.get(Integer.parseInt(vi.getTag().toString()));
                             String title = profiles.get(Integer.parseInt(vi.getTag().toString())).name;
                             Log.i("xxx", "size1: " + ActProfiles.profileDatastore.getSize());
-                            ActProfiles.profileDatastore.removeProfile(Integer.parseInt(vi.getTag().toString()));
+                            //ActProfiles.profileDatastore.removeProfile(Integer.parseInt(vi.getTag().toString()));
                             Log.i("xxx", "size2: " + ActProfiles.profileDatastore.getSize());
 
-                            databaseHelper.deleteProfileRow(title);
-                            profileDatastore.profiles= databaseHelper.getAllProfiles();
+                            profiles.remove(profile);
 
                             notifyDataSetChanged();
+                            databaseHelper.deleteProfileRow(title);
+
+
 
 
 
 
                         }});
-                            confirm.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                }});
-                            confirm.setIcon(R.drawable.goal_shark_logo1);
-                            confirm.show();
+                    confirm.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }});
+                    confirm.setIcon(R.drawable.goal_shark_logo1);
+                    confirm.show();
                 }}});
 
         renameDelete.show();
