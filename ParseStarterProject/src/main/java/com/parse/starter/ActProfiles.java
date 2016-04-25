@@ -84,7 +84,7 @@ public class ActProfiles extends ListActivity implements View.OnClickListener, T
         if(view.getTag().equals("Accounts")){
 
             Intent intentAccount = new Intent(this, ActSettings.class);
-            startActivity(intentAccount);
+            startActivityForResult(intentAccount, 6);
 
         }else {
 
@@ -178,4 +178,14 @@ public class ActProfiles extends ListActivity implements View.OnClickListener, T
     public void afterTextChanged(Editable s) {
 
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        profileDatastore.profiles= databaseHelper.getAllProfiles();
+        adapter.notifyDataSetChanged();
+
+    }
+
+
 }

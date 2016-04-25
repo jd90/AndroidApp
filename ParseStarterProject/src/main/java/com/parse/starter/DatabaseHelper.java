@@ -41,7 +41,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS profilesTbl");
         db.execSQL("DROP TABLE IF EXISTS goalsTbl");
         db.execSQL("DROP TABLE IF EXISTS pastTotalsTbl");
-
+        db.execSQL("DROP TABLE IF EXISTS futureGoalsTbl");
         // create new tables
         onCreate(db);
     }
@@ -84,6 +84,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             ","+goal.buttonsThrough[0]+","+goal.buttonsThrough[1]+","+goal.buttonsThrough[2]+","+goal.buttonsThrough[3]+","+goal.buttonsThrough[4]+","+goal.buttonsThrough[5]+","+goal.buttonsThrough[6]+
             ","+goal.percent+","+type+
                 ")");
+
+
+
+        Log.i("44331", "ZZZZZ" +this.getAllGoals().size() );
     }
 
     public void insertFutureGoal(String profileName, String goalName, int total, int type){
@@ -433,6 +437,31 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 "WHERE profileName LIKE '"+profileName+"'");
 
     }
+
+
+    public void renameProfileThroughout(String oldProfileName, String newProfileName){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE goalsTbl " +
+                "SET profileName = '" + newProfileName +
+                "' WHERE profileName LIKE '" + oldProfileName +
+                "'");
+        db.execSQL("UPDATE profilesTbl " +
+                "SET profileName = '" + newProfileName +
+                "' WHERE profileName LIKE '" + oldProfileName +
+                "'");
+        db.execSQL("UPDATE futureGoalsTbl " +
+                "SET profileName = '" + newProfileName +
+                "' WHERE profileName LIKE '" + oldProfileName +
+                "'");
+        db.execSQL("UPDATE pastTotalsTbl " +
+                "SET profileName = '" + newProfileName +
+                "' WHERE profileName LIKE '" + oldProfileName +
+                "'");
+
+    }
+
+
 
     public void clearProfileTbl(){
 

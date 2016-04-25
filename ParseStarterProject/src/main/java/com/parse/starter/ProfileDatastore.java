@@ -51,15 +51,11 @@ public class ProfileDatastore {
         return profiles.size();
     }
 
-    public void removeProfile(ClassProfile profileToRemove){
+    public void removeProfile(int i){
 
-        try {
-            ActGoals.deleteDatabase(profileToRemove.databaseNum);
-            Log.i("67056705", "Successfully deleted " + profileToRemove.databaseNum);
-        }catch(Exception e){Log.i("67056705", "error deleting databse... not created yet?");
-            Log.i("67056705", "error deleting databse... "+e.toString());}
-                profiles.remove(profileToRemove);
-                //count--; //probably eventually put this in after testing - removes count so after deletion, so that count (database names) dont become infinite
+
+                //profiles.remove(profileToRemove);
+        profiles.remove(i);
 
             }
 

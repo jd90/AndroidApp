@@ -337,8 +337,8 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                 }
 
                 strJson += "" +
-                        "\"profileName\":"+ " \" " + goalList.get(i).profileName + " \" "+ "," +//maybe i should be quoting these to protect the strings?
-                        "\"name\":" + goalList.get(i).name + "," +
+                        "\"profileName\":"+ "\"" + goalList.get(i).profileName + "\""+ "," +//maybe i should be quoting these to protect the strings?
+                        "\"name\":"+ "\"" + goalList.get(i).name + "\""+ "," +
                         "\"total\":" + goalList.get(i).total + "," +
                         "\"done\":" + goalList.get(i).done + "," +
                         "\"b0\":" + goalList.get(i).getButton(0) + "," +
@@ -392,8 +392,8 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                     strJson += ",{";
                 }
                 strJson += "" +
-                        "\"profileName\":" + " \" "+ fgoalList.get(i).profileName + " \" "+ "," +//maybe i should be quoting these to protect the strings?
-                        "\"name\":" + " \" "+ fgoalList.get(i).name +  " \" "+"," +
+                        "\"profileName\":" + "\""+ fgoalList.get(i).profileName + "\""+ "," +//maybe i should be quoting these to protect the strings?
+                        "\"name\":" + "\""+ fgoalList.get(i).name +  "\""+"," +
                         "\"total\":" + fgoalList.get(i).total + ",";
                 int typeNum;
                 if(fgoalList.get(i).type){typeNum =1;}else{typeNum=0;}
@@ -429,9 +429,9 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
             }
 
             strJson += "" +
-                    "\"profileName\":" + archiveList.get(i).profileName + "," +
+                    "\"profileName\":" + "\""+ archiveList.get(i).profileName + "\""+ "," +
                     "\"pastTotal\":" + archiveList.get(i).percent + "," +
-                    "\"pastDate\": '" + archiveList.get(i).date + "' ";
+                    "\"pastDate\":" + "\""+ archiveList.get(i).date + "\"";
             strJson += "}";
         }
         strJson += "]}";
