@@ -42,19 +42,17 @@ public class ActGoals extends AppCompatActivity {
         profile = getIntent().getExtras().getString("profileName");
 
         databaseHelper = new DatabaseHelper(this);
-        Log.i("44331 buttonprobbef", "size "+databaseHelper.getGoals(profile).size());
+
         goalStore = new GoalStore1(databaseHelper.getGoals(profile), profile);
 
 
-        Log.i("44331 emptysear", ""+databaseHelper.getFutureGoals(profile).size());
-        Log.i("44331 name2", profile);
+
 
         fgoalStore = new GoalStore2(databaseHelper.getFutureGoals(profile), profile);
         archiveItemDatastore = new ArchiveItemDatastore();
         archiveItemDatastore.list = databaseHelper.getPastTotals(profile);
 
-        Log.i("44331 buttonprob", "size "+databaseHelper.getGoals(profile).size());
-        Log.i("44331 buttonprob", "prof " + profile);
+
 
 
         p =ActProfiles.profileDatastore.getProfile(profile);
