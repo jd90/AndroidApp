@@ -89,8 +89,11 @@ public class CustAdapterNewGoals extends ArrayAdapter<ClassGoal> implements View
                     }
                     break;
                 case "delete":
-                    RelativeLayout l = (RelativeLayout) v.getParent();
-                    fGoalStore.list.remove(Integer.parseInt(l.getTag().toString()));
+                    LinearLayout l = (LinearLayout) v.getParent().getParent().getParent();
+
+                    //fGoalStore.list.remove(Integer.parseInt(l.getTag().toString()));
+                    Log.i("45454545",""+Integer.parseInt(l.getTag().toString()));
+                    fGoalStore.removeGoal(Integer.parseInt(l.getTag().toString()));
                     fGoalStore.saveToDatabase();
                     count--;
                     notifyDataSetChanged();

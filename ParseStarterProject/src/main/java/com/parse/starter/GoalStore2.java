@@ -13,8 +13,6 @@ import java.util.List;
 public class GoalStore2 {
 
     List<ClassGoal> list;
-    SQLiteDatabase myDatabase;
-    Cursor c;
     DatabaseHelper databaseHelper;
     String profile;
     //inherit from base class. do same setup in oncreate here as in goalstore1.
@@ -28,13 +26,6 @@ public class GoalStore2 {
         Log.i("44331 sizefu", ""+list.size());
     }
 
-   // public GoalStore2(SQLiteDatabase x) {
-  //      myDatabase = x;
-  //      list=new ArrayList<ClassGoal>();
-
- //       setUpGoalStore();
-
- //   }
 
     public boolean add(ClassGoal g) {
         g.profileName=profile;
@@ -58,11 +49,8 @@ public class GoalStore2 {
         return this.list.size();
     }
 
-    public double getTotalPercentage() {
-        double sum=0.0;
-        for (ClassGoal g:this.list)
-            sum+=g.percentNum;
-        return sum;
+    public void removeGoal(int i){
+        list.remove(i);
     }
 
     public void saveToDatabase(){
@@ -81,39 +69,6 @@ public class GoalStore2 {
 
         Log.i("goalstore2future", "being updated");
     }
-    public void loadFromFutureDatabase(){
-
-        this.clear();
-
-        this.list = databaseHelper.getFutureGoals("TEST");
-        Log.i("goalstore2future", "goalstore length "+this.getSize());
-    }
-
-    /*
-
-    public void setUpGoalStore(){
-        Log.i("goalstore2future", "called setupgoalstore2");
-        myDatabase.execSQL("CREATE TABLE IF NOT EXISTS FgoalsStarted (started INT(1))");
-         try {
-            Cursor cur = myDatabase.rawQuery("SELECT COUNT(*) FROM FgoalsStarted", null);
-            if (cur != null) {
-                cur.moveToFirst();                       // Always one row returned.
-                if (cur.getInt (0) == 0) {
-// Zero count means empty table.
-                        myDatabase.execSQL("INSERT INTO FgoalsStarted (started) VALUES (1)");
-                    Log.i("goalstore2future", "started set");
-
-                    myDatabase.execSQL("CREATE TABLE IF NOT EXISTS FgoalsTbl (name VARCHAR, total INT(3), type INT(1))");
-                }
-                else {
-//not empty table
-                    Log.i("goalstore2future", "already started- moving on");
-                    this.loadFromFutureDatabase();
-                }}}
-         catch(Exception e){e.printStackTrace();}
-    }
-    */
-
 
     public boolean nameTaken(String name){
 
