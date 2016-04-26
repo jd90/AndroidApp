@@ -159,6 +159,7 @@ public class CustAdapterGoals extends ArrayAdapter<ClassGoal> implements View.On
                         AlertDialog.Builder confirm = new AlertDialog.Builder(getContext());
                         confirm.setTitle("Through the Week");
                         confirm.setView(numberPicker);
+                        confirm.setIcon(R.drawable.goal_shark_logo1);
                         confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 int num = numberPicker.getValue();//before-numberPicker.getValue();

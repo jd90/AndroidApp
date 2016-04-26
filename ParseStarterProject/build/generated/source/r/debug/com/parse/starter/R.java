@@ -2094,7 +2094,7 @@ containing a value of this type.
         public static final int chronometer=0x7f0e00a3;
         public static final int clip_horizontal=0x7f0e001e;
         public static final int clip_vertical=0x7f0e001f;
-        public static final int close=0x7f0e0090;
+        public static final int close=0x7f0e0091;
         public static final int cloud=0x7f0e00be;
         public static final int collapseActionView=0x7f0e002c;
         public static final int comment=0x7f0e006d;
@@ -2127,7 +2127,7 @@ containing a value of this type.
         public static final int fill_horizontal=0x7f0e0022;
         public static final int fill_vertical=0x7f0e0023;
         public static final int fixed=0x7f0e0032;
-        public static final int freq=0x7f0e0091;
+        public static final int freq=0x7f0e0090;
         public static final int freqSpin=0x7f0e0096;
         public static final int future=0x7f0e0076;
         public static final int goalPercent=0x7f0e0080;

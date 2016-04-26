@@ -599,7 +599,7 @@ int id checkbox 0x7f0e004f
 int id chronometer 0x7f0e00a3
 int id clip_horizontal 0x7f0e001e
 int id clip_vertical 0x7f0e001f
-int id close 0x7f0e0090
+int id close 0x7f0e0091
 int id cloud 0x7f0e00be
 int id collapseActionView 0x7f0e002c
 int id comment 0x7f0e006d
@@ -632,7 +632,7 @@ int id fill 0x7f0e0021
 int id fill_horizontal 0x7f0e0022
 int id fill_vertical 0x7f0e0023
 int id fixed 0x7f0e0032
-int id freq 0x7f0e0091
+int id freq 0x7f0e0090
 int id freqSpin 0x7f0e0096
 int id future 0x7f0e0076
 int id goalPercent 0x7f0e0080

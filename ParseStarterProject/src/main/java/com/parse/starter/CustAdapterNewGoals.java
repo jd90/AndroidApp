@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +49,7 @@ public class CustAdapterNewGoals extends ArrayAdapter<ClassGoal> implements View
         View row_view = inflater.inflate(R.layout.new_goal_list_item, parent, false);
 
 
-        RelativeLayout parentLayout = (RelativeLayout) row_view.findViewById(R.id.containerLayout);
+        LinearLayout parentLayout = (LinearLayout) row_view.findViewById(R.id.containerLayout);
         parentLayout.setTag(position);
 
         Button delete = (Button) row_view.findViewById(R.id.close);

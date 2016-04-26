@@ -32,7 +32,9 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
         android:id="@android:id/list"
-        android:layout_above="@+id/bottomButtons">
+        android:layout_above="@+id/bottomButtons"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
     </ListView>
 
     <LinearLayout

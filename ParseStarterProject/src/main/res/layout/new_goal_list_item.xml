@@ -1,17 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="25dip"
-    android:paddingRight="25dip"
-    android:paddingTop="5dip"
-    android:paddingBottom="5dip"
     android:visibility="visible"
     android:id="@+id/containerLayout"
     android:focusable="false"
     android:clickable="false"
     android:longClickable="true"
-    >
+    android:orientation="horizontal"
+    android:weightSum="10">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="#ffbebebe">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="#fffafafa"
+    android:layout_marginBottom="2.5dp"
+    android:layout_marginLeft="0.5dp"
+    android:layout_marginTop="0.5dp"
+    android:layout_marginRight="0.5dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:paddingLeft="10dp">
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,23 +47,31 @@
         android:textSize="@dimen/abc_text_size_title_material"
         android:textColor="#b8000000"
         android:layout_below="@+id/textView"/>
-    <Button
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:text="x"
-        android:id="@+id/close"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/titleInput">
+        android:layout_below="@id/titleInput"
+        android:layout_marginRight="50dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/freq"
             />
     </LinearLayout>
-</RelativeLayout>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="x"
+        android:id="@+id/close"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/bottom_button"
+        android:layout_alignParentEnd="true"
+        android:layout_weight="9" />
+</LinearLayout>
+    </LinearLayout>
+</LinearLayout>

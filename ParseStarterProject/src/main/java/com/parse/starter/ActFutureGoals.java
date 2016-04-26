@@ -55,7 +55,7 @@ public class ActFutureGoals extends ListActivity implements View.OnClickListener
 
         CustAdapterNewGoals adapter = new CustAdapterNewGoals(this, fgoalStore, profileName);
         setListAdapter(adapter);
-
+        getListView().setDivider(null);
         newGoal.setOnClickListener(adapter);
 
         if(firstweek){

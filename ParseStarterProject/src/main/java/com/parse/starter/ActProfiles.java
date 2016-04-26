@@ -180,6 +180,7 @@ public class ActProfiles extends ListActivity implements View.OnClickListener, T
         profileDatastore.profiles=databaseHelper.getAllProfiles();
         adapter = new CustAdapterProfiles(this, profileDatastore.profiles);
         setListAdapter(adapter);
+        checkSignedInStatus();
         super.onResume();//this is my saviour - this resets the listview properly on resuming
     }
 
