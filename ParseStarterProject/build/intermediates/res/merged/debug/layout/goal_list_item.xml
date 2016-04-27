@@ -32,9 +32,7 @@
     android:background="#ffffffff"
 
     android:layout_marginBottom="2.5dp"
-    android:layout_marginLeft="0.5dp"
-    android:layout_marginTop="0.5dp"
-    android:layout_marginRight="0.5dp">
+    android:layout_marginLeft="0.5dp">
 
     <!--android:translationZ="20dp"
     android:elevation="20dp" -->
