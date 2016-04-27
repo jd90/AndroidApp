@@ -44,7 +44,7 @@ public class Frag1Feed extends ListFragment {
 
             if (ParseUser.getCurrentUser() == null) {
                 feedList.clear();
-                feedList.add(new ClassFeedItem("Error retrieving feed!", " No user signed in", 200, "", new ArrayList(), new ArrayList(), ""));
+                feedList.add(new ClassFeedItem("Error retrieving feed!", " No user signed in", 200, "", new ArrayList(), new ArrayList(), new ArrayList(), ""));
                 CustAdapterFeed adapter = new CustAdapterFeed(getActivity(), feedList);
                 setListAdapter(adapter);
                 //List users = ParseUser.getCurrentUser().getList("followers");
@@ -62,7 +62,7 @@ public class Frag1Feed extends ListFragment {
                         if (e == null) {
                             Log.i("78789777", "a " + "here2");
                             if (feedRows.size() == 0) {
-                                feedList.add(new ClassFeedItem("No feed items", "", 200, "", new ArrayList(), new ArrayList(), ""));
+                                feedList.add(new ClassFeedItem("No feed items", "", 200, "", new ArrayList(), new ArrayList(), new ArrayList(), ""));
                                 CustAdapterFeed adapter = new CustAdapterFeed(getActivity(), feedList);
                                 setListAdapter(adapter);
                             } else {
@@ -76,13 +76,14 @@ public class Frag1Feed extends ListFragment {
                                         String date = feedRows.get(i).getString("date");
                                         List comments = feedRows.get(i).getList("comments");
                                         List likes = feedRows.get(i).getList("likes");
+                                        List itemSeen = feedRows.get(i).getList("itemSeen");
                                         String id = feedRows.get(i).getObjectId();
                                         Log.i("78789777", "a " + "here4");
 
-                                        feedList.add(new ClassFeedItem(username, profileName, percent, date, comments, likes, id));
+                                        feedList.add(new ClassFeedItem(username, profileName, percent, date, comments, likes, itemSeen, id));
                                     } catch (Exception e3) {
                                         Log.i("6705del", " problem making JSONobject3" + e3.toString());
-                                        feedList.add(new ClassFeedItem("Error retrieving feed", "" + e3.toString(), 0, "", new ArrayList(), new ArrayList(), ""));
+                                        feedList.add(new ClassFeedItem("Error retrieving feed", "" + e3.toString(), 0, "", new ArrayList(), new ArrayList(), new ArrayList(), ""));
                                         CustAdapterFeed adapter = new CustAdapterFeed(getActivity(), feedList);
                                         setListAdapter(adapter);
                                     }
@@ -92,7 +93,7 @@ public class Frag1Feed extends ListFragment {
                                 try {
                                     CustAdapterFeed adapter = new CustAdapterFeed(getActivity(), feedList);
                                     setListAdapter(adapter);
-                                }catch(Exception exc){feedList.add(new ClassFeedItem("Error retrieving feed#", "" + exc.toString(), 0, "", new ArrayList(), new ArrayList(), ""));
+                                }catch(Exception exc){feedList.add(new ClassFeedItem("Error retrieving feed#", "" + exc.toString(), 0, "", new ArrayList(), new ArrayList(), new ArrayList(), ""));
                                     CustAdapterFeed adapter = new CustAdapterFeed(getActivity(), feedList);
                                     setListAdapter(adapter);}
 
@@ -104,7 +105,7 @@ public class Frag1Feed extends ListFragment {
                 });
 
             } catch (Exception e) {
-                feedList.add(new ClassFeedItem("Error retrieving feed", "" + e.toString(), 0, "", new ArrayList(), new ArrayList(), ""));
+                feedList.add(new ClassFeedItem("Error retrieving feed", "" + e.toString(), 0, "", new ArrayList(), new ArrayList(), new ArrayList(), ""));
                 CustAdapterFeed adapter = new CustAdapterFeed(getActivity(), feedList);
                 setListAdapter(adapter);
             }
@@ -112,11 +113,11 @@ public class Frag1Feed extends ListFragment {
         }
         } else {
             if (connect.getActiveNetworkInfo() == null) {
-                feedList.add(new ClassFeedItem("Error retrieving feed!", " Please check network connection", 200, "", new ArrayList(), new ArrayList(), ""));
+                feedList.add(new ClassFeedItem("Error retrieving feed!", " Please check network connection", 200, "", new ArrayList(), new ArrayList(), new ArrayList(), ""));
             } else {
                 if (ParseUser.getCurrentUser() == null) {
                     feedList.clear();
-                    feedList.add(new ClassFeedItem("Error retrieving feed!", " No user signed in", 200, "", new ArrayList(), new ArrayList(), ""));
+                    feedList.add(new ClassFeedItem("Error retrieving feed!", " No user signed in", 200, "", new ArrayList(), new ArrayList(), new ArrayList(), ""));
                 }
             }
             CustAdapterFeed adapter = new CustAdapterFeed(getActivity(), feedList);

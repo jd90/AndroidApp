@@ -14,9 +14,10 @@ public class ClassFeedItem {
     String date;
     List comments;
     List likes;
+    List itemSeen;
     String id;
 
-    public ClassFeedItem(String username, String profileName, int percent, String date, List comments, List likes, String id){
+    public ClassFeedItem(String username, String profileName, int percent, String date, List comments, List likes, List itemSeen, String id){
 
         this.username=username;
         this.profileName=profileName;
@@ -24,6 +25,7 @@ public class ClassFeedItem {
         this.date=date;
         this.comments=comments;
         this.likes=likes;
+        this.itemSeen=itemSeen;
         this.id=id;
     }
 

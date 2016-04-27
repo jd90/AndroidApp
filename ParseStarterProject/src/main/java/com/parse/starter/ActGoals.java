@@ -3,8 +3,10 @@ package com.parse.starter;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.design.widget.TabLayout.TabLayoutOnPageChangeListener;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,10 +15,19 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class ActGoals extends AppCompatActivity {
 
+    static TabLayout.Tab t0;
     static GoalStore1 goalStore;
     static GoalStore2 fgoalStore;
     static ArchiveItemDatastore archiveItemDatastore;
@@ -212,6 +223,70 @@ return true;
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setCurrentItem(1);
         tabLayout.getTabAt(1).select();
+        t0 = tabLayout.getTabAt(0);
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 0) {
+                    Log.i("viewpager", "feed selected");
+
+                    ConnectivityManager connect = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                    if (connect.getActiveNetworkInfo() != null) {
+
+                        if (ParseUser.getCurrentUser() == null) {
+
+                        }else{
+                            try {
+                                Log.i("78789777", "a " + "here");
+                                List l = ParseUser.getCurrentUser().getList("followers");
+                                l.add(ParseUser.getCurrentUser().getUsername());
+                                ParseQuery<ParseObject> query = ParseQuery.getQuery("Feed");
+                                query.whereContainedIn("username", l);
+                                query.orderByAscending("createdAt");
+                                query.findInBackground(new FindCallback<ParseObject>() {
+                                    public void done(List<ParseObject> feedRows, ParseException e) {
+                                        if (e == null) {
+
+                                            for(int i =0; i<feedRows.size(); i++){
+
+                                                List itemSeen = feedRows.get(i).getList("itemSeen");
+                                                if(!itemSeen.contains(ParseUser.getCurrentUser().getUsername())){
+                                                    itemSeen.add(ParseUser.getCurrentUser().getUsername());
+                                                    feedRows.get(i).put("itemSeen", itemSeen);
+                                                    feedRows.get(i).saveEventually();
+
+                                                }
+                                            }
+
+                                                }
+                                    }
+
+                                });
+
+                            } catch (Exception e) {
+
+                            }
+
+                        }
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                if(tab.getPosition()==0){
+                    t0.setIcon(null);
+                }
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
 
@@ -286,30 +361,5 @@ return true;
     }
 
 
-
-
-
-
-
-
-
-    public static void setHolidayTitle(){
-
-
-
-        //MenuItem holiday = (MenuItem) menu.findItem(R.id.settingsGroup);
-        //MenuItem set = (MenuItem)menu.getItem(R.id.settingsGroup);
-        //MenuItem holiday = (MenuItem) set.getSubMenu().getItem(R.id.holiday);
-        // (MenuItem) set.getSubMenu().findItem(R.id.holiday);
-        //set.getSubMenu().removeItem(R.id.holiday);
-        //holiday =  menu.getItem(R.id.settingsGroup).getSubMenu().getItem(R.id.holiday);
-
-     //   MenuItem holiday = menu.findItem(R.id.holiday).setTitle("hiya");
-        //
-       // if(mode){
-
-     //       holiday.setTitle("Holiday Mode: ACTIVE");
-   //     }else{holiday.setTitle("Holiday Mode: DISABLED");}
-    }
 
 }

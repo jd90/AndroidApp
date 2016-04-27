@@ -12,6 +12,7 @@ package com.parse.starter;
         import android.widget.TextView;
         import android.widget.Toast;
 
+        import com.parse.Parse;
         import com.parse.ParseException;
         import com.parse.ParseObject;
         import com.parse.ParseQuery;
@@ -27,6 +28,7 @@ public class CustAdapterFeed extends ArrayAdapter<ClassGoal> implements View.OnL
 
     private final Context context;
     private final List<ClassFeedItem> feedList;
+    boolean unseen = false;
 
     public CustAdapterFeed(Context context, List<ClassFeedItem> g) {
         super(context, R.layout.friends_feed, (List) g);
@@ -88,10 +90,17 @@ public class CustAdapterFeed extends ArrayAdapter<ClassGoal> implements View.OnL
             tDate.setText(feedList.get(position).username.toUpperCase());
             tUser.setText(feedList.get(position).username + " completed ");
             tPercent.setText(String.valueOf(feedList.get(position).percent) + "%");
-            tProfile.setText(" of "+feedList.get(position).profileName + " goals");
+            tProfile.setText(" of " + feedList.get(position).profileName + " goals");
             dateText.setText("for week ending: " + feedList.get(position).date);
             heart.setTag(position);
             heart.setOnClickListener(this);
+            if(!feedList.get(position).itemSeen.contains(ParseUser.getCurrentUser().getUsername())){
+                tUser.setBackgroundColor(R.drawable.profbutton_default_state);
+                //unseen=true;
+                ActGoals.t0.setIcon(R.drawable.abc_btn_rating_star_on_mtrl_alpha);
+
+            }
+
         }
         row_view.setTag(position);
         row_view.setOnLongClickListener(this);

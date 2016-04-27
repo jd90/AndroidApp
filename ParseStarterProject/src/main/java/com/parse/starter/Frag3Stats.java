@@ -403,11 +403,13 @@ if(v.getTag() == "sharkSwim") {
                     feed.setACL(acl);
                     List likes = new ArrayList<>();
                     List comments = new ArrayList();
+                    List itemSeen = new ArrayList();
                     feed.put("likes", likes);
                     feed.put("comments", comments);
                     feed.put("percent", y);
                     feed.put("date", z);
                     feed.put("username", ParseUser.getCurrentUser().getUsername());
+                    feed.put("itemSeen", itemSeen);
 
                     feed.put("profilename", ActProfiles.profileDatastore.getProfile(ActGoals.profileNum).name);
                     feed.saveInBackground(new SaveCallback() {
