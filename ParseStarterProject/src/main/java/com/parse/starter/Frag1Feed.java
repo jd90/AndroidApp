@@ -77,6 +77,11 @@ public class Frag1Feed extends ListFragment {
                                         List comments = feedRows.get(i).getList("comments");
                                         List likes = feedRows.get(i).getList("likes");
                                         List itemSeen = feedRows.get(i).getList("itemSeen");
+
+                                        if(!itemSeen.contains(ParseUser.getCurrentUser().getUsername())){
+                                            ActGoals.t0.setIcon(R.drawable.abc_btn_rating_star_on_mtrl_alpha);
+                                        }
+
                                         String id = feedRows.get(i).getObjectId();
                                         Log.i("78789777", "a " + "here4");
 

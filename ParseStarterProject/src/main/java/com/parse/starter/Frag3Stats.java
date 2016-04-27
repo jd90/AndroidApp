@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -396,37 +397,40 @@ if(v.getTag() == "sharkSwim") {
             public void onClick(DialogInterface dialog, int num) {
                 ConnectivityManager connect = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
                 if (connect.getActiveNetworkInfo() != null) {
-                    ParseObject feed = new ParseObject("Feed");
-                    ParseACL acl =new ParseACL();
-                    acl.setPublicWriteAccess(true);
-                    acl.setPublicReadAccess(true);
-                    feed.setACL(acl);
-                    List likes = new ArrayList<>();
-                    List comments = new ArrayList();
-                    List itemSeen = new ArrayList();
-                    feed.put("likes", likes);
-                    feed.put("comments", comments);
-                    feed.put("percent", y);
-                    feed.put("date", z);
-                    feed.put("username", ParseUser.getCurrentUser().getUsername());
-                    feed.put("itemSeen", itemSeen);
+                    if(ParseUser.getCurrentUser() ==null){Toast t = Toast.makeText(getActivity(), "Error! User must be registered and signed in", Toast.LENGTH_SHORT);
+                    t.show();}else {
+                        ParseObject feed = new ParseObject("Feed");
+                        ParseACL acl = new ParseACL();
+                        acl.setPublicWriteAccess(true);
+                        acl.setPublicReadAccess(true);
+                        feed.setACL(acl);
+                        List likes = new ArrayList<>();
+                        List comments = new ArrayList();
+                        List itemSeen = new ArrayList();
+                        feed.put("likes", likes);
+                        feed.put("comments", comments);
+                        feed.put("percent", y);
+                        feed.put("date", z);
+                        feed.put("username", ParseUser.getCurrentUser().getUsername());
+                        feed.put("itemSeen", itemSeen);
 
-                    feed.put("profilename", ActProfiles.profileDatastore.getProfile(ActGoals.profileNum).name);
-                    feed.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Toast t = Toast.makeText(getActivity(), "Shared!", Toast.LENGTH_SHORT);
-                                t.show();
-                            } else {
-                                Toast t = Toast.makeText(getActivity(), "Trouble sharing, sorry!", Toast.LENGTH_SHORT);
-                                e.printStackTrace();
-                                t.show();
+                        feed.put("profilename", ActProfiles.profileDatastore.getProfile(ActGoals.profileNum).name);
+                        feed.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    Toast t = Toast.makeText(getActivity(), "Shared!", Toast.LENGTH_SHORT);
+                                    t.show();
+                                } else {
+                                    Toast t = Toast.makeText(getActivity(), "Trouble sharing, sorry!", Toast.LENGTH_SHORT);
+                                    e.printStackTrace();
+                                    t.show();
+                                }
                             }
-                        }
-                    });
+                        });
 
 
+                    }
                 }else{Toast t = Toast.makeText(getActivity(), "Please check network connection!", Toast.LENGTH_SHORT);
                 t.show();
                 }

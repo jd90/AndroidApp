@@ -95,11 +95,11 @@ public class CustAdapterFeed extends ArrayAdapter<ClassGoal> implements View.OnL
             heart.setTag(position);
             heart.setOnClickListener(this);
             if(!feedList.get(position).itemSeen.contains(ParseUser.getCurrentUser().getUsername())){
-                tDate.setBackground(null);
+
                 tDate.setBackgroundColor(R.drawable.profbutton_default_state);
 
                 //unseen=true;
-                ActGoals.t0.setIcon(R.drawable.abc_btn_rating_star_on_mtrl_alpha);
+                //ActGoals.t0.setIcon(R.drawable.abc_btn_rating_star_on_mtrl_alpha);
 
             }
 
