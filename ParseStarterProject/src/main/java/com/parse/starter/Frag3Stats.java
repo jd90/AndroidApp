@@ -397,7 +397,7 @@ if(v.getTag() == "sharkSwim") {
             public void onClick(DialogInterface dialog, int num) {
                 ConnectivityManager connect = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
                 if (connect.getActiveNetworkInfo() != null) {
-                    if(ParseUser.getCurrentUser() ==null){Toast t = Toast.makeText(getActivity(), "Error! User must be registered and signed in", Toast.LENGTH_SHORT);
+                    if(ParseUser.getCurrentUser() ==null){Toast t = Toast.makeText(getActivity(), "Error! User must be signed in", Toast.LENGTH_SHORT);
                     t.show();}else {
                         ParseObject feed = new ParseObject("Feed");
                         ParseACL acl = new ParseACL();
