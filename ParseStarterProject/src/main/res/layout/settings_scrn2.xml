@@ -15,6 +15,15 @@
 
 
 
+        <ImageView
+            android:id="@+id/windowTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:src="@drawable/shark_logo"
+            android:textColor="#ff000000"
+            />
 
 
 
