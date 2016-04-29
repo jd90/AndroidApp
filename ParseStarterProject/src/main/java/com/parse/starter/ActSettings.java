@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,13 +59,28 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
     static int counter;
 
 
+    LinearLayout grid1;
+    LinearLayout grid2;
+    LinearLayout loginform;
+    Button back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_scrn);
+        setContentView(R.layout.settings_scrn2);
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
         databaseHelper = new DatabaseHelper(this);
+
+
+        grid1 = (LinearLayout) findViewById(R.id.grid1);
+        grid2 = (LinearLayout) findViewById(R.id.grid2);
+        loginform = (LinearLayout) findViewById(R.id.loginform);
+
+
+        back = (Button) findViewById(R.id.back_button);
+        back.setOnClickListener(this);
+        back.setTag("back");
 
         user=(TextView)findViewById(R.id.textView2);
         username =(EditText) findViewById(R.id.username);
@@ -81,24 +97,18 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
         signup.setOnClickListener(this);
         signup.setTag("signup");
 
-        save = (Button) findViewById(R.id.save);
-        load = (Button) findViewById(R.id.load);
-        save.setTag("save");
-        load.setTag("load");
-        save.setOnClickListener(this);
-        load.setOnClickListener(this);
+      //  save = (Button) findViewById(R.id.save);
+       // load = (Button) findViewById(R.id.load);
+//        save.setTag("save");
+     //   load.setTag("load");
+   //     save.setOnClickListener(this);
+   //     load.setOnClickListener(this);
         cloud = (ImageView) findViewById(R.id.cloud);
-        friends = (ImageView) findViewById(R.id.addFriends);
+        friends = (ImageView) findViewById(R.id.friends);
         cloud.setOnClickListener(this);
         friends.setOnClickListener(this);
         cloud.setTag("cloud");
         friends.setTag("friends");
-        //cloud.setVisibility(View.GONE);
-        //save.setVisibility(View.GONE);
-        //load.setVisibility(View.GONE);
-       //signin.setVisibility(View.VISIBLE);
-       //signup.setVisibility(View.VISIBLE);
-       //logout.setVisibility(View.GONE);
 
         checkSignedIn();
 
@@ -138,97 +148,93 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
 
-        ConnectivityManager connect = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connect.getActiveNetworkInfo() != null) {
-        if (v.getTag().equals("logout")) {
-            ParseUser.logOutInBackground(new LogOutCallback() {
-                @Override
-                public void done(ParseException e) {
-                    Toast t = Toast.makeText(getApplicationContext(), "Thats ye logged oot", Toast.LENGTH_SHORT);
-                    t.show();
-                    checkSignedIn();
-                }
-            });
-        }else if(v.getTag().equals("save") || v.getTag().equals("load") || v.getTag().equals("add") || v.getTag().equals("privacy")) {
-            //Log.i("6705saveToCloudswitch", "called");
+        if(v.getTag().equals("back")){
+            onBackPressed();
+
+        }else {
+            ConnectivityManager connect = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connect.getActiveNetworkInfo() != null) {
+                if (v.getTag().equals("logout")) {
+                    ParseUser.logOutInBackground(new LogOutCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            Toast t = Toast.makeText(getApplicationContext(), "Thats ye logged oot", Toast.LENGTH_SHORT);
+                            t.show();
+                            checkSignedIn();
+                        }
+                    });
+                } else if (v.getTag().equals("save") || v.getTag().equals("load") || v.getTag().equals("add") || v.getTag().equals("privacy")) {
+                    //Log.i("6705saveToCloudswitch", "called");
 
 
+                    switch (v.getTag().toString()) {
+                        case "save":
+                            saveToCloud();
+                            break;
+                        case "load":
+                            loadFromParse();
+                            break;
+                        case "add":
+                            Intent intent = new Intent(this, Frag5Friends.class);
+                            //intent.putExtra("firstweek", false);
+                            int a = 4; //request code? (receives back request code, resultcode, intent)?
+                            startActivityForResult(intent, a);
+                            break;
+                        case "privacy":
+                            break;
+                    }
 
-                switch (v.getTag().toString()) {
-                    case "save":
-                        saveToCloud();
-                        break;
-                    case "load":
-                        loadFromParse();
-                        break;
-                    case "add":
-                        Intent intent = new Intent(this, Frag5Friends.class);
-                        //intent.putExtra("firstweek", false);
-                        int a = 4; //request code? (receives back request code, resultcode, intent)?
-                        startActivityForResult(intent, a);
-                        break;
-                    case "privacy":
-                        break;
+                } else {
+                    if (v instanceof Button) {
+                        signInOrSignUp(v);
+
+                    } else {
+                        if (v.getTag().equals("cloud")) {
+                            save.setVisibility(View.VISIBLE);
+                            load.setVisibility(View.VISIBLE);
+                            friends.setVisibility(View.GONE);
+                            save.setText("SAVE TO CLOUD");
+                            save.setTag("save");
+                            load.setTag("load");
+                            load.setText("LOAD FROM CLOUD");
+                        }
+                        if (v.getTag().equals("friends")) {
+                            cloud.setVisibility(View.GONE);
+                            save.setVisibility(View.VISIBLE);
+                            load.setVisibility(View.VISIBLE);
+                            save.setText("MANAGE FRIENDS");
+                            save.setTag("add");
+                            load.setTag("privacy");
+                            load.setText("SHARE SETTINGS");
+
+                        }
+
+                    }
                 }
 
             } else {
-                if (v instanceof Button) {
-                    signInOrSignUp(v);
-
-                } else {
-                    if (v.getTag().equals("cloud")) {
-                        save.setVisibility(View.VISIBLE);
-                        load.setVisibility(View.VISIBLE);
-                        friends.setVisibility(View.GONE);
-                        save.setText("SAVE TO CLOUD");
-                        save.setTag("save");
-                        load.setTag("load");
-                        load.setText("LOAD FROM CLOUD");
-                    }
-                    if (v.getTag().equals("friends")) {
-                        cloud.setVisibility(View.GONE);
-                        save.setVisibility(View.VISIBLE);
-                        load.setVisibility(View.VISIBLE);
-                        save.setText("MANAGE FRIENDS");
-                        save.setTag("add");
-                        load.setTag("privacy");
-                        load.setText("SHARE SETTINGS");
-
-                    }
-
-                }
+                Toast t = Toast.makeText(this, "Please check network connection!", Toast.LENGTH_SHORT);
+                t.show();
             }
-        }else{Toast t = Toast.makeText(this, "Please check network connection!", Toast.LENGTH_SHORT);
-        t.show();}
+        }
     }
 
     public void checkSignedIn(){
         if(ParseUser.getCurrentUser() != null) {
             Log.i("6705logcurrent", ParseUser.getCurrentUser().getUsername());
-            signin.setVisibility(View.GONE);
-            signup.setVisibility(View.GONE);
-            username.setVisibility(View.GONE);
-            password.setVisibility(View.GONE);
+
             user.setText("signed in as " + ParseUser.getCurrentUser().getUsername());
             //save.setVisibility(View.VISIBLE);
             //load.setVisibility(View.VISIBLE);
-            save.setVisibility(View.GONE);
-            load.setVisibility(View.GONE);
-            cloud.setVisibility(View.VISIBLE);
-            friends.setVisibility(View.VISIBLE);
+            loginform.setVisibility(View.GONE);
+            grid1.setVisibility(View.VISIBLE);
+            grid2.setVisibility(View.VISIBLE);
             logout.setVisibility(View.VISIBLE);
-
         }else{
             user.setText("not signed in");
-            signin.setVisibility(View.VISIBLE);
-            signup.setVisibility(View.VISIBLE);
-            username.setVisibility(View.VISIBLE);
-            password.setVisibility(View.VISIBLE);
-            logout.setVisibility(View.VISIBLE);
-            save.setVisibility(View.GONE);
-            load.setVisibility(View.GONE);
-            cloud.setVisibility(View.GONE);
-            friends.setVisibility(View.GONE);
+            loginform.setVisibility(View.VISIBLE);
+            grid1.setVisibility(View.GONE);
+            grid2.setVisibility(View.GONE);
             logout.setVisibility(View.GONE);
 
         }
@@ -689,15 +695,18 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
     //that or remove that drop down access option
   public void onBackPressed(){
 
+      if(ParseUser.getCurrentUser()!=null){
 
       Log.i("MethodCalledJ", "L");
-      if((cloud.getVisibility()==View.VISIBLE && friends.getVisibility()==View.VISIBLE) || (cloud.getVisibility()==View.GONE && friends.getVisibility()==View.GONE)){
+      if((cloud.getVisibility()==View.VISIBLE && friends.getVisibility()==View.VISIBLE) || (cloud.getVisibility()==View.GONE && friends.getVisibility()==View.GONE)) {
 
-         ActProfiles.profileDatastore.profiles= databaseHelper.getAllProfiles();
+          ActProfiles.profileDatastore.profiles = databaseHelper.getAllProfiles();
           finish();
           //Intent intentHome = new Intent(this, ActProfiles.class);
           //startActivity(intentHome);
 
+      }
+          /*
       }else{
           if(cloud.getVisibility() == View.GONE){
               checkSignedIn();
@@ -705,7 +714,8 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
           if(cloud.getVisibility() == View.VISIBLE){
               checkSignedIn();
           }
-      }
+      */
+      }else{finish();}
 
   }
 
