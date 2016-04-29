@@ -8,11 +8,13 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -163,7 +165,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                             checkSignedIn();
                         }
                     });
-                } else if (v.getTag().equals("save") || v.getTag().equals("load") || v.getTag().equals("add") || v.getTag().equals("privacy")) {
+                } else if (v.getTag().equals("cloud") || v.getTag().equals("friends") || v.getTag().equals("settings") || v.getTag().equals("notifications")) {
                     //Log.i("6705saveToCloudswitch", "called");
 
 
@@ -174,13 +176,34 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                         case "load":
                             loadFromParse();
                             break;
-                        case "add":
+                        case "friends":
                             Intent intent = new Intent(this, Frag5Friends.class);
                             //intent.putExtra("firstweek", false);
                             int a = 4; //request code? (receives back request code, resultcode, intent)?
                             startActivityForResult(intent, a);
                             break;
-                        case "privacy":
+                        case "cloud":
+                            //Creating the instance of PopupMenu
+                            PopupMenu popup = new PopupMenu(getApplicationContext(), cloud);
+                            //Inflating the Popup using xml file
+                            popup.getMenuInflater().inflate(R.menu.cloud_menu, popup.getMenu());
+
+                            //registering popup with OnMenuItemClickListener
+                            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                public boolean onMenuItemClick(MenuItem item) {
+
+                                    if(String.valueOf(item.getTitle()).equals("Save To Cloud")){
+                                        saveToCloud();
+                                    }else{
+                                        loadFromParse();
+                                    }
+
+                                    return true;
+                                }
+                            });
+
+                            popup.show();//showing popup menu
+
                             break;
                     }
 

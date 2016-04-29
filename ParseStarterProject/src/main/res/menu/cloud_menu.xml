@@ -1,0 +1,15 @@
+<menu xmlns:androclass="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/save"
+        android:title="Save To Cloud"
+        androclass:title="Save To Cloud" />
+
+    <item
+        android:id="@+id/load"
+        android:title="Load From Cloud"
+        androclass:title="Load From Cloud" />
+
+
+</menu>
