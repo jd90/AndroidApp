@@ -13,7 +13,6 @@ import java.util.List;
 public class ClassProfile {
 
     String name;
-    int databaseNum;
     int refreshDay;
 
     public ClassProfile(String name, int refreshDay) {
@@ -22,8 +21,6 @@ public class ClassProfile {
         this.refreshDay = refreshDay;
 
 
-        //could create database and goalStore right here? probably should...
-        //i would then open dictate the correct goalstore by using the databaseNum?
     }
 
     public void renameProfile(String newName){
