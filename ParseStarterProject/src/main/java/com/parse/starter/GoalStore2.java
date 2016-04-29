@@ -62,7 +62,7 @@ public class GoalStore2 {
             int type;
             if(this.getAt(i).type){type=1;}else{type=0;}
             ClassGoal g = this.getAt(i);
-            databaseHelper.insertFutureGoal(g.profileName, g.name, g.total, type);
+            databaseHelper.insertFutureGoal(g.profileName, g.getName(), g.getTotal(), type);
             Log.i("44331 goalstore2e22", "" + databaseHelper.getFutureGoals(g.profileName).size());
         }
 
@@ -73,7 +73,7 @@ public class GoalStore2 {
     public boolean nameTaken(String name){
 
         for(int i=0; i< list.size(); i++){
-            if(name.equals(list.get(i).name)){
+            if(name.equals(list.get(i).getName())){
                 return true;
             }
         }

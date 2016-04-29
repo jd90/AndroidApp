@@ -68,9 +68,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public void insertGoal(ClassGoal goal) {
 
 
-        Log.i("44331", "insert goal"+goal.name);
+        Log.i("44331", "insert goal"+goal.getName());
 
-        Log.i("44331 dbh ", ""+goal.profileName+"','"+goal.name+"',"+goal.total+","+goal.done+"" +
+        Log.i("44331 dbh ", ""+goal.profileName+"','"+goal.getName()+"',"+goal.getTotal()+","+goal.getDone()+"" +
                 ","+goal.getButton(0)+","+goal.getButton(1)+","+goal.getButton(2)+","+goal.getButton(3)+","+goal.getButton(4)+","+goal.getButton(5)+","+goal.getButton(6)+
                 ","+goal.buttonsThrough[0]+","+goal.buttonsThrough[1]+","+goal.buttonsThrough[2]+","+goal.buttonsThrough[3]+","+goal.buttonsThrough[4]+","+goal.buttonsThrough[5]+","+goal.buttonsThrough[6]+
                 ","+goal.percent+
@@ -79,7 +79,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         int type;
         if(goal.type){type=1;}else{type=0;}
         db.execSQL("INSERT INTO goalsTbl (profileName,goalName,total,done,b0,b1,b2,b3,b4,b5,b6,bt0,bt1,bt2,bt3,bt4,bt5,bt6,percent,type) " +
-                "VALUES ('"+goal.profileName+"','"+goal.name+"',"+goal.total+","+goal.done+"" +
+                "VALUES ('"+goal.profileName+"','"+goal.getName()+"',"+goal.getTotal()+","+goal.getDone()+"" +
             ","+goal.getButton(0)+","+goal.getButton(1)+","+goal.getButton(2)+","+goal.getButton(3)+","+goal.getButton(4)+","+goal.getButton(5)+","+goal.getButton(6)+
             ","+goal.buttonsThrough[0]+","+goal.buttonsThrough[1]+","+goal.buttonsThrough[2]+","+goal.buttonsThrough[3]+","+goal.buttonsThrough[4]+","+goal.buttonsThrough[5]+","+goal.buttonsThrough[6]+
             ","+goal.percent+","+type+
@@ -175,9 +175,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             do {
                 ClassGoal goal = new ClassGoal("",999);
                 goal.profileName = profileName;
-                goal.name = (c.getString(c.getColumnIndex("goalName")));
-                goal.total = (c.getInt(c.getColumnIndex("total")));
-                goal.done = (c.getInt(c.getColumnIndex("done")));
+                goal.setName((c.getString(c.getColumnIndex("goalName"))));
+                goal.setTotal((c.getInt(c.getColumnIndex("total"))));
+                goal.setDone((c.getInt(c.getColumnIndex("done"))));
                 int type =(c.getInt(c.getColumnIndex("type")));
                 if(type == 1){goal.type = true;}else{goal.type=false;}
                 goal.setButton(0, (c.getInt(c.getColumnIndex("b0"))));
@@ -221,8 +221,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 ClassGoal futureGoal = new ClassGoal("",999);
                 Log.i("44331 nm13", profileName);
                 futureGoal.profileName = profileName;
-                futureGoal.name = (c.getString(c.getColumnIndex("goalName")));
-                futureGoal.total = (c.getInt(c.getColumnIndex("total")));
+                futureGoal.setName((c.getString(c.getColumnIndex("goalName"))));
+                futureGoal.setTotal((c.getInt(c.getColumnIndex("total"))));
                 int type =(c.getInt(c.getColumnIndex("type")));
                 if(type == 1){futureGoal.type = true;}else{futureGoal.type=false;}
 
@@ -294,9 +294,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             do {
                 ClassGoal goal = new ClassGoal("",999);
                 goal.profileName = (c.getString(c.getColumnIndex("profileName")));
-                goal.name = (c.getString(c.getColumnIndex("goalName")));
-                goal.total = (c.getInt(c.getColumnIndex("total")));
-                goal.done = (c.getInt(c.getColumnIndex("done")));
+                goal.setName((c.getString(c.getColumnIndex("goalName"))));
+                goal.setTotal((c.getInt(c.getColumnIndex("total"))));
+                goal.setDone((c.getInt(c.getColumnIndex("done"))));
                 int type =(c.getInt(c.getColumnIndex("type")));
                 if(type == 1){goal.type = true;}else{goal.type=false;}
                 goal.setButton(0, (c.getInt(c.getColumnIndex("b0"))));
@@ -340,8 +340,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 ClassGoal futureGoal = new ClassGoal("",999);
 
                 futureGoal.profileName = (c.getString(c.getColumnIndex("profileName")));
-                futureGoal.name = (c.getString(c.getColumnIndex("goalName")));
-                futureGoal.total = (c.getInt(c.getColumnIndex("total")));
+                futureGoal.setName((c.getString(c.getColumnIndex("goalName"))));
+                futureGoal.setTotal((c.getInt(c.getColumnIndex("total"))));
                 int type =(c.getInt(c.getColumnIndex("type")));
                 if(type == 1){futureGoal.type = true;}else{futureGoal.type=false;}
 
@@ -392,7 +392,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         Log.i("44331", "g "+ goal.getButton(0));
                  db.execSQL("UPDATE goalsTbl " +
-                         "SET done = " + goal.done + ", percent = " + goal.percent +
+                         "SET done = " + goal.getDone() + ", percent = " + goal.percent +
                          ", b0 = " + goal.getButton(0) +
                          ", b1 = " + goal.getButton(1) +
                          ", b2 = " + goal.getButton(2) +
@@ -408,11 +408,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                          ", bt5 = " + goal.buttonsThrough[5] +
                          ", bt6 = " + goal.buttonsThrough[6] +
                          " WHERE profileName LIKE '" + goal.profileName + "'" +
-                         " AND goalName LIKE '" + goal.name +
+                         " AND goalName LIKE '" + goal.getName() +
                          "'");
 
         Log.i("44331 prof", goal.profileName);
-        Log.i("44331 prof", goal.name);
+        Log.i("44331 prof", goal.getName());
         //could split into a profileName change and a refreshDay change method
 
     }

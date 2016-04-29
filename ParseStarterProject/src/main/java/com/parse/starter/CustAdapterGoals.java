@@ -66,43 +66,43 @@ public class CustAdapterGoals extends ArrayAdapter<ClassGoal> implements View.On
 
         holder.linearLayout.setTag(position);
         ClassGoal g = goalStore.getAt(position);
-        holder.goalTitleView.setText(g.name);
+        holder.goalTitleView.setText(g.getName());
         holder.numberOutOfView.setText(g.getTargets());
         holder.percentView.setText(g.getPercentage());
         holder.percentageBar.setProgress((int) g.getPercentage2());
         holder.b0.setOnClickListener(this);
         holder.b0.setTag(0);
-        if(g.buttons[0]) {
+        if(g.getButtonBool(0)) {
             holder.b0.setImageResource(R.drawable.m1);}
         else{holder.b0.setImageResource(R.drawable.m2);}
         holder.b1.setOnClickListener(this);
         holder.b1.setTag(1);
-        if(g.buttons[1]) {
+        if(g.getButtonBool(1)) {
             holder.b1.setImageResource(R.drawable.t1);}
         else{holder.b1.setImageResource(R.drawable.t2);}
         holder.b2.setOnClickListener(this);
         holder.b2.setTag(2);
-        if(g.buttons[2]) {
+        if(g.getButtonBool(2)) {
             holder.b2.setImageResource(R.drawable.w1);}
         else{holder.b2.setImageResource(R.drawable.w2);}
         holder.b3.setOnClickListener(this);
         holder.b3.setTag(3);
-        if(g.buttons[3]) {
+        if(g.getButtonBool(3)) {
             holder.b3.setImageResource(R.drawable.t1);}
         else{holder.b3.setImageResource(R.drawable.t2);}
         holder.b4.setOnClickListener(this);
         holder.b4.setTag(4);
-        if(g.buttons[4]) {
+        if(g.getButtonBool(4)) {
             holder.b4.setImageResource(R.drawable.f1);}
         else{holder.b4.setImageResource(R.drawable.f2);}
         holder.b5.setOnClickListener(this);
         holder.b5.setTag(5);
-        if(g.buttons[5]) {
+        if(g.getButtonBool(5)) {
             holder.b5.setImageResource(R.drawable.s1);}
         else{holder.b5.setImageResource(R.drawable.s2);}
         holder.b6.setOnClickListener(this);
         holder.b6.setTag(6);
-        if(g.buttons[6]) {
+        if(g.getButtonBool(6)) {
             holder.b6.setImageResource(R.drawable.s1);}
         else{holder.b6.setImageResource(R.drawable.s2);}
 

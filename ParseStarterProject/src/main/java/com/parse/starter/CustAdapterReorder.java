@@ -64,7 +64,7 @@ public class CustAdapterReorder extends ArrayAdapter<ClassGoal> implements View.
         holder.upCont.setTag(position);
         holder.downCont.setTag(position);
         ClassGoal g = goalStore.getAt(position);
-        holder.goalTitleView.setText(g.name);
+        holder.goalTitleView.setText(g.getName());
 
 
 

@@ -85,7 +85,7 @@ public class GoalStore1 {
         Log.i("44331", "lo2 " + databaseHelper.getGoals(profile).size());
 
         Log.i("44331", "loaded" + databaseHelper.getGoals(profile).get(gpos).getButton(bpos));
-        Log.i("44331", "loaded" + databaseHelper.getGoals(profile).get(gpos).name);
+        Log.i("44331", "loaded" + databaseHelper.getGoals(profile).get(gpos).getName());
 
 
     }
@@ -111,7 +111,7 @@ public class GoalStore1 {
     public boolean nameTaken(String name){
 
         for(int i=0; i< list.size(); i++){
-            if(name.equals(list.get(i).name)){
+            if(name.equals(list.get(i).getName())){
                 return true;
             }
         }

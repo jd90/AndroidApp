@@ -8,10 +8,10 @@ import android.util.Log;
 
 public class ClassGoal {
 
-    public String name = "input title here";
-    public int done = 0;
-    public int total = 7;
-    public boolean[] buttons = new boolean[]{true, true, true, true, true, true, true};
+    private String name = "input title here";
+    private int done = 0;
+    private int total = 7;
+    private boolean[] buttons = new boolean[]{true, true, true, true, true, true, true};
     public double percentNum=0;
     public double percent=done*((double) 100/total);
     public String profileName="";
@@ -128,6 +128,9 @@ public class ClassGoal {
 
     }
 
+    public boolean getButtonBool(int i){
+        return buttons[i];
+    }
     public int getButton(int i){
         if(buttons[i]){return 1;}
         else{return 0;}
@@ -135,6 +138,27 @@ public class ClassGoal {
     public void setButton(int i, int state){
         if(state==1) {buttons[i]=true;}
         else{buttons[i]=false;}
+    }
+
+
+
+    public String getName(){
+        return name;
+    }
+    public void setName(String nm){
+        name= nm;
+    }
+    public int getDone(){
+        return done;
+    }
+    public void setDone(int dn){
+        done=dn;
+    }
+    public int getTotal(){
+        return total;
+    }
+    public void setTotal(int tt){
+        total=tt;
     }
 
 

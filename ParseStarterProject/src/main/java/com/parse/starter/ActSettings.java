@@ -338,9 +338,9 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
 
                 strJson += "" +
                         "\"profileName\":"+ "\"" + goalList.get(i).profileName + "\""+ "," +//maybe i should be quoting these to protect the strings?
-                        "\"name\":"+ "\"" + goalList.get(i).name + "\""+ "," +
-                        "\"total\":" + goalList.get(i).total + "," +
-                        "\"done\":" + goalList.get(i).done + "," +
+                        "\"name\":"+ "\"" + goalList.get(i).getName() + "\""+ "," +
+                        "\"total\":" + goalList.get(i).getTotal() + "," +
+                        "\"done\":" + goalList.get(i).getDone() + "," +
                         "\"b0\":" + goalList.get(i).getButton(0) + "," +
                         "\"b1\":" + goalList.get(i).getButton(1) + "," +
                         "\"b2\":" + goalList.get(i).getButton(2) + "," +
@@ -393,8 +393,8 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                 }
                 strJson += "" +
                         "\"profileName\":" + "\""+ fgoalList.get(i).profileName + "\""+ "," +//maybe i should be quoting these to protect the strings?
-                        "\"name\":" + "\""+ fgoalList.get(i).name +  "\""+"," +
-                        "\"total\":" + fgoalList.get(i).total + ",";
+                        "\"name\":" + "\""+ fgoalList.get(i).getName() +  "\""+"," +
+                        "\"total\":" + fgoalList.get(i).getTotal() + ",";
                 int typeNum;
                 if(fgoalList.get(i).type){typeNum =1;}else{typeNum=0;}
                 strJson += "\"type\": '"+typeNum+"' ";
@@ -592,7 +592,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                                         typeBool = false;
                                     }
                                     ClassGoal g = new ClassGoal(goalName, total, typeBool, profileName);
-                                    g.done = done;
+                                    g.setDone(done);
                                     g.setButton(0, b0);
                                     g.setButton(1, b1);
                                     g.setButton(2, b2);

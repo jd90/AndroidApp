@@ -57,10 +57,10 @@ public class CustAdapterNewGoals extends ArrayAdapter<ClassGoal> implements View
         delete.setTag("delete");
 
         TextView titleInput = (TextView) row_view.findViewById(R.id.titleInput);
-        titleInput.setHint(fGoalStore.getAt(position).name);
+        titleInput.setHint(fGoalStore.getAt(position).getName());
 
         TextView freq = (TextView) row_view.findViewById(R.id.freq);
-        freq.setText(String.valueOf(fGoalStore.getAt(position).total)+" times a week");
+        freq.setText(String.valueOf(fGoalStore.getAt(position).getTotal())+" times a week");
 
         return row_view;
     }
