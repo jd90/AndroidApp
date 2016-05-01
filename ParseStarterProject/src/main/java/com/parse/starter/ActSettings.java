@@ -52,6 +52,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
     ImageView cloud;
     ImageView friends;
     ImageView settings;
+    ImageView goalSharkLogo;
     SQLiteDatabase database;
     DatabaseHelper databaseHelper;
 
@@ -82,6 +83,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
         grid1 = (LinearLayout) findViewById(R.id.grid1);
         grid2 = (LinearLayout) findViewById(R.id.grid2);
         loginform = (LinearLayout) findViewById(R.id.loginform);
+        goalSharkLogo =(ImageView) findViewById(R.id.windowTitle);
 
 
         back = (Button) findViewById(R.id.back_button);
@@ -177,167 +179,173 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
 
 
                     switch (v.getTag().toString()) {
-                        case "save":
+                        case "notifications":
                             saveToCloud();
                             break;
                         case "settings":
                             //Creating the instance of PopupMenu
-                            PopupMenu popup1 = new PopupMenu(getApplicationContext(), settings);
+                            if(ParseUser.getCurrentUser() ==null){Toast t = Toast.makeText(this, "Option Available to Signed in Users Only", Toast.LENGTH_SHORT);t.show();}
+                            else {
+                                PopupMenu popup1 = new PopupMenu(getApplicationContext(), settings);
 
-                            //Inflating the Popup using xml file
-                            popup1.getMenuInflater().inflate(R.menu.settings_menu, popup1.getMenu());
+                                //Inflating the Popup using xml file
+                                popup1.getMenuInflater().inflate(R.menu.settings_menu, popup1.getMenu());
 
-                            //registering popup with OnMenuItemClickListener
-                            popup1.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                                public boolean onMenuItemClick(MenuItem item) {
+                                //registering popup with OnMenuItemClickListener
+                                popup1.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                    public boolean onMenuItemClick(MenuItem item) {
 
-                                    if(String.valueOf(item.getTitle()).equals("Change Password")){
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(ActSettings.this);
-                                        builder.setTitle("Change Password");
-                                        LinearLayout l = new LinearLayout(ActSettings.this);
-                                        l.setOrientation(LinearLayout.VERTICAL);
-                                        final EditText oldInput = new EditText(ActSettings.this);
-                                        final EditText newInput = new EditText(ActSettings.this);
-                                        oldInput.setTag("old");
-                                        newInput.setTag("new");
-                                        oldInput.setHint("Enter Your New Password...");
-                                        LinearLayout ldivider = new LinearLayout(getApplicationContext());
-                                        ldivider.setMinimumHeight(2);
-                                        newInput.setHint("Confirm New Password...");
-                                        l.addView(oldInput);
-                                        l.addView(ldivider);
-                                        l.addView(newInput);
-                                        builder.setView(l);
-                                        builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int num) {
+                                        if (String.valueOf(item.getTitle()).equals("Change Password")) {
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(ActSettings.this);
+                                            builder.setTitle("Change Password");
+                                            LinearLayout l = new LinearLayout(ActSettings.this);
+                                            l.setOrientation(LinearLayout.VERTICAL);
+                                            final EditText oldInput = new EditText(ActSettings.this);
+                                            final EditText newInput = new EditText(ActSettings.this);
+                                            oldInput.setTag("old");
+                                            newInput.setTag("new");
+                                            oldInput.setHint("Enter Your New Password...");
+                                            LinearLayout ldivider = new LinearLayout(getApplicationContext());
+                                            ldivider.setMinimumHeight(2);
+                                            newInput.setHint("Confirm New Password...");
+                                            l.addView(oldInput);
+                                            l.addView(ldivider);
+                                            l.addView(newInput);
+                                            builder.setView(l);
+                                            builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int num) {
 
-                                                if(oldInput.getText().toString().equals(newInput.getText().toString())){
+                                                    if (oldInput.getText().toString().equals(newInput.getText().toString())) {
 
-                                                    ParseUser parseUser = ParseUser.getCurrentUser();
-                                                    parseUser.setPassword(oldInput.getText().toString());
-                                                    parseUser.saveInBackground(new SaveCallback() {
-                                                        @Override
-                                                        public void done(ParseException e) {
-                                                            if(e==null) {
-                                                                user.setText("signed in as " + ParseUser.getCurrentUser().getUsername());
-                                                                Toast t = Toast.makeText(getApplicationContext(), "Change Successful!", Toast.LENGTH_SHORT);
-                                                                t.show();
+                                                        ParseUser parseUser = ParseUser.getCurrentUser();
+                                                        parseUser.setPassword(oldInput.getText().toString());
+                                                        parseUser.saveInBackground(new SaveCallback() {
+                                                            @Override
+                                                            public void done(ParseException e) {
+                                                                if (e == null) {
+                                                                    user.setText("signed in as " + ParseUser.getCurrentUser().getUsername());
+                                                                    Toast t = Toast.makeText(getApplicationContext(), "Change Successful!", Toast.LENGTH_SHORT);
+                                                                    t.show();
+                                                                }
                                                             }
-                                                        }
-                                                    });
-                                                dialog.cancel();
-                                                }else{
-                                                    Toast t = Toast.makeText(getApplicationContext(), "Passwords do not match!", Toast.LENGTH_SHORT);
-                                                    t.show();
+                                                        });
+                                                        dialog.cancel();
+                                                    } else {
+                                                        Toast t = Toast.makeText(getApplicationContext(), "Passwords do not match!", Toast.LENGTH_SHORT);
+                                                        t.show();
+                                                    }
                                                 }
+
+
+                                            });
+
+                                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int num) {
+                                                    dialog.cancel();
                                                 }
-
-
-                                        });
-
-                                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int num) {
-                                                dialog.cancel();
-                                            }
-                                        });
-                                        builder.setCancelable(false);
+                                            });
+                                            builder.setCancelable(false);
 
                                             builder.show();
 
-                                    }
-                                     else{
+                                        } else {
 
 
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(ActSettings.this);
-                                        builder.setTitle("Set Account Email");
-                                        LinearLayout l = new LinearLayout(ActSettings.this);
-                                        l.setOrientation(LinearLayout.VERTICAL);
-                                        final EditText oldInput = new EditText(ActSettings.this);
-                                        final EditText newInput = new EditText(ActSettings.this);
-                                        oldInput.setTag("old");
-                                        newInput.setTag("new");
-                                        oldInput.setHint("Enter Your Email Address");
-                                        l.addView(oldInput);
-                                        builder.setView(l);
-                                        builder.setPositiveButton("Set Email", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int num) {
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(ActSettings.this);
+                                            builder.setTitle("Set Account Email");
+                                            LinearLayout l = new LinearLayout(ActSettings.this);
+                                            l.setOrientation(LinearLayout.VERTICAL);
+                                            final EditText oldInput = new EditText(ActSettings.this);
+                                            final EditText newInput = new EditText(ActSettings.this);
+                                            oldInput.setTag("old");
+                                            newInput.setTag("new");
+                                            oldInput.setHint("Enter Your Email Address");
+                                            l.addView(oldInput);
+                                            builder.setView(l);
+                                            builder.setPositiveButton("Set Email", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int num) {
 
-                                                if(!oldInput.getText().toString().contains("@") || !oldInput.getText().toString().contains(".")){
-                                                    Toast t = Toast.makeText(getApplicationContext(), "Invalid Email Address!", Toast.LENGTH_SHORT);
-                                                    t.show();
-                                                }else {
+                                                    if (!oldInput.getText().toString().contains("@") || !oldInput.getText().toString().contains(".")) {
+                                                        Toast t = Toast.makeText(getApplicationContext(), "Invalid Email Address!", Toast.LENGTH_SHORT);
+                                                        t.show();
+                                                    } else {
 
-                                                    ParseUser parseUser = ParseUser.getCurrentUser();
-                                                    parseUser.setEmail(oldInput.getText().toString());
-                                                    parseUser.saveInBackground(new SaveCallback() {
-                                                        @Override
-                                                        public void done(ParseException e) {
-                                                            if (e == null) {
-                                                                //user.setText("signed in as " + ParseUser.getCurrentUser().getUsername());
-                                                                Toast t = Toast.makeText(getApplicationContext(), "Email Address Set!", Toast.LENGTH_SHORT);
-                                                                t.show();
+                                                        ParseUser parseUser = ParseUser.getCurrentUser();
+                                                        parseUser.setEmail(oldInput.getText().toString());
+                                                        parseUser.saveInBackground(new SaveCallback() {
+                                                            @Override
+                                                            public void done(ParseException e) {
+                                                                if (e == null) {
+                                                                    //user.setText("signed in as " + ParseUser.getCurrentUser().getUsername());
+                                                                    Toast t = Toast.makeText(getApplicationContext(), "Email Address Set!", Toast.LENGTH_SHORT);
+                                                                    t.show();
+                                                                }
                                                             }
-                                                        }
-                                                    });
+                                                        });
 
+                                                        dialog.cancel();
+                                                    }
+                                                }
+
+
+                                            });
+
+                                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int num) {
                                                     dialog.cancel();
                                                 }
-                                                }
+                                            });
+                                            builder.setCancelable(false);
 
+                                            builder.show();
+                                        }
 
+                                        return true;
 
-                                        });
-
-                                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int num) {
-                                                dialog.cancel();
-                                            }
-                                        });
-                                        builder.setCancelable(false);
-
-                                        builder.show();
                                     }
+                                });
 
-                                    return true;
-                                }
-                            });
+                                popup1.show();//showing popup menu
 
-                            popup1.show();//showing popup menu
-
-
+                            }
                             break;
                         case "friends":
-                            Intent intent = new Intent(this, Frag5Friends.class);
-                            //intent.putExtra("firstweek", false);
-                            int a = 4; //request code? (receives back request code, resultcode, intent)?
-                            startActivityForResult(intent, a);
+                            if(ParseUser.getCurrentUser() ==null){Toast t = Toast.makeText(this, "Option Available to Signed in Users Only", Toast.LENGTH_SHORT);t.show();}
+                            else {
+                                Intent intent = new Intent(this, Frag5Friends.class);
+                                //intent.putExtra("firstweek", false);
+                                int a = 4; //request code? (receives back request code, resultcode, intent)?
+                                startActivityForResult(intent, a);
+                            }
                             break;
                         case "cloud":
-                            //Creating the instance of PopupMenu
-                            PopupMenu popup2 = new PopupMenu(getApplicationContext(), cloud);
-                            //Inflating the Popup using xml file
-                            popup2.getMenuInflater().inflate(R.menu.cloud_menu, popup2.getMenu());
+                            if(ParseUser.getCurrentUser() ==null){Toast t = Toast.makeText(this, "Option Available to Signed in Users Only", Toast.LENGTH_SHORT);t.show();}
+                            else {
+                                //Creating the instance of PopupMenu
+                                PopupMenu popup2 = new PopupMenu(getApplicationContext(), cloud);
+                                //Inflating the Popup using xml file
+                                popup2.getMenuInflater().inflate(R.menu.cloud_menu, popup2.getMenu());
 
-                            //registering popup with OnMenuItemClickListener
-                            popup2.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                                public boolean onMenuItemClick(MenuItem item) {
+                                //registering popup with OnMenuItemClickListener
+                                popup2.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                    public boolean onMenuItemClick(MenuItem item) {
 
-                                    if(String.valueOf(item.getTitle()).equals("Save To Cloud")){
-                                        saveToCloud();
-                                    }else{
-                                        loadFromParse();
+                                        if (String.valueOf(item.getTitle()).equals("Save To Cloud")) {
+                                            saveToCloud();
+                                        } else {
+                                            loadFromParse();
+                                        }
+
+                                        return true;
                                     }
+                                });
 
-                                    return true;
-                                }
-                            });
-
-                            popup2.show();//showing popup menu
-
+                                popup2.show();//showing popup menu
+                            }
                             break;
                     }
 
@@ -387,12 +395,15 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
             grid1.setVisibility(View.VISIBLE);
             grid2.setVisibility(View.VISIBLE);
             logout.setVisibility(View.VISIBLE);
+            goalSharkLogo.setVisibility(View.VISIBLE);
+
         }else{
             user.setText("not signed in");
             loginform.setVisibility(View.VISIBLE);
-            grid1.setVisibility(View.GONE);
-            grid2.setVisibility(View.GONE);
+            grid1.setVisibility(View.VISIBLE);
+            grid2.setVisibility(View.VISIBLE);
             logout.setVisibility(View.GONE);
+            goalSharkLogo.setVisibility(View.GONE);
 
         }
     }

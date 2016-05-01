@@ -45,7 +45,7 @@ public class ArchiveItemDatastore {
                 list.remove(0);
 
                 Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.DAY_OF_YEAR, ActGoals.p.refreshDay - x);//should eventually be seven 7
+                calendar.set(Calendar.DAY_OF_YEAR, ActGoals.p.refreshDay - x);//should eventually be seven x*7?
                 String s = "" + new SimpleDateFormat("MMM").format(calendar.getTime()) + " ";
 
                 s += "" + calendar.get(Calendar.DAY_OF_MONTH);
@@ -59,7 +59,7 @@ public class ArchiveItemDatastore {
             list.remove(0);
             if (percent > 100) {percent = 100;}
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_YEAR, ActGoals.p.refreshDay);//should eventually be seven 7
+        calendar.set(Calendar.DAY_OF_YEAR, ActGoals.p.refreshDay);
         String s = "" + new SimpleDateFormat("MMM").format(calendar.getTime()) + " ";
 
         s += "" + calendar.get(Calendar.DAY_OF_MONTH);

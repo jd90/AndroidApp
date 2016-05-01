@@ -34,7 +34,7 @@ public class ActGoals extends AppCompatActivity {
     static Context context;
     static String profile;
     static int profileNum;
-    static MenuItem holiday;
+
     static Menu menu;
     DatabaseHelper databaseHelper;
     int dayofyear;
@@ -56,15 +56,9 @@ public class ActGoals extends AppCompatActivity {
 
         goalStore = new GoalStore1(databaseHelper.getGoals(profile), profile);
 
-
-
-
         fgoalStore = new GoalStore2(databaseHelper.getFutureGoals(profile), profile);
         archiveItemDatastore = new ArchiveItemDatastore();
         archiveItemDatastore.list = databaseHelper.getPastTotals(profile);
-
-
-
 
         p =ActProfiles.profileDatastore.getProfile(profile);
         Log.i("44331 refreshday", ""+p.refreshDay);

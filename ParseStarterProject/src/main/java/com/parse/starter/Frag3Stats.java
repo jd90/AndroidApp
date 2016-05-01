@@ -6,6 +6,7 @@ package com.parse.starter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -79,25 +80,25 @@ public class Frag3Stats extends Fragment implements View.OnClickListener, View.O
                         l = (LinearLayout) view.findViewById(R.id.bar0);
                         l.setOnLongClickListener(this);
                         l.setTag(0);
-                        l.setMinimumHeight(height);
+                        l.setMinimumHeight(height);if(height==5){l.setBackgroundColor(Color.RED);}
                         break;
                     case 1:
                         l = (LinearLayout) view.findViewById(R.id.bar1);
                         l.setOnLongClickListener(this);
                         l.setTag(1);
-                        l.setMinimumHeight(height);
+                        l.setMinimumHeight(height);if(height==5){l.setBackgroundColor(Color.RED);}
                         break;
                     case 2:
                         l = (LinearLayout) view.findViewById(R.id.bar2);
                         l.setOnLongClickListener(this);
                         l.setTag(2);
-                        l.setMinimumHeight(height);
+                        l.setMinimumHeight(height);if(height==5){l.setBackgroundColor(Color.RED);}
                         break;
                     case 3:
                         l = (LinearLayout) view.findViewById(R.id.bar3);
                         l.setOnLongClickListener(this);
                         l.setTag(3);
-                        l.setMinimumHeight(height);
+                        l.setMinimumHeight(height);if(height==5){l.setBackgroundColor(Color.RED);}
                         break;
                 }
 
@@ -113,25 +114,25 @@ public class Frag3Stats extends Fragment implements View.OnClickListener, View.O
                         l = (LinearLayout) view.findViewById(R.id.bar4);
                         l.setOnLongClickListener(this);
                         l.setTag(4);
-                        l.setMinimumHeight(height);
+                        l.setMinimumHeight(height);if(height==5){l.setBackgroundColor(Color.RED);}
                         break;
                     case 5:
                         l = (LinearLayout) view.findViewById(R.id.bar5);
                         l.setOnLongClickListener(this);
                         l.setTag(5);
-                        l.setMinimumHeight(height);
+                        l.setMinimumHeight(height);if(height==5){l.setBackgroundColor(Color.RED);}
                         break;
                     case 6:
                         l = (LinearLayout) view.findViewById(R.id.bar6);
                         l.setOnLongClickListener(this);
                         l.setTag(6);
-                        l.setMinimumHeight(height);
+                        l.setMinimumHeight(height);if(height==5){l.setBackgroundColor(Color.RED);}
                         break;
                     case 7:
                         l = (LinearLayout) view.findViewById(R.id.bar7);
                         l.setOnLongClickListener(this);
                         l.setTag(7);
-                        l.setMinimumHeight(height);
+                        l.setMinimumHeight(height);if(height==5){l.setBackgroundColor(Color.RED);}
                         break;
                 }
             }
@@ -139,55 +140,56 @@ public class Frag3Stats extends Fragment implements View.OnClickListener, View.O
 
                 int height = (int) (g.get(i).percent * 3);
                 LinearLayout l;
+                height+=5;
                 Log.i("heightbargraph", "" + g.get(i).percent * 2);
                 switch (i) {
                     case 8:
                         l = (LinearLayout) view.findViewById(R.id.bar8);
                         l.setOnLongClickListener(this);
                         l.setTag(8);
-                        l.setMinimumHeight(height);
+                        l.setMinimumHeight(height);if(height==5){l.setBackgroundColor(Color.RED);}
                         break;
                     case 9:
                         l = (LinearLayout) view.findViewById(R.id.bar9);
                         l.setOnLongClickListener(this);
                         l.setTag(9);
-                        l.setMinimumHeight(height);
+                        l.setMinimumHeight(height);if(height==5){l.setBackgroundColor(Color.RED);}
                         break;
                     case 10:
                         l = (LinearLayout) view.findViewById(R.id.bar10);
                         l.setOnLongClickListener(this);
                         l.setTag(10);
-                        l.setMinimumHeight(height);
+                        l.setMinimumHeight(height);if(height==5){l.setBackgroundColor(Color.RED);}
                         break;
                     case 11:
                         l = (LinearLayout) view.findViewById(R.id.bar11);
                         l.setOnLongClickListener(this);
                         l.setTag(11);
-                        l.setMinimumHeight(height);
+                        l.setMinimumHeight(height);if(height==5){l.setBackgroundColor(Color.RED);}
                         break;
                     case 12:
                         l = (LinearLayout) view.findViewById(R.id.bar12);
                         l.setOnLongClickListener(this);
                         l.setTag(12);
-                        l.setMinimumHeight(height);
+                        l.setMinimumHeight(height);if(height==5){l.setBackgroundColor(Color.RED);}
                         break;
                     case 13:
                         l = (LinearLayout) view.findViewById(R.id.bar13);
                         l.setOnLongClickListener(this);
                         l.setTag(13);
-                        l.setMinimumHeight(height);
+                        l.setMinimumHeight(height);if(height==5){l.setBackgroundColor(Color.RED);}
                         break;
                     case 14:
                         l = (LinearLayout) view.findViewById(R.id.bar14);
                         l.setOnLongClickListener(this);
                         l.setTag(14);
-                        l.setMinimumHeight(height);
+                        l.setMinimumHeight(height);if(height==5){l.setBackgroundColor(Color.RED);}
                         break;
                     case 15:
                         l = (LinearLayout) view.findViewById(R.id.bar15);
                         l.setOnLongClickListener(this);
                         l.setTag(15);
-                        l.setMinimumHeight(height);
+                        l.setMinimumHeight(height);if(height==5){l.setBackgroundColor(Color.RED);}
                         break;
                 }
 
@@ -315,78 +317,12 @@ if(v.getTag() == "sharkSwim") {
     public boolean onLongClick(View v) {
 
 
-
         LinearLayout l = (LinearLayout) v;
         int x = Integer.parseInt(l.getTag().toString());
         y = archiveItemDatastore.list.get(x).percent;
         z = archiveItemDatastore.list.get(x).date;
-       // Toast t = Toast.makeText(getActivity(), y + "%", Toast.LENGTH_SHORT);
-       // t.show();
 
         Log.i("pastDate", z);
-
-        /*
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Past Week: " + y + "%");
-        builder.setMessage("");
-
-        //this will inflate a whole dialog for me
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.goal_list_item, null);
-        builder.setView(dialogView);
-*/
-/*
-        //i should put this into a wee scrollpane so that it only displays two or three goals and you scroll through them?
-        //keeping the pop up quite small?
-        String name;
-        String total;
-        String done;
-        String percent;
-        String b0,b1,b2,b3,b4,b5,b6;
-
-        ArrayList<ClassGoal> pastGoalARRAY = new ArrayList<>();
-
-       try {
-           JSONObject jsonRootObject = new JSONObject(ActGoals.goalStore.pastGoals.get(x));
-            JSONArray jsonArray = jsonRootObject.optJSONArray("Goals");
-
-            Log.i("888888", "jsonlength1" + jsonArray.length());
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                name =(jsonObject.optString("name"));
-                total=(jsonObject.optString("total"));
-                percent=(String.valueOf(Double.parseDouble(jsonObject.optString("percent"))));
-                b0 =(jsonObject.optString("b0"));
-                b1 =(jsonObject.optString("b1"));
-                b2 =(jsonObject.optString("b2"));
-                b3 =(jsonObject.optString("b3"));
-                b4 =(jsonObject.optString("b4"));
-                b5 =(jsonObject.optString("b5"));
-                b6 =(jsonObject.optString("b6"));
-
-                ClassGoal g = new ClassGoal(name, Integer.parseInt(total));
-                g.setButton(0, Integer.parseInt(b0));
-                g.setButton(1, Integer.parseInt(b1));
-                g.setButton(2, Integer.parseInt(b2));
-                g.setButton(3, Integer.parseInt(b3));
-                g.setButton(4, Integer.parseInt(b4));
-                g.setButton(5, Integer.parseInt(b5));
-                g.setButton(6, Integer.parseInt(b6));
-                g.total=Integer.parseInt(total);
-                pastGoalARRAY.add(g);
-            }
-
-        }catch(Exception e){Log.i("888888","jsonlength error" +e.toString());}
-*/
-      //  Dialog dialog = new Dialog(getActivity());
-      //  dialog.setContentView(R.layout.goals_layout);
-
-       // ListView lv = (ListView) dialog.findViewById(R.id.listview);
-       // lv.setAdapter(new CustomArrayAdapterPast(this.getActivity(), pastGoalARRAY, x));
-       // dialog.setCancelable(true);
-       // dialog.setTitle(z + ": " + y + "%");
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
