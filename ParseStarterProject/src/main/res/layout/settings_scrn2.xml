@@ -117,6 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/settings"
+                android:id="@+id/settings"
                 android:background="@drawable/gridbutton"
                 android:padding="5dp"
                 android:layout_weight="1"

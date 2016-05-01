@@ -1,6 +1,8 @@
 package com.parse.starter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -48,6 +51,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
     Button load;
     ImageView cloud;
     ImageView friends;
+    ImageView settings;
     SQLiteDatabase database;
     DatabaseHelper databaseHelper;
 
@@ -107,6 +111,9 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
    //     load.setOnClickListener(this);
         cloud = (ImageView) findViewById(R.id.cloud);
         friends = (ImageView) findViewById(R.id.friends);
+        settings = (ImageView) findViewById(R.id.settings);
+        settings.setOnClickListener(this);
+        settings.setTag("settings");
         cloud.setOnClickListener(this);
         friends.setOnClickListener(this);
         cloud.setTag("cloud");
@@ -173,8 +180,135 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                         case "save":
                             saveToCloud();
                             break;
-                        case "load":
-                            loadFromParse();
+                        case "settings":
+                            //Creating the instance of PopupMenu
+                            PopupMenu popup1 = new PopupMenu(getApplicationContext(), settings);
+
+                            //Inflating the Popup using xml file
+                            popup1.getMenuInflater().inflate(R.menu.settings_menu, popup1.getMenu());
+
+                            //registering popup with OnMenuItemClickListener
+                            popup1.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                public boolean onMenuItemClick(MenuItem item) {
+
+                                    if(String.valueOf(item.getTitle()).equals("Change Password")){
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(ActSettings.this);
+                                        builder.setTitle("Change Password");
+                                        LinearLayout l = new LinearLayout(ActSettings.this);
+                                        l.setOrientation(LinearLayout.VERTICAL);
+                                        final EditText oldInput = new EditText(ActSettings.this);
+                                        final EditText newInput = new EditText(ActSettings.this);
+                                        oldInput.setTag("old");
+                                        newInput.setTag("new");
+                                        oldInput.setHint("Enter Your New Password...");
+                                        LinearLayout ldivider = new LinearLayout(getApplicationContext());
+                                        ldivider.setMinimumHeight(2);
+                                        newInput.setHint("Confirm New Password...");
+                                        l.addView(oldInput);
+                                        l.addView(ldivider);
+                                        l.addView(newInput);
+                                        builder.setView(l);
+                                        builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int num) {
+
+                                                if(oldInput.getText().toString().equals(newInput.getText().toString())){
+
+                                                    ParseUser parseUser = ParseUser.getCurrentUser();
+                                                    parseUser.setPassword(oldInput.getText().toString());
+                                                    parseUser.saveInBackground(new SaveCallback() {
+                                                        @Override
+                                                        public void done(ParseException e) {
+                                                            if(e==null) {
+                                                                user.setText("signed in as " + ParseUser.getCurrentUser().getUsername());
+                                                                Toast t = Toast.makeText(getApplicationContext(), "Change Successful!", Toast.LENGTH_SHORT);
+                                                                t.show();
+                                                            }
+                                                        }
+                                                    });
+                                                dialog.cancel();
+                                                }else{
+                                                    Toast t = Toast.makeText(getApplicationContext(), "Passwords do not match!", Toast.LENGTH_SHORT);
+                                                    t.show();
+                                                }
+                                                }
+
+
+                                        });
+
+                                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int num) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                                        builder.setCancelable(false);
+
+                                            builder.show();
+
+                                    }
+                                     else{
+
+
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(ActSettings.this);
+                                        builder.setTitle("Set Account Email");
+                                        LinearLayout l = new LinearLayout(ActSettings.this);
+                                        l.setOrientation(LinearLayout.VERTICAL);
+                                        final EditText oldInput = new EditText(ActSettings.this);
+                                        final EditText newInput = new EditText(ActSettings.this);
+                                        oldInput.setTag("old");
+                                        newInput.setTag("new");
+                                        oldInput.setHint("Enter Your Email Address");
+                                        l.addView(oldInput);
+                                        builder.setView(l);
+                                        builder.setPositiveButton("Set Email", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int num) {
+
+                                                if(!oldInput.getText().toString().contains("@") || !oldInput.getText().toString().contains(".")){
+                                                    Toast t = Toast.makeText(getApplicationContext(), "Invalid Email Address!", Toast.LENGTH_SHORT);
+                                                    t.show();
+                                                }else {
+
+                                                    ParseUser parseUser = ParseUser.getCurrentUser();
+                                                    parseUser.setEmail(oldInput.getText().toString());
+                                                    parseUser.saveInBackground(new SaveCallback() {
+                                                        @Override
+                                                        public void done(ParseException e) {
+                                                            if (e == null) {
+                                                                //user.setText("signed in as " + ParseUser.getCurrentUser().getUsername());
+                                                                Toast t = Toast.makeText(getApplicationContext(), "Email Address Set!", Toast.LENGTH_SHORT);
+                                                                t.show();
+                                                            }
+                                                        }
+                                                    });
+
+                                                    dialog.cancel();
+                                                }
+                                                }
+
+
+
+                                        });
+
+                                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int num) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                                        builder.setCancelable(false);
+
+                                        builder.show();
+                                    }
+
+                                    return true;
+                                }
+                            });
+
+                            popup1.show();//showing popup menu
+
+
                             break;
                         case "friends":
                             Intent intent = new Intent(this, Frag5Friends.class);
@@ -184,12 +318,12 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                             break;
                         case "cloud":
                             //Creating the instance of PopupMenu
-                            PopupMenu popup = new PopupMenu(getApplicationContext(), cloud);
+                            PopupMenu popup2 = new PopupMenu(getApplicationContext(), cloud);
                             //Inflating the Popup using xml file
-                            popup.getMenuInflater().inflate(R.menu.cloud_menu, popup.getMenu());
+                            popup2.getMenuInflater().inflate(R.menu.cloud_menu, popup2.getMenu());
 
                             //registering popup with OnMenuItemClickListener
-                            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            popup2.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                                 public boolean onMenuItemClick(MenuItem item) {
 
                                     if(String.valueOf(item.getTitle()).equals("Save To Cloud")){
@@ -202,7 +336,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                                 }
                             });
 
-                            popup.show();//showing popup menu
+                            popup2.show();//showing popup menu
 
                             break;
                     }
