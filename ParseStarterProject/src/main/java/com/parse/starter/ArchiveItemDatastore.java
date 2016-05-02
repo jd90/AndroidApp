@@ -38,21 +38,7 @@ public class ArchiveItemDatastore {
             } else {
                 emptyweeks = 0;
             }
-
-        int x = emptyweeks;
-
-            for(int i =0; i< emptyweeks; i++) {
-                list.remove(0);
-
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.DAY_OF_YEAR, ActGoals.p.refreshDay - x);//should eventually be seven x*7?
-                String s = "" + new SimpleDateFormat("MMM").format(calendar.getTime()) + " ";
-
-                s += "" + calendar.get(Calendar.DAY_OF_MONTH);
-                ClassArchiveItem archiveItem = new ClassArchiveItem(0, s);
-                list.add(15, archiveItem);
-                x--;
-            }
+        Log.i("pastt", "refresh: "+emptyweeks);
 
 
             double percent = ActGoals.goalStore.getTotalPercentage();
@@ -66,7 +52,27 @@ public class ArchiveItemDatastore {
         ClassArchiveItem archiveItem = new ClassArchiveItem((int) percent, s);
         list.add(15, archiveItem);
 
+        int x = emptyweeks;
+        int y = ActGoals.p.refreshDay;
+        calendar = Calendar.getInstance();
+        for(int i =1; i<= emptyweeks; i++) {
 
+            Log.i("pastt", "i: "+i);
+
+            list.remove(0);
+
+            y += 1;
+            //Log.i("pasttY", s);
+            calendar.set(Calendar.DAY_OF_YEAR, y);//should eventually be seven x*7?
+            s = "" + new SimpleDateFormat("MMM").format(calendar.getTime()) + " ";
+
+            s += "" + calendar.get(Calendar.DAY_OF_MONTH);
+
+            Log.i("pasttotes", s);
+            archiveItem = new ClassArchiveItem(0, s);
+            list.add(15, archiveItem);
+
+        }
     }
 
 }
