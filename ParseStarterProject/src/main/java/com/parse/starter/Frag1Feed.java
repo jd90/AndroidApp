@@ -98,7 +98,7 @@ public class Frag1Feed extends ListFragment {
                                 try {
                                     CustAdapterFeed adapter = new CustAdapterFeed(getActivity(), feedList);
                                     setListAdapter(adapter);
-                                }catch(Exception exc){feedList.add(new ClassFeedItem("Error retrieving feed#", "" + exc.toString(), 0, "", new ArrayList(), new ArrayList(), new ArrayList(), ""));
+                                }catch(Exception exc){feedList.add(new ClassFeedItem("Error retrieving feed#", "" + exc.toString(), 0, "", new ArrayList(11), new ArrayList(11), new ArrayList(11), ""));
                                     CustAdapterFeed adapter = new CustAdapterFeed(getActivity(), feedList);
                                     setListAdapter(adapter);}
 
