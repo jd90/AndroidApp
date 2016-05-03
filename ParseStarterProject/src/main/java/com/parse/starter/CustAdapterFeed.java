@@ -69,6 +69,7 @@ public class CustAdapterFeed extends ArrayAdapter<ClassGoal> implements View.OnL
                 dateCont.setVisibility(View.VISIBLE);//problem here - parse user is a nullpointer? should have been stopped before this point tho...
             if(feedList.get(position).likes.contains(ParseUser.getCurrentUser().getUsername())){
                 heart.setImageResource(R.drawable.heart_red);
+
             }else{
                 heart.setImageResource(R.drawable.heart);}
             if(feedList.get(position).likes.size()>0){
@@ -158,14 +159,19 @@ public class CustAdapterFeed extends ArrayAdapter<ClassGoal> implements View.OnL
                         //ImageView heart = (ImageView) v;
                         //heart.setImageResource(R.drawable.heart);
                     } else {
+
                         likes.add(ParseUser.getCurrentUser().getUsername());
                         feedList.get(pos).likes.add(ParseUser.getCurrentUser().getUsername());
                         Log.i("75757 3", v.getTag().toString());
+                        ImageView vv = (ImageView)v;
+                        vv.setImageResource(R.drawable.heart_red);
+                        vv.animate().scaleX(10).scaleY(10).setDuration(500);
                         o.put("likes", likes);
                         o.saveInBackground(new SaveCallback() {
                             @Override
                             public void done(ParseException e) {
                                 if (e == null) {
+
                                     notifyDataSetChanged();
                                 } else {
                                     Toast t = Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT);
