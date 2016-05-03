@@ -42,7 +42,7 @@ public class DialogFragAddGoal extends DialogFragment implements View.OnClickLis
         inputTitle.setHint("User Must Enter Title");
         inputTitle.addTextChangedListener(this);
         warningMessage = (TextView) rootView.findViewById(R.id.warning);
-        warningMessage.setText("Warning! Title must be:\n" +
+        warningMessage.setText("Oops... Title must be:\n" +
                 "Provided\nLess than 20 characters\nUnique");
 
         Button okB = (Button) rootView.findViewById(R.id.ok);

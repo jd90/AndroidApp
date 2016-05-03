@@ -87,7 +87,7 @@
         android:textColor="#ffff0025"
         android:gravity="center"
         android:id="@+id/warning"
-        />
+        android:textAlignment="viewStart" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
