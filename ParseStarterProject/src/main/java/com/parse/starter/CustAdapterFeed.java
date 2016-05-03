@@ -29,12 +29,14 @@ public class CustAdapterFeed extends ArrayAdapter<ClassGoal> implements View.OnL
     private final Context context;
     private final List<ClassFeedItem> feedList;
     boolean unseen = false;
+    ImageView hearty;
 
     public CustAdapterFeed(Context context, List<ClassFeedItem> g) {
         super(context, R.layout.friends_feed, (List) g);
 
         this.context = context;
         this.feedList = g;
+
 
     }
 
@@ -166,6 +168,7 @@ public class CustAdapterFeed extends ArrayAdapter<ClassGoal> implements View.OnL
                         ImageView vv = (ImageView)v;
                         vv.setImageResource(R.drawable.heart_red);
                         vv.animate().scaleX(10).scaleY(10).setDuration(500);
+
                         o.put("likes", likes);
                         o.saveInBackground(new SaveCallback() {
                             @Override

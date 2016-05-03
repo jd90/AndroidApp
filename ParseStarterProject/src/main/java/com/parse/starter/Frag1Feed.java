@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.parse.FindCallback;
@@ -31,12 +32,14 @@ public class Frag1Feed extends ListFragment {
     ArrayList<Integer> pastTotalsArray = new ArrayList<>();
     ArrayList<String> pastDatesArray = new ArrayList<>();
     int i;
+
     // Required empty public constructor
     public Frag1Feed() {
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
 
         ConnectivityManager connect = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -137,8 +140,6 @@ public class Frag1Feed extends ListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getListView().setDivider(null);
-
-
 
 }
 
