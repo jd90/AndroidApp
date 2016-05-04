@@ -55,7 +55,6 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
     ImageView goalSharkLogo;
     SQLiteDatabase database;
     DatabaseHelper databaseHelper;
-
     ArrayList<JSONObject> JSONgoals = new ArrayList<>();
     ArrayList<JSONObject> JSONFuturegoals = new ArrayList<>();
     ArrayList<JSONObject> JSONPastTotals = new ArrayList<>();
@@ -336,6 +335,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
 
                                         if (String.valueOf(item.getTitle()).equals("Save To Cloud")) {
                                             saveToCloud();
+
                                         } else {
                                             loadFromParse();
                                         }
@@ -648,6 +648,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                     } else {
                         Toast t = Toast.makeText(getApplicationContext(), "Trouble savin yer goals pal, sorry!", Toast.LENGTH_SHORT);
                         e.printStackTrace();
+
                         t.show();
                     }
                 }

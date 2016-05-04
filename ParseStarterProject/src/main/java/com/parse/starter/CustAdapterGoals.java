@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -188,7 +190,9 @@ public class CustAdapterGoals extends ArrayAdapter<ClassGoal> implements View.On
                     } else {
 
                         g.buttonClick(Integer.parseInt(v.getTag().toString()));
-                        ActGoals.goalStore.updateGoal(Integer.parseInt(l.getTag().toString()),Integer.parseInt(v.getTag().toString()));
+                        ActGoals.goalStore.updateGoal(Integer.parseInt(l.getTag().toString()), Integer.parseInt(v.getTag().toString()));
+
+
                     }
                     //ActGoals.goalStore.saveToDatabase();
 
