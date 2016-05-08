@@ -58,6 +58,7 @@ public class CustAdapterFeed extends ArrayAdapter<ClassGoal> implements View.OnL
         ImageView heart = (ImageView) row_view.findViewById(R.id.heart);
         ImageView comment = (ImageView) row_view.findViewById(R.id.comment);
         TextView likers = (TextView) row_view.findViewById(R.id.likers);
+
         if(feedList.get(position).percent == 200){
             dateCont.setVisibility(View.VISIBLE);
             tPercent.setVisibility(View.GONE);

@@ -34,6 +34,7 @@ public class ActGoals extends AppCompatActivity {
     static Context context;
     static String profile;
     static int profileNum;
+    static TabLayout tabLayout;
 
     static Menu menu;
     DatabaseHelper databaseHelper;
@@ -79,9 +80,9 @@ public class ActGoals extends AppCompatActivity {
         databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(15, "apr 4"));databaseHelper.insertPastTotal(ActGoals.profile, new ClassArchiveItem(16, "apr 4"));
             archiveItemDatastore = new ArchiveItemDatastore();
             archiveItemDatastore.list = databaseHelper.getPastTotals(profile);//repeated here because the table is yet to be populated above when loading from db
-            Log.i("44331", "size of pasttots"+archiveItemDatastore.list.size());
 
-            Log.i("6705firstweek", "first week called");
+
+
             Intent intent = new Intent(this, ActFutureGoals.class);
             int a = 4; //request code? (receives back request code, resultcode, intent)?
             intent.putExtra("firstweek", true);
@@ -150,6 +151,7 @@ return true;
             case R.id.action_next_seven:
                 Intent intent = new Intent(this, ActFutureGoals.class);
                 intent.putExtra("firstweek", false);
+                intent.putExtra("profileName", profile);// this fixed a problem - was sending it during the firstweek opening but not here, so if reordering after resuming from this sequence the goals profile on resume was unknown
                 int a = 4; //request code? (receives back request code, resultcode, intent)?
                 startActivityForResult(intent, a);
                 break;
@@ -204,11 +206,11 @@ return true;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Setup the viewPager
-        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         CustPagerAdapter pagerAdapter = new CustPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         // Setup the Tabs
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         // tabs will be populated according to viewPager's count and
         // with the name from the pagerAdapter getPageTitle()
         tabLayout.setTabsFromPagerAdapter(pagerAdapter);
@@ -219,9 +221,12 @@ return true;
         tabLayout.getTabAt(1).select();
         t0 = tabLayout.getTabAt(0);
 
+
         tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                int position =tab.getPosition();
+                viewPager.setCurrentItem(position);
                 if (tab.getPosition() == 0) {
                     Log.i("viewpager", "feed selected");
 
@@ -354,6 +359,14 @@ return true;
         return 1;
     }
 
+    @Override
+    public void onResume(){
+
+        Log.i("profilename === ", ""+profile);
+        //goalStore = new GoalStore1(databaseHelper.getGoals(profile), profile);
+        //fgoalStore = new GoalStore2(databaseHelper.getFutureGoals(profile), profile);
+        super.onResume();
+    }
 
 
 }

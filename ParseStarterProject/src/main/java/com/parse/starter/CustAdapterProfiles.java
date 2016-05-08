@@ -78,7 +78,7 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
         Log.i("zzzz", "profilename:" + profileDatastore.getProfile(Integer.parseInt(v.getTag().toString())).name);
 
         ArrayList<ClassGoal> ggs =databaseHelper.getAllGoals();
-        Log.i("zzzzx", "profName:"+ggs.get(0).profileName);
+//        Log.i("zzzzx", "profName:"+ggs.get(0).profileName);
 
         profileDatastore.profiles=databaseHelper.getAllProfiles();//this needs to be here - means that the profiles name is accurately passed - opening the right goals after a rename
         Intent hi = new Intent(getContext(), ActGoals.class);
