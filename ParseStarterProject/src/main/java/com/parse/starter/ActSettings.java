@@ -1,6 +1,10 @@
 package com.parse.starter;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +12,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -38,6 +44,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class ActSettings extends AppCompatActivity implements View.OnClickListener{
@@ -52,6 +59,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
     ImageView cloud;
     ImageView friends;
     ImageView settings;
+    ImageView notifications;
     ImageView goalSharkLogo;
     SQLiteDatabase database;
     DatabaseHelper databaseHelper;
@@ -113,6 +121,9 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
         cloud = (ImageView) findViewById(R.id.cloud);
         friends = (ImageView) findViewById(R.id.friends);
         settings = (ImageView) findViewById(R.id.settings);
+        notifications = (ImageView) findViewById(R.id.notifications);
+        notifications.setOnClickListener(this);
+        notifications.setTag("notifications");
         settings.setOnClickListener(this);
         settings.setTag("settings");
         cloud.setOnClickListener(this);
@@ -179,7 +190,53 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
 
                     switch (v.getTag().toString()) {
                         case "notifications":
-                            saveToCloud();
+
+                            //NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this);
+                            //notifBuilder.setSmallIcon(R.drawable.goal_shark_logo1);
+                            //notifBuilder.setContentTitle("Enjoying Yer Doss, Aye?");
+                            //notifBuilder.setContentText("Get Yer Goals Done Ya Weapon!");
+                            //notifBuilder.setTicker("Enjoying Yer Doss, AYEEE?");
+                            //notifBuilder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
+                            //notifBuilder.setAutoCancel(true);
+
+                            //Intent openProfiles = new Intent(this, ActProfiles.class);
+                            //TaskStackBuilder tstack = TaskStackBuilder.create(this);
+                            //tstack.addParentStack(ActProfiles.class);
+                            //tstack.addNextIntent(openProfiles);
+
+                            //PendingIntent pendingIntent = tstack.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                            //notifBuilder.setContentIntent(pendingIntent);
+                            //for when user clicks it - pendingIntent handles - takes the activity from TaskStackBuilder
+
+                            //NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                            //int notificationID = 1;
+                            //notificationManager.notify(notificationID, notifBuilder.build());
+
+                           /* Calendar calendar = Calendar.getInstance();
+                            long alertTime = new GregorianCalendar().getTimeInMillis()+5000;
+                            Intent alertIntent = new Intent(this, AlertReceiver.class);
+                            PendingIntent alarmIntent = PendingIntent.getService(this, 0, alertIntent, 0);
+
+                            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, alarmIntent);
+*/
+
+                            Intent alertIntent = new Intent(this, AlertReceiver.class);
+                            final PendingIntent pendingIntent =
+                                    PendingIntent.getBroadcast
+                                            (this,1,alertIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+
+                                    Long alertTime = new
+                                            GregorianCalendar().getTimeInMillis()+5*1000;
+
+                                    AlarmManager am =
+                                            (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                                    am.set(AlarmManager.RTC_WAKEUP,alertTime,pendingIntent );
+
+
                             break;
                         case "settings":
                             //Creating the instance of PopupMenu
