@@ -2352,7 +2352,8 @@ containing a value of this type.
     public static final class menu {
         public static final int cloud_menu=0x7f0f0000;
         public static final int menu_main=0x7f0f0001;
-        public static final int settings_menu=0x7f0f0002;
+        public static final int notifications_menu=0x7f0f0002;
+        public static final int settings_menu=0x7f0f0003;
     }
     public static final class mipmap {
         public static final int ic_launcher=0x7f030000;

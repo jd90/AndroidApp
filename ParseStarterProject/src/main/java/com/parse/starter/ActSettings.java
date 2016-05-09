@@ -220,29 +220,53 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
                             alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, alarmIntent);
-*/
+*/          PopupMenu popup2 = new PopupMenu(getApplicationContext(), notifications);
 
-                            Intent alertIntent = new Intent(this, AlertReceiver.class);
-                            final PendingIntent pendingIntent =
-                                    PendingIntent.getBroadcast
-                                            (this,1,alertIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-                            //pendingintent setting what to do - using intent-
+                            //Inflating the Popup using xml file
+                            popup2.getMenuInflater().inflate(R.menu.notifications_menu, popup2.getMenu());
 
-                            Calendar calendar = new GregorianCalendar();
-                            calendar.set(Calendar.HOUR_OF_DAY, 14);
-                            calendar.set(Calendar.MINUTE, 54);
+                            //registering popup with OnMenuItemClickListener
+                            popup2.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                public boolean onMenuItemClick(MenuItem item) {
 
-                            Long alertTime = calendar.getTimeInMillis();
-                            //Long alertTime = new
-                                         //   GregorianCalendar().getTimeInMillis()+5*1000;
-                            //had to put use permission into manifest for set alarm
-                                    AlarmManager alarmMan =
-                                            (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-                                    //alarmMan.set(AlarmManager.RTC_WAKEUP,alertTime,pendingIntent );
-                            alarmMan.setRepeating(AlarmManager.RTC_WAKEUP, alertTime, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
-                            //alarmmanager sets to wakeup after the time and uses pendingintent to call the broadcast AlertReceiver
+                                    if (String.valueOf(item.getTitle()).equals("Set Notifications On")) {
 
-                            //alarmMan.cancel(pendingIntent);
+                                        Intent alertIntent = new Intent(getApplicationContext(), AlertReceiver.class);
+                                        final PendingIntent pendingIntent =
+                                                PendingIntent.getBroadcast
+                                                        (getApplicationContext(), 1, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                        //pendingintent setting what to do - using intent-
+
+                                        Calendar calendar = new GregorianCalendar();
+                                        calendar.set(Calendar.HOUR_OF_DAY, 20);
+                                        calendar.set(Calendar.MINUTE, 0);
+
+                                        Long alertTime = calendar.getTimeInMillis();
+                                        //Long alertTime = new
+                                        //   GregorianCalendar().getTimeInMillis()+5*1000;
+                                        //had to put use permission into manifest for set alarm
+                                        AlarmManager alarmMan =
+                                                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                                        //alarmMan.set(AlarmManager.RTC_WAKEUP,alertTime,pendingIntent );
+                                        alarmMan.setRepeating(AlarmManager.RTC_WAKEUP, alertTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+                                        //alarmmanager sets to wakeup after the time and uses pendingintent to call the broadcast AlertReceiver
+
+                                    } else {
+                                        Intent alertIntent = new Intent(getApplicationContext(), AlertReceiver.class);
+
+                                        final PendingIntent pendingIntent =
+                                                PendingIntent.getBroadcast
+                                                        (getApplicationContext(), 1, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                                        AlarmManager alarmMan =
+                                                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                                        alarmMan.cancel(pendingIntent);
+                                    }
+
+                                return true;}
+
+                            });
+                            popup2.show();
 
                             break;
                         case "settings":
@@ -389,12 +413,12 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                             if(ParseUser.getCurrentUser() ==null){Toast t = Toast.makeText(this, "Option Available to Signed in Users Only", Toast.LENGTH_SHORT);t.show();}
                             else {
                                 //Creating the instance of PopupMenu
-                                PopupMenu popup2 = new PopupMenu(getApplicationContext(), cloud);
+                                PopupMenu popup3 = new PopupMenu(getApplicationContext(), cloud);
                                 //Inflating the Popup using xml file
-                                popup2.getMenuInflater().inflate(R.menu.cloud_menu, popup2.getMenu());
+                                popup3.getMenuInflater().inflate(R.menu.cloud_menu, popup3.getMenu());
 
                                 //registering popup with OnMenuItemClickListener
-                                popup2.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                popup3.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                                     public boolean onMenuItemClick(MenuItem item) {
 
                                         if (String.valueOf(item.getTitle()).equals("Save To Cloud")) {
@@ -408,7 +432,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                                     }
                                 });
 
-                                popup2.show();//showing popup menu
+                                popup3.show();//showing popup menu
                             }
                             break;
                     }
