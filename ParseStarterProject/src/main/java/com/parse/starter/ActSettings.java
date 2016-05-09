@@ -226,16 +226,23 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                             final PendingIntent pendingIntent =
                                     PendingIntent.getBroadcast
                                             (this,1,alertIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+                            //pendingintent setting what to do - using intent-
 
+                            Calendar calendar = new GregorianCalendar();
+                            calendar.set(Calendar.HOUR_OF_DAY, 14);
+                            calendar.set(Calendar.MINUTE, 54);
 
-
-                                    Long alertTime = new
-                                            GregorianCalendar().getTimeInMillis()+5*1000;
-
-                                    AlarmManager am =
+                            Long alertTime = calendar.getTimeInMillis();
+                            //Long alertTime = new
+                                         //   GregorianCalendar().getTimeInMillis()+5*1000;
+                            //had to put use permission into manifest for set alarm
+                                    AlarmManager alarmMan =
                                             (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-                                    am.set(AlarmManager.RTC_WAKEUP,alertTime,pendingIntent );
+                                    //alarmMan.set(AlarmManager.RTC_WAKEUP,alertTime,pendingIntent );
+                            alarmMan.setRepeating(AlarmManager.RTC_WAKEUP, alertTime, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+                            //alarmmanager sets to wakeup after the time and uses pendingintent to call the broadcast AlertReceiver
 
+                            //alarmMan.cancel(pendingIntent);
 
                             break;
                         case "settings":

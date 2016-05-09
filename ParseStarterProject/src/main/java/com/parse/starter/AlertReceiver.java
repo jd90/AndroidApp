@@ -5,8 +5,11 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import java.util.List;
 
 /**
  * Created by Borris on 08/05/2016.
@@ -18,60 +21,53 @@ public class AlertReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
 
+        //this receives the intent after alarm time is up and called
 
-        PendingIntent notifyIntent = PendingIntent.getActivity(context, 0, new
-                Intent(context, ActProfiles.class), 0);
+        //defined receiver and intent-filter in manifest for this - also set alarm was a use permission
 
-        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(context);
-        notifBuilder.setSmallIcon(R.drawable.goal_shark_logo1);
-        notifBuilder.setContentTitle("Enjoying Yer Doss, Aye?");
-        notifBuilder.setContentText("Get Yer Goals Done Ya Weapon!");
-        notifBuilder.setTicker("Enjoying Yer Doss, AYEEE?");
-        notifBuilder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
-        notifBuilder.setAutoCancel(true);
-        notifBuilder.setContentIntent(notifyIntent);
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        ProfileDatastore profileDatastore = new ProfileDatastore();
+        List<ClassProfile> profileList = databaseHelper.getAllProfiles();
+        double lowestPercent=100;
+        String lowestProfileName="";
+        for (int i = 0; i < profileList.size(); i++) {
 
+            GoalStore1 goalStore1= new GoalStore1(databaseHelper.getGoals(profileList.get(i).name),profileList.get(i).name);
+            if(goalStore1.getTotalPercentage()<lowestPercent){
+                lowestPercent=goalStore1.getTotalPercentage();
+                lowestProfileName=goalStore1.profile;
+            }
+        }
 
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService
-                        (Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1, notifBuilder.build());
+        if(lowestPercent<100){
+            PendingIntent notifyIntent = PendingIntent.getActivity(context, 0, new
+                    Intent(context, ActProfiles.class), 0);
 
-/*
+            NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(context);
+            notifBuilder.setSmallIcon(R.drawable.goal_shark_logo1);
+            notifBuilder.setContentTitle("Enjoying Yer Doss, Aye?");
+            String msg;
+            if(lowestPercent<50) {
+                msg = "Get Yer "+lowestProfileName+" Goals Done Ya Weapon!\nYer no even half way";
+            }else{msg="Get Yer "+lowestProfileName+" Goals Done Ya Weapon!\nYer only " + (int) lowestPercent + "% Done";}
+            notifBuilder.setContentText(msg);
+            notifBuilder.setTicker("Enjoying Yer Doss, AYEEE?");
+            notifBuilder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
+            notifBuilder.setAutoCancel(true);
+            notifBuilder.setContentIntent(notifyIntent);
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
+//sets up the notification settings - sets the pendingintent to call when clicked on with setcontentintent
+            NotificationManager notificationManager =
+                    (NotificationManager) context.getSystemService
+                            (Context.NOTIFICATION_SERVICE);
+            notificationManager.notify(1, notifBuilder.build());
 
-        //called when broadcast is set
-        Log.i("notifyyyy", "called 1");
+            //manager service takes settings to build and execute the notification
 
-        createNotification(context, "Let's Go", "nada", "AAAAHH");
-
-    }
-
-    public void createNotification(Context context, String message, String messageText, String messageAlert){
-
-        Log.i("notifyyyy", "called 2");
-
-        PendingIntent notificationIntent = PendingIntent.getActivity(context, 0, new Intent(context, ActProfiles.class), 0);
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.goal_shark_logo1)
-                .setContentTitle(message)
-                .setTicker(messageAlert)
-                .setContentText(messageText);
-
-        mBuilder.setContentIntent(notificationIntent);
-        mBuilder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
-        mBuilder.setAutoCancel(true);
-
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify(1, mBuilder.build());
+        }
 
 
-    }
 
-*/
+
     }
 }
