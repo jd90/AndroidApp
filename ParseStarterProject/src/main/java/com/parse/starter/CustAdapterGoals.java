@@ -39,10 +39,7 @@ public class CustAdapterGoals extends ArrayAdapter<ClassGoal> implements View.On
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-
         ViewHolder holder;
-
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.goal_list_item, parent, false);
             holder = new ViewHolder();
@@ -51,7 +48,6 @@ public class CustAdapterGoals extends ArrayAdapter<ClassGoal> implements View.On
             holder.numberOutOfView = (TextView) convertView.findViewById(R.id.goalTargets);
             holder.percentView = (TextView) convertView.findViewById(R.id.goalPercent);
             holder.percentageBar = (ProgressBar) convertView.findViewById(R.id.progressBar1);
-
             holder.b0 = (ImageView) convertView.findViewById(R.id.button1);
             holder.b1 = (ImageView) convertView.findViewById(R.id.button2);
             holder.b2 = (ImageView) convertView.findViewById(R.id.button3);
@@ -59,12 +55,8 @@ public class CustAdapterGoals extends ArrayAdapter<ClassGoal> implements View.On
             holder.b4 = (ImageView) convertView.findViewById(R.id.button5);
             holder.b5 = (ImageView) convertView.findViewById(R.id.button6);
             holder.b6 = (ImageView) convertView.findViewById(R.id.button7);
-
             convertView.setTag(holder);
-        }
-        else {
-            holder = (ViewHolder) convertView.getTag();
-        }
+        }else{holder = (ViewHolder) convertView.getTag();}
 
         holder.linearLayout.setTag(position);
         ClassGoal g = goalStore.getAt(position);
@@ -107,7 +99,6 @@ public class CustAdapterGoals extends ArrayAdapter<ClassGoal> implements View.On
         if(g.getButtonBool(6)) {
             holder.b6.setImageResource(R.drawable.s1);}
         else{holder.b6.setImageResource(R.drawable.s2);}
-
         holder.percentageBar.getProgressDrawable().setColorFilter(Color.parseColor("#47aff3"), PorterDuff.Mode.MULTIPLY);
         return convertView;
     }

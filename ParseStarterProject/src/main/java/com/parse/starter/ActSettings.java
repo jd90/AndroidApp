@@ -589,7 +589,6 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
 
         if(goalList.size()>0){
 
-
             strJson = "{\"Goals\":[";
             for (int i = 0; i < goalList.size(); i++) {
                 if (i == 0) {
@@ -597,7 +596,6 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                 } else {
                     strJson += ",{";
                 }
-
                 strJson += "" +
                         "\"profileName\":"+ "\"" + goalList.get(i).profileName + "\""+ "," +//maybe i should be quoting these to protect the strings?
                         "\"name\":"+ "\"" + goalList.get(i).getName() + "\""+ "," +

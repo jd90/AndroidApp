@@ -15,11 +15,11 @@ import java.util.List;
  */
 public class DatabaseHelper extends SQLiteOpenHelper{
 
-
-
     public DatabaseHelper(Context context) {
         super(context, "goalSharkDB", null, 1);
     }
+
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -80,9 +80,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         if(goal.type){type=1;}else{type=0;}
         db.execSQL("INSERT INTO goalsTbl (profileName,goalName,total,done,b0,b1,b2,b3,b4,b5,b6,bt0,bt1,bt2,bt3,bt4,bt5,bt6,percent,type) " +
                 "VALUES ('"+goal.profileName+"','"+goal.getName()+"',"+goal.getTotal()+","+goal.getDone()+"" +
-            ","+goal.getButton(0)+","+goal.getButton(1)+","+goal.getButton(2)+","+goal.getButton(3)+","+goal.getButton(4)+","+goal.getButton(5)+","+goal.getButton(6)+
-            ","+goal.buttonsThrough[0]+","+goal.buttonsThrough[1]+","+goal.buttonsThrough[2]+","+goal.buttonsThrough[3]+","+goal.buttonsThrough[4]+","+goal.buttonsThrough[5]+","+goal.buttonsThrough[6]+
-            ","+goal.percent+","+type+
+            ","+goal.getButton(0)+","+goal.getButton(1)+","+goal.getButton(2)+","+goal.getButton(3)+","+goal.getButton(4)+
+                ","+goal.getButton(5)+","+goal.getButton(6)+","+goal.buttonsThrough[0]+","+goal.buttonsThrough[1]+","
+                +goal.buttonsThrough[2]+","+goal.buttonsThrough[3]+","+goal.buttonsThrough[4]+","+goal.buttonsThrough[5]+
+                ","+goal.buttonsThrough[6]+ ","+goal.percent+","+type+
                 ")");
 
 
@@ -496,7 +497,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
     public void clearPastTotalsTbl(String profileName){
 
-        Log.i("44331", "pastots called");
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM pastTotalsTbl WHERE profileName Like '"+profileName+"'");
     }
