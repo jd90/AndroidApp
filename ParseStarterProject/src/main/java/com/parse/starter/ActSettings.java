@@ -173,301 +173,278 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
             onBackPressed();
 
         }else {
-            ConnectivityManager connect = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (connect.getActiveNetworkInfo() != null) {
-                if (v.getTag().equals("logout")) {
-                    ParseUser.logOutInBackground(new LogOutCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            Toast t = Toast.makeText(getApplicationContext(), "Thats ye logged oot", Toast.LENGTH_SHORT);
-                            t.show();
-                            checkSignedIn();
-                        }
-                    });
-                } else if (v.getTag().equals("cloud") || v.getTag().equals("friends") || v.getTag().equals("settings") || v.getTag().equals("notifications")) {
-                    //Log.i("6705saveToCloudswitch", "called");
+
+            if (v.getTag().equals("notifications")) {
 
 
-                    switch (v.getTag().toString()) {
-                        case "notifications":
+                boolean alarmSet = (PendingIntent.getBroadcast(getApplicationContext(), 1,
+                        new Intent(getApplicationContext(), AlertReceiver.class),
+                        PendingIntent.FLAG_NO_CREATE) != null);
 
-                            //NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this);
-                            //notifBuilder.setSmallIcon(R.drawable.goal_shark_logo1);
-                            //notifBuilder.setContentTitle("Enjoying Yer Doss, Aye?");
-                            //notifBuilder.setContentText("Get Yer Goals Done Ya Weapon!");
-                            //notifBuilder.setTicker("Enjoying Yer Doss, AYEEE?");
-                            //notifBuilder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
-                            //notifBuilder.setAutoCancel(true);
+                if (alarmSet) {
+                    Intent alertIntent = new Intent(getApplicationContext(), AlertReceiver.class);
 
-                            //Intent openProfiles = new Intent(this, ActProfiles.class);
-                            //TaskStackBuilder tstack = TaskStackBuilder.create(this);
-                            //tstack.addParentStack(ActProfiles.class);
-                            //tstack.addNextIntent(openProfiles);
+                    final PendingIntent pendingIntent =
+                            PendingIntent.getBroadcast
+                                    (getApplicationContext(), 1, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                            //PendingIntent pendingIntent = tstack.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-                            //notifBuilder.setContentIntent(pendingIntent);
-                            //for when user clicks it - pendingIntent handles - takes the activity from TaskStackBuilder
-
-                            //NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                            //int notificationID = 1;
-                            //notificationManager.notify(notificationID, notifBuilder.build());
-
-                           /* Calendar calendar = Calendar.getInstance();
-                            long alertTime = new GregorianCalendar().getTimeInMillis()+5000;
-                            Intent alertIntent = new Intent(this, AlertReceiver.class);
-                            PendingIntent alarmIntent = PendingIntent.getService(this, 0, alertIntent, 0);
-
-                            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-                            alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, alarmIntent);
-*/          PopupMenu popup2 = new PopupMenu(getApplicationContext(), notifications);
-
-                            //Inflating the Popup using xml file
-                            popup2.getMenuInflater().inflate(R.menu.notifications_menu, popup2.getMenu());
-
-                            //registering popup with OnMenuItemClickListener
-                            popup2.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                                public boolean onMenuItemClick(MenuItem item) {
-
-                                    if (String.valueOf(item.getTitle()).equals("Set Notifications On")) {
-
-                                        Intent alertIntent = new Intent(getApplicationContext(), AlertReceiver.class);
-                                        final PendingIntent pendingIntent =
-                                                PendingIntent.getBroadcast
-                                                        (getApplicationContext(), 1, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                        //pendingintent setting what to do - using intent-
-
-                                        Calendar calendar = new GregorianCalendar();
-                                        calendar.set(Calendar.HOUR_OF_DAY, 20);
-                                        calendar.set(Calendar.MINUTE, 0);
-
-                                        Long alertTime = calendar.getTimeInMillis();
-                                        //Long alertTime = new
-                                        //   GregorianCalendar().getTimeInMillis()+5*1000;
-                                        //had to put use permission into manifest for set alarm
-                                        AlarmManager alarmMan =
-                                                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                                        //alarmMan.set(AlarmManager.RTC_WAKEUP,alertTime,pendingIntent );
-                                        alarmMan.setRepeating(AlarmManager.RTC_WAKEUP, alertTime, AlarmManager.INTERVAL_DAY, pendingIntent);
-                                        //alarmmanager sets to wakeup after the time and uses pendingintent to call the broadcast AlertReceiver
-
-                                    } else {
-                                        Intent alertIntent = new Intent(getApplicationContext(), AlertReceiver.class);
-
-                                        final PendingIntent pendingIntent =
-                                                PendingIntent.getBroadcast
-                                                        (getApplicationContext(), 1, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                                        AlarmManager alarmMan =
-                                                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                                        alarmMan.cancel(pendingIntent);
-                                    }
-
-                                return true;}
-
-                            });
-                            popup2.show();
-
-                            break;
-                        case "settings":
-                            //Creating the instance of PopupMenu
-                            if(ParseUser.getCurrentUser() ==null){Toast t = Toast.makeText(this, "Option Available to Signed in Users Only", Toast.LENGTH_SHORT);t.show();}
-                            else {
-                                PopupMenu popup1 = new PopupMenu(getApplicationContext(), settings);
-
-                                //Inflating the Popup using xml file
-                                popup1.getMenuInflater().inflate(R.menu.settings_menu, popup1.getMenu());
-
-                                //registering popup with OnMenuItemClickListener
-                                popup1.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                                    public boolean onMenuItemClick(MenuItem item) {
-
-                                        if (String.valueOf(item.getTitle()).equals("Change Password")) {
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(ActSettings.this);
-                                            builder.setTitle("Change Password");
-                                            LinearLayout l = new LinearLayout(ActSettings.this);
-                                            l.setOrientation(LinearLayout.VERTICAL);
-                                            final EditText oldInput = new EditText(ActSettings.this);
-                                            final EditText newInput = new EditText(ActSettings.this);
-                                            oldInput.setTag("old");
-                                            newInput.setTag("new");
-                                            oldInput.setHint("Enter Your New Password...");
-                                            LinearLayout ldivider = new LinearLayout(getApplicationContext());
-                                            ldivider.setMinimumHeight(2);
-                                            newInput.setHint("Confirm New Password...");
-                                            l.addView(oldInput);
-                                            l.addView(ldivider);
-                                            l.addView(newInput);
-                                            builder.setView(l);
-                                            builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int num) {
-
-                                                    if (oldInput.getText().toString().equals(newInput.getText().toString())) {
-
-                                                        ParseUser parseUser = ParseUser.getCurrentUser();
-                                                        parseUser.setPassword(oldInput.getText().toString());
-                                                        parseUser.saveInBackground(new SaveCallback() {
-                                                            @Override
-                                                            public void done(ParseException e) {
-                                                                if (e == null) {
-                                                                    user.setText("signed in as " + ParseUser.getCurrentUser().getUsername());
-                                                                    Toast t = Toast.makeText(getApplicationContext(), "Change Successful!", Toast.LENGTH_SHORT);
-                                                                    t.show();
-                                                                }
-                                                            }
-                                                        });
-                                                        dialog.cancel();
-                                                    } else {
-                                                        Toast t = Toast.makeText(getApplicationContext(), "Passwords do not match!", Toast.LENGTH_SHORT);
-                                                        t.show();
-                                                    }
-                                                }
+                    AlarmManager alarmMan =
+                            (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    alarmMan.cancel(pendingIntent);
+                    pendingIntent.cancel();
 
 
-                                            });
+                    Toast t = Toast.makeText(getApplicationContext(), "Notifications Off!", Toast.LENGTH_SHORT);
+                    t.show();
+                } else {
+                    Intent alertIntent = new Intent(getApplicationContext(), AlertReceiver.class);
+                    final PendingIntent pendingIntent =
+                            PendingIntent.getBroadcast
+                                    (getApplicationContext(), 1, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    //pendingintent setting what to do - using intent-
 
-                                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int num) {
-                                                    dialog.cancel();
-                                                }
-                                            });
-                                            builder.setCancelable(false);
+                    Calendar calendar = new GregorianCalendar();
+                    calendar.set(Calendar.HOUR_OF_DAY, 20);
+                    calendar.set(Calendar.MINUTE, 0);
 
-                                            builder.show();
+                    Long alertTime = calendar.getTimeInMillis();
+                    //Long alertTime = new
+                    //   GregorianCalendar().getTimeInMillis()+5*1000;
+                    //had to put use permission into manifest for set alarm
+                    AlarmManager alarmMan =
+                            (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    //alarmMan.set(AlarmManager.RTC_WAKEUP,alertTime,pendingIntent );
+                    alarmMan.setRepeating(AlarmManager.RTC_WAKEUP, alertTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+                    //alarmmanager sets to wakeup after the time and uses pendingintent to call the broadcast AlertReceiver
 
-                                        } else {
+                    Toast t = Toast.makeText(getApplicationContext(), "Notifications On!", Toast.LENGTH_SHORT);
+                    t.show();
+                }
+            } else {
 
-
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(ActSettings.this);
-                                            builder.setTitle("Set Account Email");
-                                            LinearLayout l = new LinearLayout(ActSettings.this);
-                                            l.setOrientation(LinearLayout.VERTICAL);
-                                            final EditText oldInput = new EditText(ActSettings.this);
-                                            final EditText newInput = new EditText(ActSettings.this);
-                                            oldInput.setTag("old");
-                                            newInput.setTag("new");
-                                            oldInput.setHint("Enter Your Email Address");
-                                            l.addView(oldInput);
-                                            builder.setView(l);
-                                            builder.setPositiveButton("Set Email", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int num) {
-
-                                                    if (!oldInput.getText().toString().contains("@") || !oldInput.getText().toString().contains(".")) {
-                                                        Toast t = Toast.makeText(getApplicationContext(), "Invalid Email Address!", Toast.LENGTH_SHORT);
-                                                        t.show();
-                                                    } else {
-
-                                                        ParseUser parseUser = ParseUser.getCurrentUser();
-                                                        parseUser.setEmail(oldInput.getText().toString());
-                                                        parseUser.saveInBackground(new SaveCallback() {
-                                                            @Override
-                                                            public void done(ParseException e) {
-                                                                if (e == null) {
-                                                                    //user.setText("signed in as " + ParseUser.getCurrentUser().getUsername());
-                                                                    Toast t = Toast.makeText(getApplicationContext(), "Email Address Set!", Toast.LENGTH_SHORT);
-                                                                    t.show();
-                                                                }
-                                                            }
-                                                        });
-
-                                                        dialog.cancel();
-                                                    }
-                                                }
-
-
-                                            });
-
-                                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int num) {
-                                                    dialog.cancel();
-                                                }
-                                            });
-                                            builder.setCancelable(false);
-
-                                            builder.show();
-                                        }
-
-                                        return true;
-
-                                    }
-                                });
-
-                                popup1.show();//showing popup menu
-
+                ConnectivityManager connect = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                if (connect.getActiveNetworkInfo() != null) {
+                    if (v.getTag().equals("logout")) {
+                        ParseUser.logOutInBackground(new LogOutCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                Toast t = Toast.makeText(getApplicationContext(), "Thats ye logged oot", Toast.LENGTH_SHORT);
+                                t.show();
+                                checkSignedIn();
                             }
-                            break;
-                        case "friends":
-                            if(ParseUser.getCurrentUser() ==null){Toast t = Toast.makeText(this, "Option Available to Signed in Users Only", Toast.LENGTH_SHORT);t.show();}
-                            else {
-                                Intent intent = new Intent(this, Frag5Friends.class);
-                                //intent.putExtra("firstweek", false);
-                                int a = 4; //request code? (receives back request code, resultcode, intent)?
-                                startActivityForResult(intent, a);
-                            }
-                            break;
-                        case "cloud":
-                            if(ParseUser.getCurrentUser() ==null){Toast t = Toast.makeText(this, "Option Available to Signed in Users Only", Toast.LENGTH_SHORT);t.show();}
-                            else {
+                        });
+                    } else if (v.getTag().equals("cloud") || v.getTag().equals("friends") || v.getTag().equals("settings") || v.getTag().equals("notifications")) {
+                        //Log.i("6705saveToCloudswitch", "called");
+
+
+                        switch (v.getTag().toString()) {
+
+                            case "settings":
                                 //Creating the instance of PopupMenu
-                                PopupMenu popup3 = new PopupMenu(getApplicationContext(), cloud);
-                                //Inflating the Popup using xml file
-                                popup3.getMenuInflater().inflate(R.menu.cloud_menu, popup3.getMenu());
+                                if (ParseUser.getCurrentUser() == null) {
+                                    Toast t = Toast.makeText(this, "Option Available to Signed in Users Only", Toast.LENGTH_SHORT);
+                                    t.show();
+                                } else {
+                                    PopupMenu popup1 = new PopupMenu(getApplicationContext(), settings);
 
-                                //registering popup with OnMenuItemClickListener
-                                popup3.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                                    public boolean onMenuItemClick(MenuItem item) {
+                                    //Inflating the Popup using xml file
+                                    popup1.getMenuInflater().inflate(R.menu.settings_menu, popup1.getMenu());
 
-                                        if (String.valueOf(item.getTitle()).equals("Save To Cloud")) {
-                                            saveToCloud();
+                                    //registering popup with OnMenuItemClickListener
+                                    popup1.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                        public boolean onMenuItemClick(MenuItem item) {
 
-                                        } else {
-                                            loadFromParse();
+                                            if (String.valueOf(item.getTitle()).equals("Change Password")) {
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(ActSettings.this);
+                                                builder.setTitle("Change Password");
+                                                LinearLayout l = new LinearLayout(ActSettings.this);
+                                                l.setOrientation(LinearLayout.VERTICAL);
+                                                final EditText oldInput = new EditText(ActSettings.this);
+                                                final EditText newInput = new EditText(ActSettings.this);
+                                                oldInput.setTag("old");
+                                                newInput.setTag("new");
+                                                oldInput.setHint("Enter Your New Password...");
+                                                LinearLayout ldivider = new LinearLayout(getApplicationContext());
+                                                ldivider.setMinimumHeight(2);
+                                                newInput.setHint("Confirm New Password...");
+                                                l.addView(oldInput);
+                                                l.addView(ldivider);
+                                                l.addView(newInput);
+                                                builder.setView(l);
+                                                builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int num) {
+
+                                                        if (oldInput.getText().toString().equals(newInput.getText().toString())) {
+
+                                                            ParseUser parseUser = ParseUser.getCurrentUser();
+                                                            parseUser.setPassword(oldInput.getText().toString());
+                                                            parseUser.saveInBackground(new SaveCallback() {
+                                                                @Override
+                                                                public void done(ParseException e) {
+                                                                    if (e == null) {
+                                                                        user.setText("signed in as " + ParseUser.getCurrentUser().getUsername());
+                                                                        Toast t = Toast.makeText(getApplicationContext(), "Change Successful!", Toast.LENGTH_SHORT);
+                                                                        t.show();
+                                                                    }
+                                                                }
+                                                            });
+                                                            dialog.cancel();
+                                                        } else {
+                                                            Toast t = Toast.makeText(getApplicationContext(), "Passwords do not match!", Toast.LENGTH_SHORT);
+                                                            t.show();
+                                                        }
+                                                    }
+
+
+                                                });
+
+                                                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int num) {
+                                                        dialog.cancel();
+                                                    }
+                                                });
+                                                builder.setCancelable(false);
+
+                                                builder.show();
+
+                                            } else {
+
+
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(ActSettings.this);
+                                                builder.setTitle("Set Account Email");
+                                                LinearLayout l = new LinearLayout(ActSettings.this);
+                                                l.setOrientation(LinearLayout.VERTICAL);
+                                                final EditText oldInput = new EditText(ActSettings.this);
+                                                final EditText newInput = new EditText(ActSettings.this);
+                                                oldInput.setTag("old");
+                                                newInput.setTag("new");
+                                                oldInput.setHint("Enter Your Email Address");
+                                                l.addView(oldInput);
+                                                builder.setView(l);
+                                                builder.setPositiveButton("Set Email", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int num) {
+
+                                                        if (!oldInput.getText().toString().contains("@") || !oldInput.getText().toString().contains(".")) {
+                                                            Toast t = Toast.makeText(getApplicationContext(), "Invalid Email Address!", Toast.LENGTH_SHORT);
+                                                            t.show();
+                                                        } else {
+
+                                                            ParseUser parseUser = ParseUser.getCurrentUser();
+                                                            parseUser.setEmail(oldInput.getText().toString());
+                                                            parseUser.saveInBackground(new SaveCallback() {
+                                                                @Override
+                                                                public void done(ParseException e) {
+                                                                    if (e == null) {
+                                                                        //user.setText("signed in as " + ParseUser.getCurrentUser().getUsername());
+                                                                        Toast t = Toast.makeText(getApplicationContext(), "Email Address Set!", Toast.LENGTH_SHORT);
+                                                                        t.show();
+                                                                    }
+                                                                }
+                                                            });
+
+                                                            dialog.cancel();
+                                                        }
+                                                    }
+
+
+                                                });
+
+                                                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int num) {
+                                                        dialog.cancel();
+                                                    }
+                                                });
+                                                builder.setCancelable(false);
+
+                                                builder.show();
+                                            }
+
+                                            return true;
+
                                         }
+                                    });
 
-                                        return true;
-                                    }
-                                });
+                                    popup1.show();//showing popup menu
 
-                                popup3.show();//showing popup menu
+                                }
+                                break;
+                            case "friends":
+                                if (ParseUser.getCurrentUser() == null) {
+                                    Toast t = Toast.makeText(this, "Option Available to Signed in Users Only", Toast.LENGTH_SHORT);
+                                    t.show();
+                                } else {
+                                    Intent intent = new Intent(this, Frag5Friends.class);
+                                    //intent.putExtra("firstweek", false);
+                                    int a = 4; //request code? (receives back request code, resultcode, intent)?
+                                    startActivityForResult(intent, a);
+                                }
+                                break;
+                            case "cloud":
+                                if (ParseUser.getCurrentUser() == null) {
+                                    Toast t = Toast.makeText(this, "Option Available to Signed in Users Only", Toast.LENGTH_SHORT);
+                                    t.show();
+                                } else {
+                                    //Creating the instance of PopupMenu
+                                    PopupMenu popup3 = new PopupMenu(getApplicationContext(), cloud);
+                                    //Inflating the Popup using xml file
+                                    popup3.getMenuInflater().inflate(R.menu.cloud_menu, popup3.getMenu());
+
+                                    //registering popup with OnMenuItemClickListener
+                                    popup3.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                        public boolean onMenuItemClick(MenuItem item) {
+
+                                            if (String.valueOf(item.getTitle()).equals("Save To Cloud")) {
+                                                saveToCloud();
+
+                                            } else {
+                                                loadFromParse();
+                                            }
+
+                                            return true;
+                                        }
+                                    });
+
+                                    popup3.show();//showing popup menu
+                                }
+                                break;
+                        }
+
+                    } else {
+                        if (v instanceof Button) {
+                            signInOrSignUp(v);
+
+                        } else {
+                            if (v.getTag().equals("cloud")) {
+                                save.setVisibility(View.VISIBLE);
+                                load.setVisibility(View.VISIBLE);
+                                friends.setVisibility(View.GONE);
+                                save.setText("SAVE TO CLOUD");
+                                save.setTag("save");
+                                load.setTag("load");
+                                load.setText("LOAD FROM CLOUD");
                             }
-                            break;
+                            if (v.getTag().equals("friends")) {
+                                cloud.setVisibility(View.GONE);
+                                save.setVisibility(View.VISIBLE);
+                                load.setVisibility(View.VISIBLE);
+                                save.setText("MANAGE FRIENDS");
+                                save.setTag("add");
+                                load.setTag("privacy");
+                                load.setText("SHARE SETTINGS");
+
+                            }
+
+                        }
                     }
 
                 } else {
-                    if (v instanceof Button) {
-                        signInOrSignUp(v);
-
-                    } else {
-                        if (v.getTag().equals("cloud")) {
-                            save.setVisibility(View.VISIBLE);
-                            load.setVisibility(View.VISIBLE);
-                            friends.setVisibility(View.GONE);
-                            save.setText("SAVE TO CLOUD");
-                            save.setTag("save");
-                            load.setTag("load");
-                            load.setText("LOAD FROM CLOUD");
-                        }
-                        if (v.getTag().equals("friends")) {
-                            cloud.setVisibility(View.GONE);
-                            save.setVisibility(View.VISIBLE);
-                            load.setVisibility(View.VISIBLE);
-                            save.setText("MANAGE FRIENDS");
-                            save.setTag("add");
-                            load.setTag("privacy");
-                            load.setText("SHARE SETTINGS");
-
-                        }
-
-                    }
+                    Toast t = Toast.makeText(this, "Please check network connection!", Toast.LENGTH_SHORT);
+                    t.show();
                 }
-
-            } else {
-                Toast t = Toast.makeText(this, "Please check network connection!", Toast.LENGTH_SHORT);
-                t.show();
             }
         }
     }

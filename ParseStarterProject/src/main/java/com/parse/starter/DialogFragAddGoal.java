@@ -146,16 +146,21 @@ public class DialogFragAddGoal extends DialogFragment implements View.OnClickLis
 
         Log.i("contains", inputTitle.getText().toString());
 
-        if(inputTitle.getText().toString().contains("'")||inputTitle.getText().toString().contains("\"")||inputTitle.getText().toString().contains("\\")){
-            inputTitle.setText(inputTitle.getText().toString().substring(0, inputTitle.length()-1));
-            inputTitle.setSelection(inputTitle.getText().toString().length());//changes cursor to still be at the end
+        String input = inputTitle.getText().toString();
+
+        if(input.contains("'")||input.contains("\"")||input.contains("\\")){
+            inputTitle.setText(input.substring(0, start)+input.substring(start+1, input.length()));
+
+
+            inputTitle.setSelection(start);//changes cursor to still be at the end
         }
+
+
         if(inputTitle.getText().toString().length() > 20){
             warningMessage.setVisibility(View.VISIBLE);
         } else {
             warningMessage.setVisibility(View.GONE);
         }
-
 
        if(saveClickedBool) {
            if (inputTitle.getText().toString().equals(""))  {
