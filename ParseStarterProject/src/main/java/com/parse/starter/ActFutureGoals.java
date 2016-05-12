@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Calendar;
+
 /**
  * Created by Borris on 09/02/2016.
  */
@@ -105,7 +107,13 @@ public class ActFutureGoals extends ListActivity implements View.OnClickListener
     }
     public void exit(){
 
-        int refresh= ActGoals.goalStore.dayofyear + ActGoals.daysToRefresh();//possibly move to dbhelper method
+        //this possibly only needs to be done during the firstweek - however it doesnt cause any harm to do it all times
+        Calendar calendar = Calendar.getInstance();
+        calendar.get(Calendar.DAY_OF_YEAR);
+        int refresh= calendar.get(Calendar.DAY_OF_YEAR) + ActGoals.daysToRefresh();//possibly move to dbhelper method
+        Log.i("refreshfromfuture", ""+ActGoals.daysToRefresh());
+        Log.i("refreshfromfuture", ""+refresh);
+
         if(refresh > 365){refresh-=365;}
         databaseHelper.updateProfileRow(profileName, profileName, refresh);
 
@@ -115,7 +123,7 @@ public class ActFutureGoals extends ListActivity implements View.OnClickListener
 
         setResult(RESULT_OK, intentBack);
 
-        Log.i("MethodCalledJ", "L");
+        Log.i("refreshfromfuture", ""+refresh);
         //why use intents when i can just access ProfileMainActivity.goalStore2?
         finish();}
 

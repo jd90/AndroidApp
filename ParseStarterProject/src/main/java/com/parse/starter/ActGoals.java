@@ -92,8 +92,8 @@ public class ActGoals extends AppCompatActivity {
          //goalStore.loadFromFutureDatabase();//one time on first load
       }
 
-        Log.i("44331 refresh", ""+p.refreshDay);
-        Log.i("44331 refresh", ""+dayofyear);
+        Log.i("44331 refresh day", ""+p.refreshDay);
+        Log.i("44331 refresh ofyear", ""+dayofyear);
 
 
         //p.refreshDay = dayofyear-2;
@@ -103,6 +103,7 @@ public class ActGoals extends AppCompatActivity {
             //should also do the past totals thing here
             //and save a new refreshday
 
+            Log.i("refreshing", "rday: "+p.refreshDay+" day: "+dayofyear);
             archiveItemDatastore.updateList(p.refreshDay, dayofyear);
             databaseHelper.updatePastTotals(profile, archiveItemDatastore.list);
 
@@ -254,23 +255,15 @@ return true;
                                                     itemSeen.add(ParseUser.getCurrentUser().getUsername());
                                                     feedRows.get(i).put("itemSeen", itemSeen);
                                                     feedRows.get(i).saveEventually();
-
                                                 }
                                             }
-
                                                 }
                                     }
-
                                 });
-
                             } catch (Exception e) {
-
                             }
-
                         }
                     }
-
-
                 }
             }
 
