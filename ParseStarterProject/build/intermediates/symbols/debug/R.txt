@@ -543,7 +543,6 @@ int drawable up_button_pressed 0x7f020061
 int drawable up_buttonexemel 0x7f020062
 int drawable w1 0x7f020063
 int drawable w2 0x7f020064
-int id account 0x7f0e00ec
 int id action0 0x7f0e009c
 int id action_bar 0x7f0e0057
 int id action_bar_activity_content 0x7f0e0000
@@ -649,7 +648,7 @@ int id grid1 0x7f0e00c3
 int id grid2 0x7f0e00c5
 int id heart 0x7f0e006d
 int id hearty 0x7f0e006a
-int id holiday 0x7f0e00ee
+int id holiday 0x7f0e00ed
 int id home 0x7f0e0004
 int id homeAsUp 0x7f0e000e
 int id icon 0x7f0e0042
@@ -708,7 +707,7 @@ int id radiogroup 0x7f0e0092
 int id rect 0x7f0e00dc
 int id rect2 0x7f0e00d7
 int id rect3 0x7f0e00ce
-int id reorder 0x7f0e00ed
+int id reorder 0x7f0e00ec
 int id right 0x7f0e0025
 int id save 0x7f0e00c0
 int id screen 0x7f0e0036

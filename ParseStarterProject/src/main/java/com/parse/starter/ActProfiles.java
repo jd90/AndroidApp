@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.ParseUser;
 
@@ -99,9 +100,11 @@ public class ActProfiles extends ListActivity implements View.OnClickListener, T
                     @Override
                     public void onClick(DialogInterface dialog, int num) {
 
-                        if (profileDatastore.nameTaken(profileInput.getText().toString().toUpperCase()) || profileInput.getText().toString().equals("")) {
+                        if (profileInput.getText().toString().equals("")) {
                             Log.i("44331", "name taken");
-                            dialog.cancel();
+                            Toast t = Toast.makeText(getApplicationContext(), "Name cannot be blank", Toast.LENGTH_SHORT);
+                            t.show();
+
                         }//fix this to show a warning message of some sort
                         else {
                             String title = profileInput.getText().toString().toUpperCase();
@@ -158,14 +161,29 @@ public class ActProfiles extends ListActivity implements View.OnClickListener, T
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         Log.i("contains", profileInput.getText().toString());
 
-        if (profileInput.getText().toString().contains("'") || profileInput.getText().toString().contains("\"") || profileInput.getText().toString().contains("\\")) {
-            profileInput.setText(profileInput.getText().toString().substring(0, profileInput.length() - 1));
-            profileInput.setSelection(profileInput.getText().toString().length());//changes cursor to still be at the end
+      //  if (profileInput.getText().toString().contains("'") || profileInput.getText().toString().contains("\"") || profileInput.getText().toString().contains("\\")) {
+        //    profileInput.setText(profileInput.getText().toString().substring(0, profileInput.length() - 1));
+          //  profileInput.setSelection(profileInput.getText().toString().length());//changes cursor to still be at the end
+        //}
+        String input = profileInput.getText().toString();
+
+        if(input.contains("'")||input.contains("\"")||input.contains("\\")){
+            profileInput.setText(input.substring(0, start)+input.substring(start+1, input.length()));
+            profileInput.setSelection(start);//changes cursor to still be at the end
+        }
+        if(profileInput.length()>10){
+            profileInput.setText(input.substring(0, start)+input.substring(start+1, input.length()));
+            profileInput.setSelection(start);//changes cursor to still be at the end
+            Toast t = Toast.makeText(getApplicationContext(), "Must be less than 10 characters", Toast.LENGTH_SHORT);
+            t.show();
         }
 
-        if (profileDatastore.nameTaken(profileInput.getText().toString())) {
-            profileInput.setText("NAME TAKEN");
+        if (profileDatastore.nameTaken(profileInput.getText().toString().toUpperCase())) {
+
+            Toast t = Toast.makeText(getApplicationContext(), "Name already taken", Toast.LENGTH_SHORT);
+            t.show();
         }//fix this to show a warning message of some sort
+
 
     }
 

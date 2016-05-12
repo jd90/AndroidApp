@@ -22,9 +22,7 @@
 
         />
     <group android:id="@+id/settingsGroup">
-    <item android:id="@+id/account"
-        android:title="Account"
-        android:onClick="menuDropdown"/>
+
     <item android:id="@+id/reorder"
         android:title="Re-order Goals"
         android:onClick="menuDropdown"/>

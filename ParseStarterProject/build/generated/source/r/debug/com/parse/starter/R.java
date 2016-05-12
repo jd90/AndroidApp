@@ -2038,7 +2038,6 @@ containing a value of this type.
         public static final int w2=0x7f020064;
     }
     public static final class id {
-        public static final int account=0x7f0e00ec;
         public static final int action0=0x7f0e009c;
         public static final int action_bar=0x7f0e0057;
         public static final int action_bar_activity_content=0x7f0e0000;
@@ -2144,7 +2143,7 @@ containing a value of this type.
         public static final int grid2=0x7f0e00c5;
         public static final int heart=0x7f0e006d;
         public static final int hearty=0x7f0e006a;
-        public static final int holiday=0x7f0e00ee;
+        public static final int holiday=0x7f0e00ed;
         public static final int home=0x7f0e0004;
         public static final int homeAsUp=0x7f0e000e;
         public static final int icon=0x7f0e0042;
@@ -2203,7 +2202,7 @@ containing a value of this type.
         public static final int rect=0x7f0e00dc;
         public static final int rect2=0x7f0e00d7;
         public static final int rect3=0x7f0e00ce;
-        public static final int reorder=0x7f0e00ed;
+        public static final int reorder=0x7f0e00ec;
         public static final int right=0x7f0e0025;
         public static final int save=0x7f0e00c0;
         public static final int screen=0x7f0e0036;

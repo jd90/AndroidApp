@@ -299,12 +299,12 @@ return true;
         Log.i("6705reorder", "ayyyp");
 
         switch(String.valueOf(item.getTitle())){
-            case "Account":
+           // case "Account":
 
-                Intent intentAccount = new Intent(this, ActSettings.class)              ;
-                startActivity(intentAccount);
+             //   Intent intentAccount = new Intent(this, ActSettings.class)              ;
+            //    startActivity(intentAccount);
 
-                break;
+           //     break;
             case "Re-order Goals":
 
                 Log.i("6705reorder", "called");
@@ -356,7 +356,7 @@ return true;
                 break;
         }
         //return daysToRefresh; // also change in settingsScrn
-        return 1;
+        return daysToRefresh;
     }
 
     @Override
