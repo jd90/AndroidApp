@@ -26,7 +26,7 @@ public class ProfileDatastore {
     public boolean nameTaken(String name){
 
         for(int i=0; i< profiles.size(); i++){
-            if(name.equals(profiles.get(i).name)){
+            if(name.equals(profiles.get(i).getName())){
                 return true;
             }
         }
@@ -40,7 +40,7 @@ public class ProfileDatastore {
     public ClassProfile getProfile(String name){
 
         for(int i=0; i<profiles.size();i++){
-            if(profiles.get(i).name.equals(name)){
+            if(profiles.get(i).getName().equals(name)){
                 return profiles.get(i);
             }
         }

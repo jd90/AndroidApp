@@ -112,7 +112,7 @@ public class CustAdapterGoals extends ArrayAdapter<ClassGoal> implements View.On
 
         v=v1;
 
-        if (ActGoals.p.refreshDay == 366) {
+        if (ActGoals.p.getRefreshDay() == 366) {
             AlertDialog.Builder confirm = new AlertDialog.Builder(getContext());
             confirm.setTitle("Holiday Mode");
             confirm.setMessage("Sorry, Holiday Mode is Activated!\n Deactivate to Proceed with Goals");

@@ -105,12 +105,12 @@ ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\And
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:71:9-41
 	android:name
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:70:9-39
-activity#com.parse.starter.Frag5Friends
+activity#com.parse.starter.ActAddFriends
 ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:77:9-84:16
 	android:label
 		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:79:9-41
 	android:name
-		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:78:9-37
+		ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:78:9-38
 receiver#com.parse.starter.AlertReceiver
 ADDED from C:\Users\Borris\Desktop\ParseGoalApp\ParseStarterProject\src\main\AndroidManifest.xml:86:9-92:20
 	android:name

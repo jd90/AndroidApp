@@ -12,8 +12,8 @@ import java.util.List;
  */
 public class ClassProfile {
 
-    String name;
-    int refreshDay;
+    private String name;
+    private int refreshDay;
 
     public ClassProfile(String name, int refreshDay) {
 
@@ -25,6 +25,17 @@ public class ClassProfile {
 
     public void renameProfile(String newName){
         this.name=newName;
+    }
+
+    public String getName(){
+        return name;
+    }
+    public int getRefreshDay(){
+        return refreshDay;
+    }
+
+    public void setRefreshDay(int rday){
+        refreshDay=rday;
     }
 
 }

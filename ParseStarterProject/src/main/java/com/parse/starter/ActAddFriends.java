@@ -38,14 +38,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Frag5Friends extends ListActivity {
+public class ActAddFriends extends ListActivity {
 
     SQLiteDatabase database;
     ArrayList<String> usernames;
     FollowersArrayAdapter adapter;
     ListView lView;
     // Required empty public constructor
-    public Frag5Friends() {
+    public ActAddFriends() {
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {

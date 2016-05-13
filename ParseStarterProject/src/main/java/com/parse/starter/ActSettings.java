@@ -2,21 +2,15 @@ package com.parse.starter;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -377,7 +371,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                                     Toast t = Toast.makeText(this, "Option Available to Signed in Users Only", Toast.LENGTH_SHORT);
                                     t.show();
                                 } else {
-                                    Intent intent = new Intent(this, Frag5Friends.class);
+                                    Intent intent = new Intent(this, ActAddFriends.class);
                                     //intent.putExtra("firstweek", false);
                                     int a = 4; //request code? (receives back request code, resultcode, intent)?
                                     startActivityForResult(intent, a);
@@ -388,12 +382,9 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                                     Toast t = Toast.makeText(this, "Option Available to Signed in Users Only", Toast.LENGTH_SHORT);
                                     t.show();
                                 } else {
-                                    //Creating the instance of PopupMenu
                                     PopupMenu popup3 = new PopupMenu(getApplicationContext(), cloud);
-                                    //Inflating the Popup using xml file
                                     popup3.getMenuInflater().inflate(R.menu.cloud_menu, popup3.getMenu());
 
-                                    //registering popup with OnMenuItemClickListener
                                     popup3.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                                         public boolean onMenuItemClick(MenuItem item) {
 
@@ -408,7 +399,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                                         }
                                     });
 
-                                    popup3.show();//showing popup menu
+                                    popup3.show();
                                 }
                                 break;
                         }
@@ -543,8 +534,8 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                 }
 
                 strJson += "" +
-                        "\"name\":\"" + profileList.get(i).name + "\"," +
-                        "\"refreshDay\": '" + profileList.get(i).refreshDay + "' ";
+                        "\"name\":\"" + profileList.get(i).getName() + "\"," +
+                        "\"refreshDay\": '" + profileList.get(i).getRefreshDay() + "' ";
                 strJson += "}";
             }
             strJson += "]}";

@@ -110,9 +110,7 @@ public class ActFutureGoals extends ListActivity implements View.OnClickListener
         //this possibly only needs to be done during the firstweek - however it doesnt cause any harm to do it all times
         Calendar calendar = Calendar.getInstance();
         calendar.get(Calendar.DAY_OF_YEAR);
-        int refresh= calendar.get(Calendar.DAY_OF_YEAR) + ActGoals.daysToRefresh();//possibly move to dbhelper method
-        Log.i("refreshfromfuture", ""+ActGoals.daysToRefresh());
-        Log.i("refreshfromfuture", ""+refresh);
+        int refresh= calendar.get(Calendar.DAY_OF_YEAR) + ActGoals.daysToRefresh();
 
         if(refresh > 365){refresh-=365;}
         databaseHelper.updateProfileRow(profileName, profileName, refresh);
@@ -123,8 +121,6 @@ public class ActFutureGoals extends ListActivity implements View.OnClickListener
 
         setResult(RESULT_OK, intentBack);
 
-        Log.i("refreshfromfuture", ""+refresh);
-        //why use intents when i can just access ProfileMainActivity.goalStore2?
         finish();}
 
 

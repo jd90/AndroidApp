@@ -53,7 +53,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public void insertProfile(ClassProfile profile) {
 
-        Log.i("44331", "insert prof"+profile.name);
+        Log.i("44331", "insert prof"+profile.getName());
 
         SQLiteDatabase db = this.getWritableDatabase();//not just have a db that i access and hold at a class level??
 
@@ -62,7 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         //values.put("refreshDay", 366);
         //db.insert("profilesTbl", null, values);
 
-        db.execSQL("INSERT INTO profilesTbl (profileName, refreshDay) VALUES ('" + profile.name + "', " + profile.refreshDay + ")");
+        db.execSQL("INSERT INTO profilesTbl (profileName, refreshDay) VALUES ('" + profile.getName() + "', " + profile.getRefreshDay() + ")");
     }
 
     public void insertGoal(ClassGoal goal) {
@@ -151,8 +151,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         if (c.moveToFirst()) {
             do {
                 ClassProfile profile = new ClassProfile("", 777);
-                profile.name = (c.getString(c.getColumnIndex("profileName")));
-                profile.refreshDay = (c.getInt(c.getColumnIndex("refreshDay")));
+                profile.renameProfile(c.getString(c.getColumnIndex("profileName")));
+                profile.setRefreshDay(c.getInt(c.getColumnIndex("refreshDay")));
 
                 // adding to list
                 profilesList.add(profile);
@@ -270,8 +270,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         if (c.moveToFirst()) {
             do {
                 ClassProfile profile = new ClassProfile("", 777);
-                profile.name = (c.getString(c.getColumnIndex("profileName")));
-                profile.refreshDay = (c.getInt(c.getColumnIndex("refreshDay")));
+                profile.renameProfile(c.getString(c.getColumnIndex("profileName")));
+                profile.setRefreshDay(c.getInt(c.getColumnIndex("refreshDay")));
 
                 // adding to list
                 profilesList.add(profile);

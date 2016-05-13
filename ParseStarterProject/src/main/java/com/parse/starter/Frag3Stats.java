@@ -261,7 +261,7 @@ if(v.getTag() == "sharkSwim") {
     }
     double x = percent * 4.73;
     per = Float.parseFloat("" + x);
-    // sharkFinPic.setImageResource(R.drawable.shark_fin_pic_moving);
+
     sharkFinPic.animate().translationX(per).setDuration(600);
 
 
@@ -271,7 +271,6 @@ if(v.getTag() == "sharkSwim") {
         public void run() {
             TextView totalPercent = (TextView) view.findViewById(R.id.totalPercent);
             TextView weektotalTitle = (TextView) view.findViewById(R.id.weektotalTitle);
-            //totalPercent.setText(per+"%");
             int total = (int) ActGoals.goalStore.getTotalPercentage();
             if(total>100){
                 total = 100;
@@ -280,10 +279,6 @@ if(v.getTag() == "sharkSwim") {
             weektotalTitle.setText("Week Total:");
             TextView totalPercentAve = (TextView) view.findViewById(R.id.totalPercentAve);
             int aveTotal=0;
-
-            //Log.i("HEREYEGOARRAY", " "+ ActGoals.goalStore.pastTotals.toString());
-            //Log.i("HEREYEGOARRAY", " "+ ActGoals.goalStore.pastTotals.size());
-
 
             for(int i=12; i<16; i++ ){
 
@@ -294,9 +289,6 @@ if(v.getTag() == "sharkSwim") {
 
             TextView weektotalAveTitle = (TextView) view.findViewById(R.id.weektotalAveTitle);
             weektotalAveTitle.setText("4 Week Average");
-            //starts after 600
-            //ImageView sharkFinPic = (ImageView) view.findViewById(R.id.sharkFinPic);
-            //sharkFinPic.setImageResource(R.drawable.shark_fin_pic);
         }
     }, 600);
 
@@ -369,7 +361,7 @@ if(v.getTag() == "sharkSwim") {
                         feed.put("username", ParseUser.getCurrentUser().getUsername());
                         feed.put("itemSeen", itemSeen);
 
-                        feed.put("profilename", ActProfiles.profileDatastore.getProfile(ActGoals.profileNum).name);
+                        feed.put("profilename", ActProfiles.profileDatastore.getProfile(ActGoals.profileNum).getName());
                         feed.saveInBackground(new SaveCallback() {
                             @Override
                             public void done(ParseException e) {

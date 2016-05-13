@@ -32,7 +32,7 @@ public class AlertReceiver extends BroadcastReceiver {
         String lowestProfileName="";
         for (int i = 0; i < profileList.size(); i++) {
 
-            GoalStore1 goalStore1= new GoalStore1(databaseHelper.getGoals(profileList.get(i).name),profileList.get(i).name);
+            GoalStore1 goalStore1= new GoalStore1(databaseHelper.getGoals(profileList.get(i).getName()),profileList.get(i).getName());
             if(goalStore1.getTotalPercentage()<lowestPercent){
                 lowestPercent=goalStore1.getTotalPercentage();
                 lowestProfileName=goalStore1.profile;

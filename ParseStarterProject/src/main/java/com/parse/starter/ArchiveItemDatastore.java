@@ -42,14 +42,14 @@ public class ArchiveItemDatastore {
             list.remove(0);
             if (percent > 100) {percent = 100;}
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_YEAR, ActGoals.p.refreshDay);
+        calendar.set(Calendar.DAY_OF_YEAR, ActGoals.p.getRefreshDay());
         String s = "" + new SimpleDateFormat("MMM").format(calendar.getTime()) + " ";
 
         s += "" + calendar.get(Calendar.DAY_OF_MONTH);
         ClassArchiveItem archiveItem = new ClassArchiveItem((int) percent, s);
         list.add(15, archiveItem);
 
-        int y = ActGoals.p.refreshDay;
+        int y = ActGoals.p.getRefreshDay();
         calendar = Calendar.getInstance();
         for(int i =1; i<= emptyweeks; i++) {
 

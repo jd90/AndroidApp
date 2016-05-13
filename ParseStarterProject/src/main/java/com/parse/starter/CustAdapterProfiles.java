@@ -60,7 +60,7 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
         View row_view = inflater.inflate(R.layout.profiles_item, parent, false);
 
         TextView prof1 = (TextView)row_view.findViewById(R.id.profileText);
-        prof1.setText(profiles.get(position).name);
+        prof1.setText(profiles.get(position).getName());
         profileContainer = (LinearLayout) row_view.findViewById(R.id.profileContainer);
         profileContainer.setOnLongClickListener(this);
         profileContainer.setOnClickListener(this);
@@ -73,18 +73,18 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
     public void onClick(View v) {
 
 
-        Log.i("ZZZZ", "size click prof: "+ databaseHelper.getAllGoals().size());
-        Log.i("zzzz", "size click prof profilename: "+databaseHelper.getGoals(profileDatastore.getProfile(Integer.parseInt(v.getTag().toString())).name).size());
-        Log.i("zzzz", "profilename:" + profileDatastore.getProfile(Integer.parseInt(v.getTag().toString())).name);
+       // Log.i("ZZZZ", "size click prof: "+ databaseHelper.getAllGoals().size());
+      //  Log.i("zzzz", "size click prof profilename: "+databaseHelper.getGoals(profileDatastore.getProfile(Integer.parseInt(v.getTag().toString())).getName()).size());
+      //  Log.i("zzzz", "profilename:" + profileDatastore.getProfile(Integer.parseInt(v.getTag().toString())).getName());
 
         ArrayList<ClassGoal> ggs =databaseHelper.getAllGoals();
 //        Log.i("zzzzx", "profName:"+ggs.get(0).profileName);
 
         profileDatastore.profiles=databaseHelper.getAllProfiles();//this needs to be here - means that the profiles name is accurately passed - opening the right goals after a rename
         Intent hi = new Intent(getContext(), ActGoals.class);
-        hi.putExtra("profileName", profileDatastore.getProfile(Integer.parseInt(v.getTag().toString())).name);
+        hi.putExtra("profileName", profileDatastore.getProfile(Integer.parseInt(v.getTag().toString())).getName());
         //hi.putExtra("profile", databaseNum);
-        Log.i("44331", "opening profile " + profileDatastore.getProfile(Integer.parseInt(v.getTag().toString())).name);
+        Log.i("44331", "opening profile " + profileDatastore.getProfile(Integer.parseInt(v.getTag().toString())).getName());
         getContext().startActivity(hi);
 
     }
@@ -118,8 +118,8 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
                             else {
                                 saveClickedBool = true;
                                 ClassProfile profile = profiles.get(Integer.parseInt(vi.getTag().toString()));
-                                String oldTitle = profiles.get(Integer.parseInt(vi.getTag().toString())).name;
-                                int refresh = profiles.get(Integer.parseInt(vi.getTag().toString())).refreshDay;
+                                String oldTitle = profiles.get(Integer.parseInt(vi.getTag().toString())).getName();
+                                int refresh = profiles.get(Integer.parseInt(vi.getTag().toString())).getRefreshDay();
                                 String newTitle = profileInput.getText().toString().toUpperCase();
                                 profile.renameProfile(newTitle);
 
@@ -142,7 +142,7 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
                     confirm.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             ClassProfile profile = profiles.get(Integer.parseInt(vi.getTag().toString()));
-                            String title = profiles.get(Integer.parseInt(vi.getTag().toString())).name;
+                            String title = profiles.get(Integer.parseInt(vi.getTag().toString())).getName();
                             Log.i("xxx", "size1: " + ActProfiles.profileDatastore.getSize());
                             //ActProfiles.profileDatastore.removeProfile(Integer.parseInt(vi.getTag().toString()));
                             Log.i("xxx", "size2: " + ActProfiles.profileDatastore.getSize());

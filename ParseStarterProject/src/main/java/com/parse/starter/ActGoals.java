@@ -62,9 +62,9 @@ public class ActGoals extends AppCompatActivity {
         archiveItemDatastore.list = databaseHelper.getPastTotals(profile);
 
         p =ActProfiles.profileDatastore.getProfile(profile);
-        Log.i("44331 refreshday", ""+p.refreshDay);
+        Log.i("44331 refreshday", ""+p.getRefreshDay());
 
-        if(p.refreshDay==888){
+        if(p.getRefreshDay()==888){
             goalStore.firstweek=true;
         }else{goalStore.firstweek=false;}
         //fix - combine these two?
@@ -92,19 +92,19 @@ public class ActGoals extends AppCompatActivity {
          //goalStore.loadFromFutureDatabase();//one time on first load
       }
 
-        Log.i("44331 refresh day", ""+p.refreshDay);
+       // Log.i("44331 refresh day", ""+p.refreshDay);
         Log.i("44331 refresh ofyear", ""+dayofyear);
 
 
         //p.refreshDay = dayofyear-2;
 
-        if(p.refreshDay<= dayofyear){
+        if(p.getRefreshDay()<= dayofyear){
 
             //should also do the past totals thing here
             //and save a new refreshday
 
-            Log.i("refreshing", "rday: "+p.refreshDay+" day: "+dayofyear);
-            archiveItemDatastore.updateList(p.refreshDay, dayofyear);
+            Log.i("refreshing", "rday: " + p.getRefreshDay() + " day: " + dayofyear);
+            archiveItemDatastore.updateList(p.getRefreshDay(), dayofyear);
             databaseHelper.updatePastTotals(profile, archiveItemDatastore.list);
 
 
@@ -137,7 +137,7 @@ public class ActGoals extends AppCompatActivity {
         this.menu = menu;//overcame an issue here, was trying to find menu item from menu being called before menu was inflated..
         MenuItem holiday = menu.findItem(R.id.holiday).setTitle("hiya");
 
-        if(p.refreshDay==366){
+        if(p.getRefreshDay()==366){
 
             holiday.setTitle("Holiday Mode: ACTIVE");
         }else{holiday.setTitle("Holiday Mode: DISABLED");}
@@ -175,19 +175,19 @@ return true;
             //        Toast.LENGTH_SHORT).show();}}
 
             Log.i("44331", "onactivity result");
-            if(p.refreshDay == 888) //goalStore.firstweek){
+            if(p.getRefreshDay() == 888) //goalStore.firstweek){
             {
                 goalStore.list = databaseHelper.getFutureGoals(profile);
                 goalStore.saveToDatabase();
                 Log.i("44331", "size of goalStorelist" + goalStore.list.size());
                 int refresh = dayofyear + daysToRefresh();//possibly move to db method2
                 if(refresh > 365){refresh-=365;}
-                Log.i("44331 refresh1", ""+p.refreshDay);
+                //Log.i("44331 refresh1", ""+p.refreshDay);
                 Log.i("44331 refresh2", ""+refresh);
 
-                p.refreshDay=refresh;
+                p.setRefreshDay(refresh);
                 //goalStore.refreshDay=refresh;
-                databaseHelper.updateProfileRow(p.name, p.name, refresh);
+                databaseHelper.updateProfileRow(p.getName(), p.getName(), refresh);
             }
         }
         else{
@@ -208,7 +208,7 @@ return true;
         setSupportActionBar(toolbar);
         // Setup the viewPager
         final ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        CustPagerAdapter pagerAdapter = new CustPagerAdapter(getSupportFragmentManager());
+        final CustPagerAdapter pagerAdapter = new CustPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         // Setup the Tabs
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -271,6 +271,7 @@ return true;
             public void onTabUnselected(TabLayout.Tab tab) {
                 if(tab.getPosition()==0){
                     t0.setIcon(null);
+
                 }
             }
 
@@ -309,8 +310,8 @@ return true;
 
 
 
-                p.refreshDay=366;
-                databaseHelper.updateProfileRow(profile,profile,p.refreshDay);
+                p.setRefreshDay(366);
+                databaseHelper.updateProfileRow(profile,profile,p.getRefreshDay());
 
                 item.setTitle("Holiday Mode: ACTIVE");
 
@@ -319,8 +320,8 @@ return true;
 
                 int refresh=dayofyear+daysToRefresh();
                 if (refresh > 365){refresh -= 365;}
-                p.refreshDay=refresh;
-                databaseHelper.updateProfileRow(profile,profile,p.refreshDay);
+                p.setRefreshDay(refresh);
+                databaseHelper.updateProfileRow(profile,profile,p.getRefreshDay());
 
                 item.setTitle("Holiday Mode: DISABLED");
 

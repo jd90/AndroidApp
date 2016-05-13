@@ -75,7 +75,7 @@
         </intent-filter>
     </activity>
         <activity
-        android:name=".Frag5Friends"
+        android:name=".ActAddFriends"
         android:label="@string/app_name" >
         <intent-filter>
             <action android:name="com.example.borris.toolbartest.future_item_layout" />
