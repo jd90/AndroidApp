@@ -61,6 +61,9 @@ public class ActGoals extends AppCompatActivity {
         archiveItemDatastore = new ArchiveItemDatastore();
         archiveItemDatastore.list = databaseHelper.getPastTotals(profile);
 
+        if(ActProfiles.profileDatastore.profiles==null) { //this activates teh profile datastore when the broadcast receiver opens the app from goals and not the home page.
+            ActProfiles.profileDatastore.profiles = databaseHelper.getProfiles();
+        }
         p =ActProfiles.profileDatastore.getProfile(profile);
         Log.i("44331 refreshday", ""+p.getRefreshDay());
 

@@ -39,19 +39,21 @@ public class AlertReceiver extends BroadcastReceiver {
             }
         }
 
+
         if(lowestPercent<100){
-            PendingIntent notifyIntent = PendingIntent.getActivity(context, 0, new
-                    Intent(context, ActProfiles.class), 0);
+            Intent i = new Intent(context, ActGoals.class);
+            i.putExtra("profileName", lowestProfileName);
+            PendingIntent notifyIntent = PendingIntent.getActivity(context, 0, i, 0);
 
             NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(context);
             notifBuilder.setSmallIcon(R.drawable.goal_shark_logo1);
-            notifBuilder.setContentTitle("Enjoying Yer Doss, Aye?");
+            notifBuilder.setContentTitle("Don't Forget Your Goals, Champ!");
             String msg;
             if(lowestPercent<50) {
-                msg = "Get Yer "+lowestProfileName+" Goals Done Ya Weapon!\nYer no even half way";
-            }else{msg="Get Yer "+lowestProfileName+" Goals Done Ya Weapon!\nYer only " + (int) lowestPercent + "% Done";}
+                msg = "Get Your "+lowestProfileName+" Goals Done!\nYou're not even half way yet";
+            }else{msg="Get Your "+lowestProfileName+" Goals Done!\nYou're only " + (int) lowestPercent + "% Done";}
             notifBuilder.setContentText(msg);
-            notifBuilder.setTicker("Enjoying Yer Doss, AYEEE?");
+            notifBuilder.setTicker("Don't Forget Your Goals, Champ!");
             notifBuilder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
             notifBuilder.setAutoCancel(true);
             notifBuilder.setContentIntent(notifyIntent);

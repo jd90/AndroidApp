@@ -171,11 +171,11 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
             if (v.getTag().equals("notifications")) {
 
 
-                boolean alarmSet = (PendingIntent.getBroadcast(getApplicationContext(), 1,
+                boolean alarm = (PendingIntent.getBroadcast(getApplicationContext(), 1,
                         new Intent(getApplicationContext(), AlertReceiver.class),
                         PendingIntent.FLAG_NO_CREATE) != null);
 
-                if (alarmSet) {
+                if (alarm) {
                     Intent alertIntent = new Intent(getApplicationContext(), AlertReceiver.class);
 
                     final PendingIntent pendingIntent =
@@ -191,28 +191,32 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                     Toast t = Toast.makeText(getApplicationContext(), "Notifications Off!", Toast.LENGTH_SHORT);
                     t.show();
                 } else {
+                    //pendingintent setting what to do - using intent-
+                    //Long alertTime = new
+                    //   GregorianCalendar().getTimeInMillis()+5*1000;
+                    //had to put use permission into manifest for set alarm
+                    //alarmMan.set(AlarmManager.RTC_WAKEUP,alertTime,pendingIntent );
+
+
                     Intent alertIntent = new Intent(getApplicationContext(), AlertReceiver.class);
                     final PendingIntent pendingIntent =
                             PendingIntent.getBroadcast
                                     (getApplicationContext(), 1, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                    //pendingintent setting what to do - using intent-
 
                     Calendar calendar = new GregorianCalendar();
                     calendar.set(Calendar.HOUR_OF_DAY, 20);
                     calendar.set(Calendar.MINUTE, 0);
-
                     Long alertTime = calendar.getTimeInMillis();
-                    //Long alertTime = new
-                    //   GregorianCalendar().getTimeInMillis()+5*1000;
-                    //had to put use permission into manifest for set alarm
+
                     AlarmManager alarmMan =
                             (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    //alarmMan.set(AlarmManager.RTC_WAKEUP,alertTime,pendingIntent );
                     alarmMan.setRepeating(AlarmManager.RTC_WAKEUP, alertTime, AlarmManager.INTERVAL_DAY, pendingIntent);
-                    //alarmmanager sets to wakeup after the time and uses pendingintent to call the broadcast AlertReceiver
 
                     Toast t = Toast.makeText(getApplicationContext(), "Notifications On!", Toast.LENGTH_SHORT);
                     t.show();
+
+
+                    //alarmmanager sets to wakeup after the time and uses pendingintent to call the broadcast AlertReceiver
                 }
             } else {
 
@@ -228,23 +232,22 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                             }
                         });
                     } else if (v.getTag().equals("cloud") || v.getTag().equals("friends") || v.getTag().equals("settings") || v.getTag().equals("notifications")) {
-                        //Log.i("6705saveToCloudswitch", "called");
+
 
 
                         switch (v.getTag().toString()) {
 
                             case "settings":
-                                //Creating the instance of PopupMenu
+
                                 if (ParseUser.getCurrentUser() == null) {
                                     Toast t = Toast.makeText(this, "Option Available to Signed in Users Only", Toast.LENGTH_SHORT);
                                     t.show();
                                 } else {
                                     PopupMenu popup1 = new PopupMenu(getApplicationContext(), settings);
 
-                                    //Inflating the Popup using xml file
+                                    //inflating the menu with menures
                                     popup1.getMenuInflater().inflate(R.menu.settings_menu, popup1.getMenu());
 
-                                    //registering popup with OnMenuItemClickListener
                                     popup1.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                                         public boolean onMenuItemClick(MenuItem item) {
 
