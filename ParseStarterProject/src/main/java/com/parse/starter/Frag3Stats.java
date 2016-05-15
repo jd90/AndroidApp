@@ -241,6 +241,7 @@ if(v.getTag() == "sharkSwim") {
     //must set translationX()to the value of goalstore2.getTotalPercentages() * 5
     //also set the totalPercent text to this number
 
+
     TextView press = (TextView) view.findViewById(R.id.presshere);
     press.setVisibility(View.GONE);
 
