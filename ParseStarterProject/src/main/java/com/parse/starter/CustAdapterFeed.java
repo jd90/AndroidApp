@@ -1,17 +1,23 @@
 package com.parse.starter;
 
         import android.app.Activity;
+        import android.app.AlertDialog;
         import android.app.FragmentManager;
         import android.content.Context;
+        import android.content.DialogInterface;
         import android.net.ConnectivityManager;
         import android.os.Bundle;
+        import android.support.v4.widget.ListViewAutoScrollHelper;
         import android.util.Log;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.ArrayAdapter;
+        import android.widget.Button;
+        import android.widget.EditText;
         import android.widget.ImageView;
         import android.widget.LinearLayout;
+        import android.widget.Scroller;
         import android.widget.TextView;
         import android.widget.Toast;
 
@@ -211,12 +217,12 @@ public class CustAdapterFeed extends ArrayAdapter<ClassGoal> implements View.OnL
 
                 if (!feedList.get(pos).id.equals("")) {
 
-                    ArrayList<String> comments = new ArrayList<>(feedList.get(pos).comments);
+
+
 
                     FragmentManager fm = ((Activity) context).getFragmentManager();
                     DialogFragMessages d = new DialogFragMessages();
                     Bundle args = new Bundle();
-                    args.putStringArrayList("comments", comments);
                     d.setArguments(args);
                     d.show(fm, "dialog");
 
