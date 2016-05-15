@@ -65,6 +65,7 @@ public class Frag3Stats extends Fragment implements View.OnClickListener, View.O
 
         view = inflater.inflate(R.layout.statistics_fragment, container, false);
 
+        TextView press = (TextView) view.findViewById(R.id.presshere);
         try {
 
             archiveItemDatastore = ActGoals.archiveItemDatastore;
@@ -240,6 +241,8 @@ if(v.getTag() == "sharkSwim") {
     //must set translationX()to the value of goalstore2.getTotalPercentages() * 5
     //also set the totalPercent text to this number
 
+    TextView press = (TextView) view.findViewById(R.id.presshere);
+    press.setVisibility(View.GONE);
 
     ImageView sharkFinPic = (ImageView) view.findViewById(R.id.sharkFinPic);
     sharkFinPic.setTranslationX(0);
