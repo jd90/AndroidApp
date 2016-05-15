@@ -52,7 +52,8 @@
             android:layout_height="30dp"
             android:orientation="horizontal"
             android:weightSum="8"
-            android:layout_weight="7">
+            android:layout_weight="7"
+            android:id="@+id/buttonsContainer">
 
             <ImageView
                 android:layout_width="match_parent"

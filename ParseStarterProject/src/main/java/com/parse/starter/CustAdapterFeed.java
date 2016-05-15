@@ -1,7 +1,10 @@
 package com.parse.starter;
 
+        import android.app.Activity;
+        import android.app.FragmentManager;
         import android.content.Context;
         import android.net.ConnectivityManager;
+        import android.os.Bundle;
         import android.util.Log;
         import android.view.LayoutInflater;
         import android.view.View;
@@ -19,6 +22,7 @@ package com.parse.starter;
         import com.parse.ParseUser;
         import com.parse.SaveCallback;
 
+        import java.util.ArrayList;
         import java.util.List;
 
 /**
@@ -48,6 +52,7 @@ public class CustAdapterFeed extends ArrayAdapter<ClassGoal> implements View.OnL
 
 
         LinearLayout dateCont = (LinearLayout) row_view.findViewById(R.id.dateContainer);
+        LinearLayout buttonsContainer = (LinearLayout) row_view.findViewById(R.id.buttonsContainer);
         TextView tUser = (TextView) row_view.findViewById(R.id.user);
         TextView tProfile = (TextView) row_view.findViewById(R.id.profile);
         TextView tPercent = (TextView) row_view.findViewById(R.id.percent);
@@ -96,8 +101,11 @@ public class CustAdapterFeed extends ArrayAdapter<ClassGoal> implements View.OnL
             tPercent.setText(String.valueOf(feedList.get(position).percent) + "%");
             tProfile.setText(" of " + feedList.get(position).profileName + " goals");
             dateText.setText("for week ending: " + feedList.get(position).date);
-            heart.setTag(position);
+            heart.setTag("heart");
+            buttonsContainer.setTag(position);
             heart.setOnClickListener(this);
+            comment.setOnClickListener(this);
+            comment.setTag("comment");
             if(!feedList.get(position).itemSeen.contains(ParseUser.getCurrentUser().getUsername())){
 
                 tDate.setBackgroundColor(R.drawable.profbutton_default_state);
@@ -120,11 +128,17 @@ public class CustAdapterFeed extends ArrayAdapter<ClassGoal> implements View.OnL
     @Override
     public void onClick(View v) {
 
+        LinearLayout parent = (LinearLayout) v.getParent();
+        int pos = Integer.parseInt(parent.getTag().toString());
 
         ConnectivityManager connect = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         if(connect.getActiveNetworkInfo() != null && ParseUser.getCurrentUser() != null) {
+
+
+            if(v.getTag().equals("heart")){
+
+
             Log.i("75757", v.getTag().toString());
-            int pos = Integer.parseInt(v.getTag().toString());
             if (!feedList.get(pos).id.equals("")) {
                 ParseQuery query2 = new ParseQuery("Feed");
                 try {
@@ -192,7 +206,31 @@ public class CustAdapterFeed extends ArrayAdapter<ClassGoal> implements View.OnL
                 }
 
             }
+            }else {
+
+
+                if (!feedList.get(pos).id.equals("")) {
+
+                    ArrayList<String> comments = new ArrayList<>(feedList.get(pos).comments);
+
+                    FragmentManager fm = ((Activity) context).getFragmentManager();
+                    DialogFragMessages d = new DialogFragMessages();
+                    Bundle args = new Bundle();
+                    args.putStringArrayList("comments", comments);
+                    d.setArguments(args);
+                    d.show(fm, "dialog");
+
+
+                }
+
+
+
+
+            }
+
+
         }else{Toast t = Toast.makeText(getContext(), "Error: Please check network connection!", Toast.LENGTH_SHORT);
             t.show();}
+
     }
 }
