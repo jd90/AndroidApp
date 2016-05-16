@@ -72,7 +72,11 @@ public class Frag1Feed extends ListFragment {
                                 setListAdapter(adapter);
                             } else {
                                 feedList.clear();
-                                for (i = feedRows.size() - 1; i >= 0; i--) {
+                                int length=0;
+                                if(feedRows.size()>15){// ensures it loads a maximum of 15 items
+                                    length = feedRows.size()-15;
+                                }
+                                for (i = feedRows.size() - 1; i >= length; i--) {
                                     Log.i("78789777", "a " + "here3");
                                     try {
                                         String username = feedRows.get(i).getString("username");
