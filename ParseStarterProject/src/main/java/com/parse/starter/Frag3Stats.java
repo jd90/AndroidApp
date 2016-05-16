@@ -280,7 +280,7 @@ if(v.getTag() == "sharkSwim") {
                 total = 100;
             }
             totalPercent.setText(total+"%");
-            weektotalTitle.setText("Week Total:");
+            weektotalTitle.setText("Current Total");
             TextView totalPercentAve = (TextView) view.findViewById(R.id.totalPercentAve);
             int aveTotal=0;
 

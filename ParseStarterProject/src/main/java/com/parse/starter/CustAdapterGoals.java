@@ -114,6 +114,7 @@ public class CustAdapterGoals extends ArrayAdapter<ClassGoal> implements View.On
 
         if (ActGoals.p.getRefreshDay() == 366) {
             AlertDialog.Builder confirm = new AlertDialog.Builder(getContext());
+            confirm.setIcon(R.drawable.goal_shark_logo1);
             confirm.setTitle("Holiday Mode");
             confirm.setMessage("Sorry, Holiday Mode is Activated!\n Deactivate to Proceed with Goals");
             confirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -121,7 +122,6 @@ public class CustAdapterGoals extends ArrayAdapter<ClassGoal> implements View.On
                     //could stick a deactivation button right here?? if i have time or think its better
                 }
             })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
 
         } else {

@@ -220,11 +220,11 @@ public class CustAdapterFeed extends ArrayAdapter<ClassGoal> implements View.OnL
 
 
 
-                    FragmentManager fm = ((Activity) context).getFragmentManager();
-                    DialogFragMessages d = new DialogFragMessages();
-                    Bundle args = new Bundle();
-                    d.setArguments(args);
-                    d.show(fm, "dialog");
+                  //  FragmentManager fm = ((Activity) context).getFragmentManager();
+                    //DialogFragMessages d = new DialogFragMessages();
+                    //Bundle args = new Bundle();
+                    //d.setArguments(args);
+                    //d.show(fm, "dialog");
 
 
                 }
