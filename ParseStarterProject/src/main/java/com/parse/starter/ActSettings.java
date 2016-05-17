@@ -65,6 +65,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
     static int count;
     static int size;
     static int counter;
+    boolean dontshow = false;
 
 
     LinearLayout grid1;
@@ -753,6 +754,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                         //do something if no rows returned
                         Toast t = Toast.makeText(getApplicationContext(), "Oops... No Goals Found!", Toast.LENGTH_SHORT);
                         t.show();
+                        dontshow = true;
                     } else {
 
                         databaseHelper.clearAllTbls();
@@ -905,8 +907,10 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                     //CustAdapterProfiles.profiles=databaseHelper.getAllProfiles();
                     //ActProfiles.adapter.notifyDataSetChanged();
                     //here i must reload tables
+                    if(!dontshow){
                     Toast t = Toast.makeText(getApplicationContext(), "Load Successful!", Toast.LENGTH_SHORT);
                     t.show();
+                    }
 
                 }
             }
