@@ -139,6 +139,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                 if (user != null) {
                     Toast.makeText(getApplication(), "Signed In Successfully!", Toast.LENGTH_LONG).show();
                     checkSignedIn();
+                    loadFromParse();
                 } else {
                     Toast.makeText(getApplication(), "ERROR:" + e.toString(), Toast.LENGTH_LONG).show();
                 }
@@ -162,6 +163,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                     });
         }
     }
+
     @Override
     public void onClick(View v) {
 
@@ -228,7 +230,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                         ParseUser.logOutInBackground(new LogOutCallback() {
                             @Override
                             public void done(ParseException e) {
-                                Toast t = Toast.makeText(getApplicationContext(), "Thats ye logged oot", Toast.LENGTH_SHORT);
+                                Toast t = Toast.makeText(getApplicationContext(), "Successfully Logged out", Toast.LENGTH_SHORT);
                                 t.show();
                                 checkSignedIn();
                             }

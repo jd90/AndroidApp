@@ -85,7 +85,7 @@
     android:visibility="gone"
         android:text="SAVE NOT POSSIBLE!  USER MUST ENTER TITLE"
         android:textColor="#ffff0025"
-        android:gravity="center"
+        android:gravity="left"
         android:id="@+id/warning"
         android:textAlignment="viewStart" />
     <LinearLayout
