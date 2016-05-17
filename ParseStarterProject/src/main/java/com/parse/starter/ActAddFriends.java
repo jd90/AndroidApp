@@ -80,6 +80,7 @@ public class ActAddFriends extends ListActivity {
                 Log.i("78789", "here");
                 Log.i("7878789 ", "" + usernames.toString());
 
+                getListView().setDivider(null);
                 setListAdapter(adapter);
             }
 

@@ -60,6 +60,8 @@ public class FollowersArrayAdapter extends ArrayAdapter<ClassGoal> implements Vi
         c.setOnClickListener(this);
         l.setTag(position);
 
+
+
         return row_view;
     }
 

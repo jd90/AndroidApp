@@ -146,6 +146,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                     ParseUser newUser = new ParseUser();
                     newUser.setUsername(String.valueOf(username.getText()));
                     newUser.setPassword(String.valueOf(password.getText()));
+                    newUser.put("followers", new ArrayList());
 
                     newUser.signUpInBackground(new SignUpCallback() {
                         public void done(ParseException e) {
@@ -679,7 +680,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
     public void saveToParse(){
 
 
-        if(JSONgoals.size()==0){Toast t = Toast.makeText(getApplicationContext(), "Yu'v nae profiles tae save, ya chancer!", Toast.LENGTH_SHORT);t.show();}
+        if(JSONgoals.size()==0){Toast t = Toast.makeText(getApplicationContext(), "Oops... No Goals To Load!", Toast.LENGTH_SHORT);t.show();}
         for (int ii = 0; ii < JSONgoals.size(); ii++) {
 
             Log.i("44331", "json" + JSONgoals.get(ii).toString());
@@ -700,10 +701,10 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
-                        Toast t = Toast.makeText(getApplicationContext(), "Saved yer Goals fur ye!", Toast.LENGTH_SHORT);
+                        Toast t = Toast.makeText(getApplicationContext(), "Goals Saved!", Toast.LENGTH_SHORT);
                         t.show();
                     } else {
-                        Toast t = Toast.makeText(getApplicationContext(), "Trouble savin yer goals pal, sorry!", Toast.LENGTH_SHORT);
+                        Toast t = Toast.makeText(getApplicationContext(), "Oops... There Was a Problem Saving Your Goals", Toast.LENGTH_SHORT);
                         e.printStackTrace();
 
                         t.show();
@@ -750,7 +751,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
 
                     if (goalData.size() < 1) {
                         //do something if no rows returned
-                        Toast t = Toast.makeText(getApplicationContext(), "Yu'v nae goals tae load, ya pudding!", Toast.LENGTH_SHORT);
+                        Toast t = Toast.makeText(getApplicationContext(), "Oops... No Goals Found!", Toast.LENGTH_SHORT);
                         t.show();
                     } else {
 

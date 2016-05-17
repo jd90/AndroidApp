@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +30,9 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
     static ArrayList<ClassProfile> profiles;
     TextView warningMessage;
     boolean saveClickedBool = false;
-    EditText profileInput = new EditText(getContext());
+    EditText profileInput;
     DatabaseHelper databaseHelper;
+    AlertDialog.Builder renameDelete = new AlertDialog.Builder(getContext());
 
     static LinearLayout profileContainer;
 
@@ -45,7 +47,6 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
         this.profileDatastore= new ProfileDatastore();
         profileDatastore.profiles=profiles;
         this.context = context;
-        profileInput.addTextChangedListener(this);
 
 
     }
@@ -77,6 +78,8 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
       //  Log.i("zzzz", "size click prof profilename: "+databaseHelper.getGoals(profileDatastore.getProfile(Integer.parseInt(v.getTag().toString())).getName()).size());
       //  Log.i("zzzz", "profilename:" + profileDatastore.getProfile(Integer.parseInt(v.getTag().toString())).getName());
 
+
+
         ArrayList<ClassGoal> ggs =databaseHelper.getAllGoals();
 //        Log.i("zzzzx", "profName:"+ggs.get(0).profileName);
 
@@ -97,23 +100,30 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
 
         final CharSequence[] options = {"Rename", "Delete"};
 
-        AlertDialog.Builder renameDelete = new AlertDialog.Builder(getContext());
-        renameDelete.setCustomTitle(null);
-        renameDelete.setItems(options, new DialogInterface.OnClickListener() {
+        profileInput = new EditText(getContext());
+        profileInput.addTextChangedListener(this);
+
+        AlertDialog.Builder menu = new AlertDialog.Builder(getContext());
+        menu.setCustomTitle(null);
+        menu.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setTitle("Rename your Profile");
 
-                    builder.setView(profileInput);
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    renameDelete.setTitle("Rename your Profile");
+
+                    renameDelete.setView(profileInput);
+                    renameDelete.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int num) {
+
                             //change title of profile here
-                            if (profileDatastore.nameTaken(profileInput.getText().toString().toUpperCase())||profileInput.getText().toString().equals("")) {
+                            if (profileDatastore.nameTaken(profileInput.getText().toString().toUpperCase()) || profileInput.getText().toString().equals("")) {
                                 Log.i("44331", "name taken");
+                                Toast t = Toast.makeText(getContext(), "Name already taken!", Toast.LENGTH_SHORT);
+                                t.show();
                                 dialog.cancel();
+                                dialog.dismiss();
                             }//fix this to show a warning message of some sort
                             else {
                                 saveClickedBool = true;
@@ -122,24 +132,27 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
                                 int refresh = profiles.get(Integer.parseInt(vi.getTag().toString())).getRefreshDay();
                                 String newTitle = profileInput.getText().toString().toUpperCase();
                                 profile.renameProfile(newTitle);
-
+                                dialog.cancel();
+                                dialog.dismiss();
                                 notifyDataSetChanged();
                                 databaseHelper.renameProfileThroughout(oldTitle, newTitle);
+
                             }
-                        }});
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        }
+                    });
+                    renameDelete.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int num) {
                             dialog.cancel();
                         }});
-                    builder.setCancelable(false);
-                    builder.setIcon(R.drawable.goal_shark_logo1);
-                    builder.show();
+                    renameDelete.setCancelable(false);
+                    renameDelete.setIcon(R.drawable.goal_shark_logo1);
+                    renameDelete.show();
                 } else {
-                    AlertDialog.Builder confirm = new AlertDialog.Builder(getContext());
-                    confirm.setTitle("Delete Profile?");
-                    confirm.setMessage("Are you sure you want to delete this profile?");
-                    confirm.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+
+                    renameDelete.setTitle("Delete Profile?");
+                    renameDelete.setMessage("Are you sure you want to delete this profile?");
+                    renameDelete.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             ClassProfile profile = profiles.get(Integer.parseInt(vi.getTag().toString()));
                             String title = profiles.get(Integer.parseInt(vi.getTag().toString())).getName();
@@ -152,20 +165,21 @@ public class CustAdapterProfiles extends ArrayAdapter<ClassGoal> implements View
                             notifyDataSetChanged();
                             databaseHelper.deleteProfileRow(title);
 
-
+                            dialog.cancel();
+                            dialog.dismiss();
 
 
 
 
                         }});
-                    confirm.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    renameDelete.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                         }});
-                    confirm.setIcon(R.drawable.goal_shark_logo1);
-                    confirm.show();
+                    renameDelete.setIcon(R.drawable.goal_shark_logo1);
+                    renameDelete.show();
                 }}});
 
-        renameDelete.show();
+        menu.show();
         return true;
 
 
