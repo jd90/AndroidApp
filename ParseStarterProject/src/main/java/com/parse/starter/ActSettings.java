@@ -139,7 +139,7 @@ public class ActSettings extends AppCompatActivity implements View.OnClickListen
                 if (user != null) {
                     Toast.makeText(getApplication(), "Signed In Successfully!", Toast.LENGTH_LONG).show();
                     checkSignedIn();
-                    loadFromParse();
+
                 } else {
                     Toast.makeText(getApplication(), "ERROR:" + e.toString(), Toast.LENGTH_LONG).show();
                 }
